@@ -5,7 +5,7 @@ OBJS = Survive.cpp
 CC = g++
 
 #OBJ_NAME specifies object file name
-OBJ_NAME = Survive
+OBJ_NAME = Survive.out
 
 #specifies compilation flags
 COMPILER_FLAGS = -w
