@@ -118,23 +118,43 @@ int main( int argc, char* args[] ) {
                 quit = true;
             }
         }
-        SDL_Rect person1Pos;
-        person1Pos.x = 20;
-        person1Pos.y = 20;
-        person1Pos.w = 60;
-        person1Pos.h = 60;
-        SDL_Rect box2Pos;
-        box2Pos.x = 200;
-        box2Pos.y = 200;
-        box2Pos.w = 60;
-        box2Pos.h = 60;
         //clear screen
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear(gRenderer);
+        //Set up viewport for in game info bar
+        SDL_Rect infoViewport = { 10, 10, 940, 50 };
+        SDL_RenderSetViewport(gRenderer, &infoViewport);
+
+        //render in game info bar
+        SDL_Rect boxPos;
+        boxPos.x = 0;
+        boxPos.y = 0;
+        boxPos.w = 940;
+        boxPos.h = 50;
+
+        SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
+        SDL_RenderDrawRect(gRenderer, &boxPos);
+
+        //Set up viewport for gameplay area
+        SDL_Rect gameViewport = { 10, 70, 940, 560 };
+        SDL_RenderSetViewport(gRenderer, &gameViewport);
+        SDL_Rect box2Pos;
+        box2Pos.x = 0;
+        box2Pos.y = 0;
+        box2Pos.w = 940;
+        box2Pos.h = 560;
+        SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
+        SDL_RenderDrawRect(gRenderer, &box2Pos);
+
+        SDL_Rect person1Pos;
+        person1Pos.x = 200;
+        person1Pos.y = 200;
+        person1Pos.w = 60;
+        person1Pos.h = 60;
+
+        //render gameplay area
         //render texture to the renderer to render to screen
         SDL_RenderCopy(gRenderer, gTexture, NULL, &person1Pos);
-        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF );
-        SDL_RenderFillRect(gRenderer, &box2Pos);
         //update screen
         SDL_RenderPresent(gRenderer);
 
@@ -143,14 +163,3 @@ int main( int argc, char* args[] ) {
     //Close SDL window and subsystems and free memory
     close();
 }
-
-
-
-
-
-
-
-
-
-
-
