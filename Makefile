@@ -1,5 +1,5 @@
 #OBJS specifies files to compile
-OBJS = Survive.cpp
+OBJS = Survive.o Survivor.o ObjTexture.o
 
 #CC specifies compiler
 CC = g++
@@ -16,3 +16,9 @@ LINKER_FLAGS = -lSDL2 -lSDL2_image
 #target
 all: $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+
+Survive.o: ObjTexture.h Survivor.h
+
+ObjTexture.o: ObjTexture.h
+
+Survivor.o: Survivor.h
