@@ -3,8 +3,8 @@
 
 Survivor::Survivor(int x, int y) {
     texture = NULL;
-    this->x = y;
-    this->y = x;
+    this->x = x;
+    this->y = y;
     this->moving = false;
     this->angle = SURVIVOR_STARTING_ANGLE;
     this->speed = SURVIVOR_STARTING_SPEED;

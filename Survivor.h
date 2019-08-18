@@ -18,8 +18,8 @@ class Survivor {
 
         int getWidth() { return width; }
         int getHeight() { return height; }
-        int getX() { return x; }
-        int getY() { return y; }
+        float getX() { return x; }
+        float getY() { return y; }
         bool getMoving() { return moving; }
         int getDirection() { return direction; }
         int getAngle() { return angle; }
@@ -36,8 +36,8 @@ class Survivor {
 
     private:
         ObjTexture* texture;
-        int x;
-        int y;
+        float x;
+        float y;
         bool moving;
         int angle; //0 - 360
         int speed;
