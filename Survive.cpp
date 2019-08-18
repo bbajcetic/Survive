@@ -18,7 +18,7 @@ SDL_Surface* gScreen = NULL;
 SDL_Renderer* gRenderer = NULL;
 SDL_Texture* gTexture = NULL;
 //Initialize Player
-Survivor survivor(GAME_WIDTH/2, GAME_HEIGHT/2, SURVIVOR_WIDTH, SURVIVOR_HEIGHT);
+Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 //Initialize Enemies
 
 
@@ -65,7 +65,7 @@ SDL_Texture* loadTexture(std::string path) {
 bool load() {
     bool success = true;
     //load main Character texture
-    survivor.load("Player.png", 4, 4);
+    survivor.load("PlayerRight.png", 1, 4);
 
     //gTexture = survivor.getTexture()->getTexture();
     //
@@ -118,37 +118,50 @@ int main( int argc, char* args[] ) {
             if (e.type == SDL_QUIT) {
                 quit = true;
             }
+        //    else if (e.type == SDL_KEYDOWN) {
+        //        switch(e.key.keysym.sym) {
+        //            case SDLK_UP:
+        //                survivor.setMoving(true);
+        //                break;
+        //            case SDLK_DOWN:
+        //                survivor.setMoving(true);
+        //        }
+        //    }
+        //    else if (e.type == SDL_KEYUP) {
+        //        switch(e.key.keysym.sym) {
+        //            case SDLK_UP:
+        //                survivor.setMoving(
         }
         const Uint8* currentKeyState = SDL_GetKeyboardState(NULL);
+        /* put all this in survivor update function by defining sdl library in
+         * class and then putting scancode as an argument to the update func*/
         if (currentKeyState[SDL_SCANCODE_LEFT]) {
-            if (survivor.getDirection() != 0) {
-                frame = 0;
-                survivor.setDirection(0);
-            }
-        }
-        else if (currentKeyState[SDL_SCANCODE_UP]) {
-            if (survivor.getDirection() != 1) {
-                frame = 0;
-                survivor.setDirection(1);
-            }
+            survivor.update("LEFT");
+            //frame = 0;
         }
         else if (currentKeyState[SDL_SCANCODE_RIGHT]) {
-            if (survivor.getDirection() != 2) {
+            survivor.update("RIGHT");
+            //frame = 0;
+        }
+        if (currentKeyState[SDL_SCANCODE_UP]) {
+            if (!survivor.getMoving()) {
+                survivor.setMoving(true);
                 frame = 0;
-                survivor.setDirection(2);
             }
+            survivor.update("UP");
         }
-        else if (currentKeyState[SDL_SCANCODE_DOWN]) {
-            if (survivor.getDirection() != 3) {
+        if (currentKeyState[SDL_SCANCODE_DOWN]) {
+            if (!survivor.getMoving()) {
+                survivor.setMoving(true);
                 frame = 0;
-                survivor.setDirection(3);
             }
+            survivor.update("DOWN");
         }
-        else {
-            if (survivor.getDirection() < 10) {
-                survivor.setDirection(survivor.getDirection()+10);
-            }
+        if (!currentKeyState[SDL_SCANCODE_UP] 
+                && !currentKeyState[SDL_SCANCODE_DOWN]) {
+            survivor.setMoving(false);
         }
+        
 
         //clear screen
         SDL_SetRenderDrawColor( gRenderer, BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, BG_COLOR.a );
@@ -170,35 +183,15 @@ int main( int argc, char* args[] ) {
 
         //render gameplay area
         //render texture to the renderer to render to screen
-        if (survivor.getDirection() == 0) {
+
+        if (survivor.getMoving()) {
             survivor.draw(frame/6);
-            survivor.setX(survivor.getX()-2);
         }
-        else if (survivor.getDirection() == 1) {
-            survivor.draw(4 + frame/6);
-            survivor.setY(survivor.getY()-2);
-        }
-        else if (survivor.getDirection() == 2) {
-            survivor.draw(8 + frame/6);
-            survivor.setX(survivor.getX()+2);
-        }
-        else if (survivor.getDirection() == 3) {
-            survivor.draw(12 + frame/6);
-            survivor.setY(survivor.getY()+2);
-        }
-        else if (survivor.getDirection() == 10) {
+        else {
             survivor.draw(1);
         }
-        else if (survivor.getDirection() == 11) {
-            survivor.draw(5);
-        }
-        else if (survivor.getDirection() == 12) {
-            survivor.draw(9);
-        }
-        else if (survivor.getDirection() == 13) {
-            survivor.draw(13);
-        }
-        //survivor.draw(frame/16);
+        
+        
         //update screen
         SDL_RenderPresent(gRenderer);
 

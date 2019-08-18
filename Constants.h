@@ -11,10 +11,12 @@ const int MS_PER_FRAME = 16;
 //survivor global variables
 const int SURVIVOR_STARTING_X = 0;
 const int SURVIVOR_STARTING_Y = 0;
-const int SURVIVOR_STARTING_DIRECTION = 2;
+const int SURVIVOR_STARTING_ANGLE = 90;
+const int SURVIVOR_STARTING_SPEED = 5;
+const int SURVIVOR_STARTING_DIRECTION = 1;
 
-const int SURVIVOR_WIDTH = 48;
-const int SURVIVOR_HEIGHT = 48;
+const int SURVIVOR_WIDTH = 64;
+const int SURVIVOR_HEIGHT = 64;
 
 /*VIEWPORTS*/
 //Info viewport
@@ -28,5 +30,8 @@ const SDL_Rect GAME_VIEWPORT = { 10, 90, 940, 540 }; //x, y, width, height
 const SDL_Rect GAME = { 0, 0, 940, 540 };
 const int GAME_WIDTH = 940;
 const int GAME_HEIGHT = 540;
+
+//math constants
+const double PI = 3.141592653589793;
 
 #endif

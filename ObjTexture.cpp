@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "ObjTexture.h"
 
 ObjTexture::ObjTexture() {
@@ -45,7 +44,7 @@ bool ObjTexture::load(std::string path, int anim_rows, int anim_cols) {
     texture = newTexture;
     return success;
 }
-void ObjTexture::render(int x, int y, int width, int height, int anim_index) {
+void ObjTexture::render(int x, int y, int angle, int width, int height, int anim_index) {
     int row, col, row_height, col_width, textureX, textureY;
     row = anim_index / getAnimCols();
     col = anim_index % getAnimCols();
@@ -58,5 +57,6 @@ void ObjTexture::render(int x, int y, int width, int height, int anim_index) {
     //printf("%d, %d, %d, %d, %d, %d\n", row, col, col_width, row_height, textureX, textureY);
     SDL_Rect clip = { textureX, textureY, col_width, row_height };
     SDL_Rect quad = { x, y, width, height };
-    SDL_RenderCopy(gRenderer, texture, &clip, &quad);
+    SDL_RenderCopyEx(gRenderer, texture, &clip, &quad, -angle, NULL, SDL_FLIP_NONE);
+    /*negative angle for counter clockwise rotation like in the unit circle*/
 }

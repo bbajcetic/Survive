@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
+#include <stdio.h>
 
 extern SDL_Renderer* gRenderer;
 
@@ -13,7 +14,7 @@ class ObjTexture {
         ~ObjTexture();
 
         bool load(std::string path, int anim_rows, int anim_cols);
-        void render(int x, int y, int width, int height, int anim_index);
+        void render(int x, int y, int angle, int width, int height, int anim_index);
         void free();
 
         SDL_Texture* getTexture() { return texture; }
