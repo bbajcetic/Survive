@@ -17,8 +17,8 @@ LINKER_FLAGS = -lSDL2 -lSDL2_image
 all: $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
 
-Survive.o: ObjTexture.h Survivor.h
+Survive.o: ObjTexture.h Survivor.h Constants.h
 
-ObjTexture.o: ObjTexture.h
+ObjTexture.o: ObjTexture.h Constants.h
 
-Survivor.o: Survivor.h
+Survivor.o: Survivor.h Constants.h
