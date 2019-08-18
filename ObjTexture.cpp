@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "ObjTexture.h"
 
 ObjTexture::ObjTexture() {
@@ -22,9 +23,9 @@ void ObjTexture::free() {
 }
 bool ObjTexture::load(std::string path, int anim_rows, int anim_cols) {
     bool success = true;
+    free();
     setAnimRows(anim_rows);
     setAnimCols(anim_cols);
-    free();
     SDL_Texture* newTexture = NULL;
     SDL_Surface* loaded = IMG_Load(path.c_str());
     if (loaded == NULL) {
@@ -41,19 +42,21 @@ bool ObjTexture::load(std::string path, int anim_rows, int anim_cols) {
         }
         SDL_FreeSurface(loaded);
     }
+    texture = newTexture;
     return success;
 }
 void ObjTexture::render(int x, int y, int width, int height, int anim_index) {
-    int row, col, row_width, col_width, textureX, textureY;
+    int row, col, row_height, col_width, textureX, textureY;
     row = anim_index / getAnimCols();
     col = anim_index % getAnimCols();
-    row_width = getHeight() / getAnimRows();
+    row_height = getHeight() / getAnimRows();
     col_width = getWidth() / getAnimCols();
 
     textureX = col * col_width;
-    textureY = row * row_width;
+    textureY = row * row_height;
 
-    SDL_Rect clip = { textureX, textureY, row_width, col_width };
-    SDL_Rect quad = { x, y, width, width };
+    //printf("%d, %d, %d, %d, %d, %d\n", row, col, col_width, row_height, textureX, textureY);
+    SDL_Rect clip = { textureX, textureY, col_width, row_height };
+    SDL_Rect quad = { x, y, width, height };
     SDL_RenderCopy(gRenderer, texture, &clip, &quad);
 }

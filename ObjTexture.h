@@ -16,6 +16,7 @@ class ObjTexture {
         void render(int x, int y, int width, int height, int anim_index);
         void free();
 
+        SDL_Texture* getTexture() { return texture; }
         int getWidth() { return width; }
         int getHeight() { return height; }
         int getAnimCols() { return anim_cols; }
