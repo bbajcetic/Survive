@@ -149,12 +149,20 @@ int main( int argc, char* args[] ) {
         SDL_Rect person1Pos;
         person1Pos.x = 200;
         person1Pos.y = 200;
-        person1Pos.w = 60;
-        person1Pos.h = 60;
+        person1Pos.w = 50;
+        person1Pos.h = 50;
+        SDL_Rect animation1;
+        animation1.x = 0;
+        animation1.y = 0;
+        animation1.w = 64;
+        animation1.h = 64;
 
         //render gameplay area
         //render texture to the renderer to render to screen
-        SDL_RenderCopy(gRenderer, gTexture, NULL, &person1Pos);
+        SDL_RenderCopy(gRenderer, gTexture, &animation1, &person1Pos);
+        //SDL_RenderCopy(gRenderer, gTexture, &animation2, &person2Pos);
+        //SDL_RenderCopy(gRenderer, gTexture, &animation3, &person3Pos);
+        //SDL_RenderCopy(gRenderer, gTexture, &animation4, &person4Pos);
         //update screen
         SDL_RenderPresent(gRenderer);
 
