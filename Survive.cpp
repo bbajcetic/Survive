@@ -170,11 +170,9 @@ int main( int argc, char* args[] ) {
          * class and then putting scancode as an argument to the update func*/
         if (currentKeyState[SDL_SCANCODE_LEFT]) {
             survivor.update("LEFT");
-            //frame = 0;
         }
         else if (currentKeyState[SDL_SCANCODE_RIGHT]) {
             survivor.update("RIGHT");
-            //frame = 0;
         }
         if (currentKeyState[SDL_SCANCODE_UP]) {
             if ( (current - last_player_move) > SURVIVOR_TIME_PER_MOVE ) {
@@ -232,7 +230,7 @@ int main( int argc, char* args[] ) {
         //update screen
         SDL_RenderPresent(gRenderer);
 
-        frame = (frame + 1) % SURVIVOR_NUM_SPRITES*FRAMES_PER_ANIMATION;
+        frame = (frame + 1) % (SURVIVOR_NUM_SPRITES*FRAMES_PER_ANIMATION);
 
         //end frame FrameManager checks
         frame_count++;
