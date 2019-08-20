@@ -17,8 +17,8 @@ const int SURVIVOR_HEIGHT = 44;
 
 //projectile global variables
 const int PROJECTILE_STARTING_SPEED = 8;
-const int PROJECTILE_WIDTH = 8;
-const int PROJECTILE_HEIGHT = 12;
+const int PROJECTILE_WIDTH = 3;
+const int PROJECTILE_HEIGHT = 15;
 
 //map global variables
 const int MAP1_TILE_ROWS = 12;

@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 #include "Constants.h"
 #include "Survivor.h"
@@ -21,6 +22,8 @@ SDL_Texture* gTexture = NULL;
 //Initialize Player
 Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 //Initialize Enemies
+//Initialize Projectiles
+std::vector<Projectile> projectiles;
 
 //Initialize tiles Array
 int tiles[MAP1_TILE_ROWS][MAP1_TILE_COLS] = {
@@ -151,19 +154,13 @@ int main( int argc, char* args[] ) {
             if (e.type == SDL_QUIT) {
                 quit = true;
             }
-        //    else if (e.type == SDL_KEYDOWN) {
-        //        switch(e.key.keysym.sym) {
-        //            case SDLK_UP:
-        //                survivor.setMoving(true);
-        //                break;
-        //            case SDLK_DOWN:
-        //                survivor.setMoving(true);
-        //        }
-        //    }
-        //    else if (e.type == SDL_KEYUP) {
-        //        switch(e.key.keysym.sym) {
-        //            case SDLK_UP:
-        //                survivor.setMoving(
+            else if (e.type == SDL_KEYDOWN) {
+                switch(e.key.keysym.sym) {
+                    case SDLK_SPACE:
+                        survivor.shoot();
+                        break;
+                }
+            }
         }
         const Uint8* currentKeyState = SDL_GetKeyboardState(NULL);
         /* put all this in survivor update function by defining sdl library in

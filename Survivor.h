@@ -3,9 +3,12 @@
 
 #include <string>
 #include <cmath>
+#include <vector>
 #include "ObjTexture.h"
 #include "Map.h"
+#include "Projectile.h"
 
+extern std::vector<Projectile> projectiles;
 extern Map map;
 
 class Survivor {
@@ -15,6 +18,7 @@ class Survivor {
 
         void update(std::string dir);
         void move(std::string dir);
+        void shoot();
         void draw(int anim_index);
         void load(std::string path, int anim_rows, int anim_cols);
 

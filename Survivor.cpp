@@ -48,6 +48,15 @@ void Survivor::move(std::string dir) {
         y = temp_y;
     }
 }
+void Survivor::shoot() {
+    float temp_x, temp_y, temp_h;
+    float rad = float(angle) * (PI/float(180));
+    temp_h = 1.5 * float(width);
+    temp_x = x + temp_h * cos(rad);
+    temp_y = y - temp_h * sin(rad);
+    Projectile temp(temp_x, temp_y, angle);
+    projectiles.push_back(temp);
+}
 void Survivor::draw(int anim_index) {
     texture->render(x, y, angle, width, height, anim_index);
 }
