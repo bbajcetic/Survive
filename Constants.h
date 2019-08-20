@@ -12,11 +12,20 @@ const int MS_PER_FRAME = 16;
 const int SURVIVOR_STARTING_X = 0;
 const int SURVIVOR_STARTING_Y = 0;
 const int SURVIVOR_STARTING_ANGLE = 90;
-const int SURVIVOR_STARTING_SPEED = 5;
+const int SURVIVOR_STARTING_SPEED = 2;
+const int SURVIVOR_TIME_PER_MOVE = 10;
 const int SURVIVOR_STARTING_DIRECTION = 1;
+const int SURVIVOR_NUM_SPRITES = 4;
+const int FRAMES_PER_ANIMATION = 6;
 
-const int SURVIVOR_WIDTH = 48;
-const int SURVIVOR_HEIGHT = 48;
+const int SURVIVOR_WIDTH = 44;
+const int SURVIVOR_HEIGHT = 44;
+
+//map global variables
+const int MAP1_TILE_ROWS = 12;
+const int MAP1_TILE_COLS = 20;
+const int MAP1_TILE_WIDTH = 48;
+const int MAP1_TILE_HEIGHT = 48;
 
 /*VIEWPORTS*/
 //Info viewport

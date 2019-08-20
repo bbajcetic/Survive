@@ -1,5 +1,5 @@
 #OBJS specifies files to compile
-OBJS = Survive.o Survivor.o ObjTexture.o
+OBJS = Survive.o Survivor.o ObjTexture.o Map.o
 
 #CC specifies compiler
 CC = g++
@@ -22,3 +22,5 @@ Survive.o: ObjTexture.h Survivor.h Constants.h
 ObjTexture.o: ObjTexture.h Constants.h
 
 Survivor.o: Survivor.h Constants.h
+
+Map.o: Map.h Constants.h

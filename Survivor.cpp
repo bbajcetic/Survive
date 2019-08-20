@@ -1,5 +1,6 @@
 #include "Survivor.h"
 #include "Constants.h"
+#include "Map.h"
 
 Survivor::Survivor(int x, int y) {
     texture = NULL;
@@ -30,13 +31,22 @@ void Survivor::move(std::string dir) {
     float rad = float(angle) * (PI/float(180));
     float move_x = float(speed) * (cos(float(rad)));
     float move_y = float(speed) * (sin(float(rad)));
+    float temp_x, temp_y;
     //printf("rad = %f, move_x = %f, move_y = %f\n", rad, move_x, move_y);
     if (dir == "FORWARD") {
-        x = x + move_x;
-        y = y - move_y;
+        temp_x = x + move_x;
+        temp_y = y - move_y;
     } else if (dir == "BACKWARD") {
-        x = x - move_x;
-        y = y + move_y;
+        temp_x = x - move_x;
+        temp_y = y + move_y;
+    }
+    if (!map.isWall(temp_x, temp_y, width, height)) {
+        x = temp_x;
+        y = temp_y;
+    } else if (!map.isWall(temp_x, y, width, height)) {
+        x = temp_x;
+    } else if (!map.isWall(x, temp_y, width, height)) {
+        y = temp_y;
     }
 }
 void Survivor::draw(int anim_index) {

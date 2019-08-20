@@ -5,6 +5,7 @@
 
 #include "Constants.h"
 #include "Survivor.h"
+#include "Map.h"
 
 //Initialize SDL and create window
 bool init();
@@ -21,8 +22,38 @@ SDL_Texture* gTexture = NULL;
 Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 //Initialize Enemies
 
+//Initialize tiles Array
+int tiles[MAP1_TILE_ROWS][MAP1_TILE_COLS] = {
+    {},
+    {},
+    { 0, 0, 8, 5, 5, 12, 5, 5, 5, 5, 5, 5, 5, 0, 0, 12, 5, 0, 0, 5 },
+    { 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
+    { 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
+    { 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
+    { 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
+    { 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 14, 5, 5, 12, 4 },
+    { 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0 },
+    { 0, 0, 9, 5, 5, 5, 5, 11, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0 },
+    { 0, 0, 0, 0, 0, 0, 0, 4, 0, 9, 5, 5, 5, 5, 5, 5, 5, 5, 10, 0 },
+    { 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+};
+//Print tiles
+void printMultiArray(int* tiles, int r, int c) {
+    for (int i = 0; i < r; ++i) {
+        for (int j = 0; j < c; ++j) {
+            printf("%d, ", *(tiles+i*c+j));
+        }
+        printf("\n");
+    }
+}
+//Initialize Map
+std::string textures[4] = { "Floor.png", "WallEdge.png", "WallCorner.png", 
+    "WallT.png" };
+Map map( (int*)tiles, 4, (std::string*)textures, MAP1_TILE_ROWS, 
+        MAP1_TILE_COLS, MAP1_TILE_WIDTH, MAP1_TILE_HEIGHT );
 
 bool init() {
+    //printMultiArray((int*)tiles, 12, 20);
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not be initialized. Error: %s\n", SDL_GetError());
         return false;
@@ -65,7 +96,8 @@ SDL_Texture* loadTexture(std::string path) {
 bool load() {
     bool success = true;
     //load main Character texture
-    survivor.load("PlayerRight.png", 1, 4);
+    map.load();
+    survivor.load("PlayerRight.png", 1, SURVIVOR_NUM_SPRITES);
 
     //gTexture = survivor.getTexture()->getTexture();
     //
@@ -107,6 +139,7 @@ int main( int argc, char* args[] ) {
     int current = SDL_GetTicks();
     int second_timer = current;
     int last = current;
+    int last_player_move = current;
     int frame_count = 0;
 
     //Event handler
@@ -144,18 +177,24 @@ int main( int argc, char* args[] ) {
             //frame = 0;
         }
         if (currentKeyState[SDL_SCANCODE_UP]) {
-            if (!survivor.getMoving()) {
-                survivor.setMoving(true);
-                frame = 0;
+            if ( (current - last_player_move) > SURVIVOR_TIME_PER_MOVE ) {
+                if (!survivor.getMoving()) {
+                    survivor.setMoving(true);
+                    frame = 0;
+                }
+                survivor.update("UP");
+                last_player_move = current;
             }
-            survivor.update("UP");
         }
         if (currentKeyState[SDL_SCANCODE_DOWN]) {
-            if (!survivor.getMoving()) {
-                survivor.setMoving(true);
-                frame = 0;
+            if ( (current - last_player_move) > SURVIVOR_TIME_PER_MOVE ) {
+                if (!survivor.getMoving()) {
+                    survivor.setMoving(true);
+                    frame = 0;
+                }
+                survivor.update("DOWN");
+                last_player_move = current;
             }
-            survivor.update("DOWN");
         }
         if (!currentKeyState[SDL_SCANCODE_UP] 
                 && !currentKeyState[SDL_SCANCODE_DOWN]) {
@@ -169,23 +208,21 @@ int main( int argc, char* args[] ) {
 
         //Set up viewport for info area
         SDL_RenderSetViewport(gRenderer, &INFO_VIEWPORT);
-
         //Render info area
         SDL_SetRenderDrawColor( gRenderer, INFO_COLOR.r, INFO_COLOR.g, INFO_COLOR.b, INFO_COLOR.a );
         SDL_RenderFillRect(gRenderer, &INFO);
 
         //Set up viewport for gameplay area
         SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
-
         //Render gameplay area
         SDL_SetRenderDrawColor(gRenderer, GAME_COLOR.r, GAME_COLOR.g, GAME_COLOR.b, GAME_COLOR.a);
         SDL_RenderFillRect(gRenderer, &GAME);
+        map.draw();
 
-        //render gameplay area
         //render texture to the renderer to render to screen
 
         if (survivor.getMoving()) {
-            survivor.draw(frame/6);
+            survivor.draw(frame/FRAMES_PER_ANIMATION);
         }
         else {
             survivor.draw(1);
@@ -195,7 +232,7 @@ int main( int argc, char* args[] ) {
         //update screen
         SDL_RenderPresent(gRenderer);
 
-        frame = (frame + 1) % 24;
+        frame = (frame + 1) % SURVIVOR_NUM_SPRITES*FRAMES_PER_ANIMATION;
 
         //end frame FrameManager checks
         frame_count++;

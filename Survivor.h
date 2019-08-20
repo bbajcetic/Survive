@@ -4,6 +4,9 @@
 #include <string>
 #include <cmath>
 #include "ObjTexture.h"
+#include "Map.h"
+
+extern Map map;
 
 class Survivor {
     public:
