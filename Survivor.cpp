@@ -55,6 +55,7 @@ void Survivor::shoot() {
     temp_x = x + temp_h * cos(rad);
     temp_y = y - temp_h * sin(rad);
     Projectile temp(temp_x, temp_y, angle);
+    temp.load("Projectile.png");
     projectiles.push_back(temp);
 }
 void Survivor::draw(int anim_index) {
