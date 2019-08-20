@@ -12,9 +12,9 @@ Map::Map(int* tiles, int num_textures, std::string* texture_names,
     this->tile_height = tile_height;
 }
 Map::~Map() {
-    //for (int i = 0; i < num_textures; ++i) {
-    //    delete *(textures+i);
-    //}
+    for (int i = 0; i < num_textures; ++i) {
+        delete textures[i];
+    }
     delete [] textures;
 }
 bool Map::onMap(int x, int y, int width, int height) {
