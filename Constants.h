@@ -2,12 +2,6 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-//window global variables
-const SDL_Color BG_COLOR = { 0, 0, 0, 255 }; //black
-const int SCREEN_WIDTH = 1190;
-const int SCREEN_HEIGHT = 596;
-const int MS_PER_FRAME = 16;
-
 //survivor global variables
 const int SURVIVOR_STARTING_X = 0;
 const int SURVIVOR_STARTING_Y = 0;
@@ -21,11 +15,22 @@ const int FRAMES_PER_ANIMATION = 6;
 const int SURVIVOR_WIDTH = 44;
 const int SURVIVOR_HEIGHT = 44;
 
+//projectile global variables
+const int PROJECTILE_STARTING_SPEED = 8;
+const int PROJECTILE_WIDTH = 8;
+const int PROJECTILE_HEIGHT = 12;
+
 //map global variables
 const int MAP1_TILE_ROWS = 12;
 const int MAP1_TILE_COLS = 20;
 const int MAP1_TILE_WIDTH = 48;
 const int MAP1_TILE_HEIGHT = 48;
+
+//window global variables
+const SDL_Color BG_COLOR = { 0, 0, 0, 255 }; //black
+const int SCREEN_WIDTH = 1190;
+const int SCREEN_HEIGHT = 596;
+const int MS_PER_FRAME = 16;
 
 /*VIEWPORTS*/
 //Info viewport
