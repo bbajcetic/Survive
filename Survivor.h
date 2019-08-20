@@ -23,7 +23,6 @@ class Survivor {
         float getX() { return x; }
         float getY() { return y; }
         bool getMoving() { return moving; }
-        int getDirection() { return direction; }
         int getAngle() { return angle; }
         int getSpeed() { return speed; }
         ObjTexture* getTexture() { return texture; }
@@ -31,7 +30,6 @@ class Survivor {
         void setX(int x) { this->x = x; }
         void setY(int y) { this->y = y; }
         void setMoving(bool moving) { this->moving = moving; }
-        void setDirection(int dir) { this->direction = dir; }
         void setAngle(int angle) { this->angle = angle; }
         void setSpeed(int speed) { this->speed = speed; }
 
@@ -45,7 +43,6 @@ class Survivor {
         int speed;
         int width;
         int height;
-        int direction; //0 = left, 1 = up, 2 = right, 3 = down
 };
 
 #endif
