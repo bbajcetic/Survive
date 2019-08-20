@@ -17,7 +17,6 @@ class Survivor {
         void move(std::string dir);
         void draw(int anim_index);
         void load(std::string path, int anim_rows, int anim_cols);
-        void free();
 
         int getWidth() { return width; }
         int getHeight() { return height; }

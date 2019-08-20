@@ -12,7 +12,6 @@ class Map {
 
         void draw();
         void load();
-        void free();
 
         int getTileWidth() { return tile_width; }
         int getTileHeight() { return tile_height; }
