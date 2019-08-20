@@ -12,6 +12,9 @@ Projectile::Projectile(int x, int y, int angle) {
 Projectile::~Projectile() {
     delete texture;
 }
+void Projectile::draw() {
+    texture->render(x, y, angle, width, height, 0);
+}
 void Projectile::load(std::string path) {
     if (texture != NULL) {
         delete texture;

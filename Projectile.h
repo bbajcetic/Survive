@@ -11,7 +11,7 @@ class Projectile {
         ~Projectile();
 
         void update(std::string dir);
-        void draw(int anim_index);
+        void draw();
         void load(std::string path);
 
         int getWidth() { return width; }
