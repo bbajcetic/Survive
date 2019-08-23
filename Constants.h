@@ -14,6 +14,11 @@ const int FRAMES_PER_ANIMATION = 6;
 const int SURVIVOR_WIDTH = 44;
 const int SURVIVOR_HEIGHT = 44;
 
+//zombie global variables
+const int ZOMBIE_STARTING_SPEED = 2;
+const int ZOMBIE_WIDTH = 44;
+const int ZOMBIE_HEIGHT = 44;
+
 //projectile global variables
 const int PROJECTILE_STARTING_SPEED = 3;
 const int PROJECTILE_WIDTH = 15;
