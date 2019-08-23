@@ -18,6 +18,8 @@ const int SURVIVOR_HEIGHT = 44;
 const int ZOMBIE_STARTING_SPEED = 2;
 const int ZOMBIE_WIDTH = 44;
 const int ZOMBIE_HEIGHT = 44;
+const int ZOMBIE_SPAWN_TIME = 6000; //6000ms = 6s
+const int MAX_ZOMBIES = 5;
 
 //projectile global variables
 const int PROJECTILE_STARTING_SPEED = 3;
