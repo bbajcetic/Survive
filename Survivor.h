@@ -8,7 +8,7 @@
 #include "Map.h"
 #include "Projectile.h"
 
-extern std::vector<Projectile> projectiles;
+extern std::vector<Projectile*> projectiles;
 extern Map map;
 
 class Survivor {
@@ -39,7 +39,7 @@ class Survivor {
 
 
     private:
-        ObjTexture objTexture;
+        ObjTexture* objTexture;
         //ObjTexture* objTexture;
         float x;
         float y;

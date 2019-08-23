@@ -23,8 +23,8 @@ ObjTexture::~ObjTexture() {
     printf("---Entering ObjTexture destructor\n");
     global_count--;
     printf("Global count = %d\n", global_count);
-    //SDL_DestroyTexture(this->texture);
-    //this->texture = NULL;
+    SDL_DestroyTexture(this->texture);
+    this->texture = NULL;
     //free_();
     printf("---Leaving ObjTexture destructor\n");
 }

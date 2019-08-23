@@ -26,8 +26,8 @@ class Map {
         //ObjTexture* getTexture() { return texture; }
 
     private:
-        //std::vector<ObjTexture*> textures;
-        std::vector<ObjTexture> textures;
+        std::vector<ObjTexture*> textures;
+        //std::vector<ObjTexture> textures;
         int* tiles;
         int num_textures;
         std::string* texture_names;

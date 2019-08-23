@@ -15,9 +15,10 @@ Map::Map(int* tiles, int num_textures, std::string* texture_names,
 }
 Map::~Map() {
     printf("---Entering Map destructor\n");
-    //for (int i = 0; i < num_textures; ++i) {
-    //    delete textures[i];
-    //}
+    for (int i = 0; i < num_textures; ++i) {
+        delete textures[i];
+        textures[i] = NULL;
+    }
     textures.clear();
     printf("---Leaving Map destructor\n");
 }
@@ -79,7 +80,7 @@ void Map::draw() {
             //printf("TYPE=%d\n", type);
             //printf("rendering texture %s\n", textures[type].getFileName().c_str());
             //printf("address = %p\n", &textures[type]);
-            this->textures[type].render(x, y, angle, tile_width, tile_height, 0);
+            this->textures[type]->render(x, y, angle, tile_width, tile_height, 0);
         }
     }
     printf("---Leaving Map::draw\n");
@@ -87,15 +88,27 @@ void Map::draw() {
 void Map::load() {
     printf("---Entering Map::load\n");
     for (int i = 0; i < num_textures; ++i) {
-        ObjTexture temp;
+        ObjTexture* temp = new ObjTexture;
         printf("LOADING %s\n", texture_names[i].c_str());
-        temp.load(texture_names[i], 1, 1);
+        temp->load(texture_names[i], 1, 1);
         //ObjTexture* temp = new ObjTexture;
         //temp->load(texture_names[i], 1, 1);
-        this->textures.push_back(temp);
+        textures.push_back(temp);
     }
     printf("---Leaving Map::load\n");
 }
+//void Map::load() {
+//    printf("---Entering Map::load\n");
+//    for (int i = 0; i < num_textures; ++i) {
+//        ObjTexture temp;
+//        printf("LOADING %s\n", texture_names[i].c_str());
+//        temp.load(texture_names[i], 1, 1);
+//        //ObjTexture* temp = new ObjTexture;
+//        //temp->load(texture_names[i], 1, 1);
+//        this->textures.push_back(temp);
+//    }
+//    printf("---Leaving Map::load\n");
+//}
 //void Map::load() {
 //    textures = new ObjTexture*[num_textures];
 //    for (int i = 0; i < num_textures; ++i) {

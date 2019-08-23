@@ -24,7 +24,8 @@ SDL_Renderer* gRenderer = NULL;
 Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 //Initialize Enemies
 //Initialize Projectiles
-std::vector<Projectile> projectiles;
+std::vector<Projectile*> projectiles;
+//std::vector<Projectile> projectiles;
 
 //Initialize tiles Array
 int tiles[MAP1_TILE_ROWS][MAP1_TILE_COLS] = {
@@ -189,12 +190,14 @@ int main( int argc, char* args[] ) {
                 && !currentKeyState[SDL_SCANCODE_DOWN]) {
             survivor.setMoving(false);
         }
-        std::vector<Projectile>::iterator it = projectiles.begin();
+        std::vector<Projectile*>::iterator it = projectiles.begin();
         //printf("check4\n");
         while (it != projectiles.end()) {
             printf("CHECK6: render projectiles\n");
             //printf("check5\n");
-            if ( !(it->update()) ) {
+            //if ( !(it->update()) ) {
+            if ( !((*it)->update()) ) {
+                delete *it;
                 it = projectiles.erase(it);
                 //it++;
             } else {
@@ -232,8 +235,10 @@ int main( int argc, char* args[] ) {
         //render projectiles to the screen
         it = projectiles.begin();
         while (it != projectiles.end()) {
-            printf("drawing projectile at %f, %f\n", it->getX(), it->getY());
-            it->draw();
+            //printf("drawing projectile at %f, %f\n", it->getX(), it->getY());
+            printf("drawing projectile at %f, %f\n", (*it)->getX(), (*it)->getY());
+            //it->draw();
+            (*it)->draw();
             it++;
         }
         

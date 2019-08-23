@@ -4,7 +4,7 @@
 
 Survivor::Survivor(int x, int y) {
     printf("---Entering Survivor constructor\n");
-    //objTexture = NULL;
+    this->objTexture = new ObjTexture();
     this->x = x;
     this->y = y;
     this->moving = false;
@@ -16,8 +16,8 @@ Survivor::Survivor(int x, int y) {
 }
 Survivor::~Survivor() {
     printf("---Entering Survivor destructor\n");
-    //delete objTexture;
-    //objTexture = NULL;
+    delete objTexture;
+    objTexture = NULL;
     printf("---Leaving Survivor destructor\n");
 }
 void Survivor::update(std::string dir) {
@@ -64,16 +64,18 @@ void Survivor::shoot() { //fix to use origin instead of top left of objTexture
     temp_h = 1.5 * (0.5*float(width));
     temp_x = (x+0.5*float(width)) + temp_h * cos(rad);
     temp_y = (y+0.5*float(height)) - temp_h * sin(rad);
-    Projectile temp(temp_x, temp_y, angle);
-    temp.load("Projectile.png");
+    //Projectile temp(temp_x, temp_y, angle);
+    Projectile* temp = new Projectile(temp_x, temp_y, angle);
+    //temp.load("Projectile.png");
+    temp->load("Projectile.png");
     projectiles.push_back(temp);
     printf("NEW PROJECTILE SIZE = %d\n", projectiles.size());
     printf("---Leaving Survivor::shoot\n");
 }
 void Survivor::draw(int anim_index) {
     printf("---Entering Survivor::draw\n");
-    //objTexture->render(x, y, angle, width, height, anim_index);
-    this->objTexture.render(x, y, angle, width, height, anim_index);
+    objTexture->render(x, y, angle, width, height, anim_index);
+    //this->objTexture.render(x, y, angle, width, height, anim_index);
     printf("---Leaving Survivor::draw\n");
 }
 void Survivor::load(std::string path, int anim_rows, int anim_cols) {
@@ -82,7 +84,7 @@ void Survivor::load(std::string path, int anim_rows, int anim_cols) {
     //    delete objTexture;
     //}
     //objTexture = new ObjTexture();
-    //objTexture->load(path, anim_rows, anim_cols);
-    objTexture.load(path, anim_rows, anim_cols);
+    objTexture->load(path, anim_rows, anim_cols);
+    //objTexture.load(path, anim_rows, anim_cols);
     printf("---Leaving Survivor::load\n");
 }

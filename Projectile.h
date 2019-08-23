@@ -32,7 +32,7 @@ class Projectile {
 
 
     private:
-        ObjTexture objTexture;
+        ObjTexture* objTexture;
         float x;
         float y;
         int angle; //0 - 360

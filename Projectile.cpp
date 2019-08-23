@@ -3,6 +3,7 @@
 Projectile::Projectile(int x, int y, int angle) {
     printf("---Entering Projectile constructor\n");
     //objTexture = NULL;
+    this->objTexture = new ObjTexture();
     this->x = x;
     this->y = y;
     this->angle = angle;
@@ -13,8 +14,8 @@ Projectile::Projectile(int x, int y, int angle) {
 }
 Projectile::~Projectile() {
     printf("---Entering Projectile destructor\n");
-    //delete objTexture;
-    //objTexture = NULL;
+    delete objTexture;
+    objTexture = NULL;
     printf("---Leaving Projectile destructor\n");
 }
 bool Projectile::update() {
@@ -37,8 +38,8 @@ bool Projectile::update() {
 }
 void Projectile::draw() {
     printf("---Entering Projectile::draw\n");
-    //objTexture->render(x, y, angle, width, height, 0);
-    objTexture.render(x, y, angle, width, height, 0);
+    objTexture->render(x, y, angle, width, height, 0);
+    //objTexture.render(x, y, angle, width, height, 0);
     printf("---Leaving Projectile::draw\n");
 }
 void Projectile::load(std::string path) {
@@ -47,7 +48,7 @@ void Projectile::load(std::string path) {
     //    delete objTexture;
     //}
     //objTexture = new ObjTexture();
-    //objTexture->load(path, 1, 1);
-    objTexture.load(path, 1, 1);
+    objTexture->load(path, 1, 1);
+    //objTexture.load(path, 1, 1);
     printf("---Leaving Projectile::load\n");
 }
