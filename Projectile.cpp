@@ -44,7 +44,7 @@ void Projectile::draw() {
     printf("---Leaving Projectile::draw\n");
 }
 void Projectile::drawHitBox() {
-    SDL_Rect hitbox = {(x+0.25*width)-1, (y+0.25*height)-1, width/2.0+2, height/2.0+2};
+    SDL_Rect hitbox = {int((x+0.25*float(width))-1.0), int((y+0.25*float(height))-1.0), int(float(width)/2.0+2.0), int(float(height)/2.0+2.0)};
     SDL_SetRenderDrawColor( gRenderer, 0, 255, 0, 255); //green
     SDL_RenderDrawRect(gRenderer, &hitbox);
 }
