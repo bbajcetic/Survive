@@ -7,6 +7,7 @@
 #include "Constants.h"
 
 extern Map map;
+extern SDL_Renderer* gRenderer;
 
 class Projectile {
     public:
@@ -15,6 +16,7 @@ class Projectile {
 
         bool update();
         void draw();
+        void drawHitBox();
         void load(std::string path);
 
         int getWidth() { return width; }

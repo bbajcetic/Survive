@@ -40,7 +40,13 @@ void Projectile::draw() {
     printf("---Entering Projectile::draw\n");
     objTexture->render(x, y, angle, width, height, 0);
     //objTexture.render(x, y, angle, width, height, 0);
+    drawHitBox();
     printf("---Leaving Projectile::draw\n");
+}
+void Projectile::drawHitBox() {
+    SDL_Rect hitbox = {(x+0.25*width)-1, (y+0.25*height)-1, width/2.0+2, height/2.0+2};
+    SDL_SetRenderDrawColor( gRenderer, 0, 255, 0, 255); //green
+    SDL_RenderDrawRect(gRenderer, &hitbox);
 }
 void Projectile::load(std::string path) {
     printf("---Entering Projectile::load\n");
