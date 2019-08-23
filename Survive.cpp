@@ -8,6 +8,8 @@
 #include "Survivor.h"
 #include "Map.h"
 
+int global_count = 0;
+
 //Initialize SDL and create window
 bool init();
 
@@ -18,7 +20,6 @@ void close();
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreen = NULL;
 SDL_Renderer* gRenderer = NULL;
-SDL_Texture* gTexture = NULL;
 //Initialize Player
 Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 //Initialize Enemies
@@ -50,9 +51,9 @@ void printMultiArray(int* tiles, int r, int c) {
     }
 }
 //Initialize Map
-std::string textures[4] = { "Floor.png", "WallEdge.png", "WallCorner.png", 
-    "WallT.png" };
-Map map( (int*)tiles, 4, (std::string*)textures, MAP1_TILE_ROWS, 
+std::string texture_names[4] = { "Floor.png", "WallEdge.png", 
+    "WallCorner.png", "WallT.png" };
+Map map( (int*)tiles, 4, (std::string*)texture_names, MAP1_TILE_ROWS, 
         MAP1_TILE_COLS, MAP1_TILE_WIDTH, MAP1_TILE_HEIGHT );
 
 bool init() {
@@ -99,22 +100,14 @@ SDL_Texture* loadTexture(std::string path) {
 bool load() {
     bool success = true;
     //load main Character texture
-    map.load();
     survivor.load("PlayerRight.png", 1, SURVIVOR_NUM_SPRITES);
+    //survivor.load("Projectile.png", 1, SURVIVOR_NUM_SPRITES);
+    map.load();
 
-    //gTexture = survivor.getTexture()->getTexture();
-    //
-    //gTexture = loadTexture("mario.png");
-    //if (gTexture == NULL) {
-    //    printf("Failed to load person1.png\n");
-    //    success = false;
-    //}
     return success;
 }
 
 void close() {
-    SDL_DestroyTexture(gTexture);
-    gTexture = NULL;
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
     gWindow = NULL;
@@ -158,6 +151,7 @@ int main( int argc, char* args[] ) {
                 switch(e.key.keysym.sym) {
                     case SDLK_SPACE:
                         survivor.shoot();
+                        printf("NEW PROJECTILE SIZE = %d\n", projectiles.size());
                         break;
                 }
             }
@@ -195,7 +189,19 @@ int main( int argc, char* args[] ) {
                 && !currentKeyState[SDL_SCANCODE_DOWN]) {
             survivor.setMoving(false);
         }
-        
+        std::vector<Projectile>::iterator it = projectiles.begin();
+        //printf("check4\n");
+        while (it != projectiles.end()) {
+            printf("CHECK6: render projectiles\n");
+            //printf("check5\n");
+            if ( !(it->update()) ) {
+                it = projectiles.erase(it);
+                //it++;
+            } else {
+                it++;
+            }
+            //printf("check6\n");
+        }
 
         //clear screen
         SDL_SetRenderDrawColor( gRenderer, BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, BG_COLOR.a );
@@ -223,6 +229,13 @@ int main( int argc, char* args[] ) {
             survivor.draw(1);
         }
         
+        //render projectiles to the screen
+        it = projectiles.begin();
+        while (it != projectiles.end()) {
+            printf("drawing projectile at %f, %f\n", it->getX(), it->getY());
+            it->draw();
+            it++;
+        }
         
         //update screen
         SDL_RenderPresent(gRenderer);

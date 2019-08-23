@@ -3,6 +3,8 @@
 
 #include "ObjTexture.h"
 #include <string>
+#include <vector>
+#include <stdio.h>
 
 class Map {
     public:
@@ -24,7 +26,8 @@ class Map {
         //ObjTexture* getTexture() { return texture; }
 
     private:
-        ObjTexture** textures;
+        //std::vector<ObjTexture*> textures;
+        std::vector<ObjTexture> textures;
         int* tiles;
         int num_textures;
         std::string* texture_names;

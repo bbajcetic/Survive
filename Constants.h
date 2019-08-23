@@ -8,7 +8,6 @@ const int SURVIVOR_STARTING_Y = 0;
 const int SURVIVOR_STARTING_ANGLE = 90;
 const int SURVIVOR_STARTING_SPEED = 3;
 const int SURVIVOR_TIME_PER_MOVE = 16;
-const int SURVIVOR_STARTING_DIRECTION = 1;
 const int SURVIVOR_NUM_SPRITES = 4;
 const int FRAMES_PER_ANIMATION = 6;
 
@@ -16,9 +15,9 @@ const int SURVIVOR_WIDTH = 44;
 const int SURVIVOR_HEIGHT = 44;
 
 //projectile global variables
-const int PROJECTILE_STARTING_SPEED = 8;
-const int PROJECTILE_WIDTH = 3;
-const int PROJECTILE_HEIGHT = 15;
+const int PROJECTILE_STARTING_SPEED = 3;
+const int PROJECTILE_WIDTH = 15;
+const int PROJECTILE_HEIGHT = 3;
 
 //map global variables
 const int MAP1_TILE_ROWS = 12;

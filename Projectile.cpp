@@ -1,24 +1,53 @@
 #include "Projectile.h"
 
 Projectile::Projectile(int x, int y, int angle) {
-    texture = NULL;
+    printf("---Entering Projectile constructor\n");
+    //objTexture = NULL;
     this->x = x;
     this->y = y;
     this->angle = angle;
     this->speed = PROJECTILE_STARTING_SPEED;
     this->width = PROJECTILE_WIDTH;
     this->height = PROJECTILE_HEIGHT;
+    printf("---Leaving Projectile constructor\n");
 }
 Projectile::~Projectile() {
-    delete texture;
+    printf("---Entering Projectile destructor\n");
+    //delete objTexture;
+    //objTexture = NULL;
+    printf("---Leaving Projectile destructor\n");
+}
+bool Projectile::update() {
+    printf("---Entering Projectile::update\n");
+    float rad = float(angle) * (PI/float(180));
+    float move_x = float(speed) * (cos(float(rad)));
+    float move_y = float(speed) * (sin(float(rad)));
+    float temp_x, temp_y;
+    temp_x = x + move_x;
+    temp_y = y - move_y;
+    if (!map.isWall(temp_x, temp_y, width, height)) {
+        x = temp_x;
+        y = temp_y;
+        //printf("new x, y = %f, %f\n", x, y);
+        printf("---Leaving Projectile::update\n");
+        return true;
+    }
+    printf("---Leaving Projectile::update\n");
+    return false;
 }
 void Projectile::draw() {
-    texture->render(x, y, angle, width, height, 0);
+    printf("---Entering Projectile::draw\n");
+    //objTexture->render(x, y, angle, width, height, 0);
+    objTexture.render(x, y, angle, width, height, 0);
+    printf("---Leaving Projectile::draw\n");
 }
 void Projectile::load(std::string path) {
-    if (texture != NULL) {
-        delete texture;
-    }
-    texture = new ObjTexture();
-    texture->load(path, 1, 1);
+    printf("---Entering Projectile::load\n");
+    //if (objTexture != NULL) {
+    //    delete objTexture;
+    //}
+    //objTexture = new ObjTexture();
+    //objTexture->load(path, 1, 1);
+    objTexture.load(path, 1, 1);
+    printf("---Leaving Projectile::load\n");
 }

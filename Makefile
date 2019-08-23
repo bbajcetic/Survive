@@ -8,7 +8,7 @@ CC = g++
 OBJ_NAME = Survive.out
 
 #specifies compilation flags
-COMPILER_FLAGS = -w
+COMPILER_FLAGS = -w -g
 
 #specifies the libraries to link against
 LINKER_FLAGS = -lSDL2 -lSDL2_image

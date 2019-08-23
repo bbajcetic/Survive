@@ -3,14 +3,17 @@
 
 #include <string>
 #include "ObjTexture.h"
+#include "Map.h"
 #include "Constants.h"
+
+extern Map map;
 
 class Projectile {
     public:
         Projectile(int x, int y, int angle);
         ~Projectile();
 
-        void update(std::string dir);
+        bool update();
         void draw();
         void load(std::string path);
 
@@ -20,7 +23,7 @@ class Projectile {
         float getY() { return y; }
         int getAngle() { return angle; }
         int getSpeed() { return speed; }
-        ObjTexture* getTexture() { return texture; }
+        //ObjTexture* getTexture() { return objTexture; }
 
         void setX(int x) { this->x = x; }
         void setY(int y) { this->y = y; }
@@ -29,7 +32,7 @@ class Projectile {
 
 
     private:
-        ObjTexture* texture;
+        ObjTexture objTexture;
         float x;
         float y;
         int angle; //0 - 360

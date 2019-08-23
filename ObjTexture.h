@@ -7,17 +7,20 @@
 #include <stdio.h>
 
 extern SDL_Renderer* gRenderer;
+extern int global_count;
 
 class ObjTexture {
     public:
         ObjTexture();
+//        ObjTexture(ObjTexture& oldObj);
         ~ObjTexture();
 
         bool load(std::string path, int anim_rows, int anim_cols);
         void render(int x, int y, int angle, int width, int height, int anim_index);
-        void free();
+        void free_();
 
         SDL_Texture* getTexture() { return texture; }
+        std::string getFileName() { return file_name; }
         int getWidth() { return width; }
         int getHeight() { return height; }
         int getAnimCols() { return anim_cols; }
@@ -27,6 +30,7 @@ class ObjTexture {
 
     private:
         SDL_Texture* texture;
+        std::string file_name;
         int width;
         int height;
         int anim_rows; //number of rows in the animation sprite
