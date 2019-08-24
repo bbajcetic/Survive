@@ -32,8 +32,8 @@ Map::~Map() {
 //}
 bool Map::onMap(int x, int y, int width, int height) {
     printf("---Entering Map::onMap\n");
-    if (x > 0 && (x+width) < (cols*tile_width)) {
-        if (y > 0 && (y+height) < (rows*tile_height)) {
+    if (x >= 0 && (x+width) < (cols*tile_width)) {
+        if (y >= 0 && (y+height) < (rows*tile_height)) {
             printf("---Leaving Map::onMap\n");
             return true;
         }

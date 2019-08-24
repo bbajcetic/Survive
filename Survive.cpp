@@ -133,7 +133,8 @@ int main( int argc, char* args[] ) {
 
     //Main loop flag
     bool quit = false;
-    int frame = 0;
+    int survivor_frame = 0;
+    int zombie_frame = 0;
     int current = SDL_GetTicks();
     int second_timer = current;
     int last = current;
@@ -173,7 +174,7 @@ int main( int argc, char* args[] ) {
             if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
                 if (!survivor.getMoving()) {
                     survivor.setMoving(true);
-                    frame = 0;
+                    survivor_frame = 0;
                 }
                 survivor.update("UP");
                 last_player_move = current;
@@ -183,7 +184,7 @@ int main( int argc, char* args[] ) {
             if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
                 if (!survivor.getMoving()) {
                     survivor.setMoving(true);
-                    frame = 0;
+                    survivor_frame = 0;
                 }
                 survivor.update("DOWN");
                 last_player_move = current;
@@ -195,18 +196,25 @@ int main( int argc, char* args[] ) {
         }
 
         //Zombies updating
+        std::vector<Zombie*>::iterator z_it = zombies.begin();
+        while (z_it != zombies.end()) {
+            if ( !((*z_it)->update()) ) {
+                z_it++;
+            } else {
+                z_it++;
+            }
+        }
         if ( (current - last_zombie_spawn) >= ZOMBIE_SPAWN_TIME ) {
             if (zombie_count < MAX_ZOMBIES) {
                 //spawn zombie
                 Zombie* temp = new Zombie(0, 0, 0);
-                temp->load("ZombieRight.png", 2, 6);
+                temp->load("ZombieRight.png", 1, 4);
                 zombies.push_back(temp);
+                zombie_count++;
                 printf("New zombie spawned\n");
             }
             last_zombie_spawn = current;
         }
-        std::vector<Zombie*>::iterator z_it = zombies.begin();
-        while (z_it != zombies.end()) {
 
 
         std::vector<Projectile*>::iterator it = projectiles.begin();
@@ -243,13 +251,18 @@ int main( int argc, char* args[] ) {
 
         //Render survivor
         if (survivor.getMoving()) {
-            survivor.draw(frame/FRAMES_PER_ANIMATION);
+            survivor.draw(survivor_frame/SURVIVOR_FRAMES_PER_ANIMATION);
         }
         else {
             survivor.draw(1);
         }
         //Render zombies
-        zit
+        z_it = zombies.begin();
+        while (z_it != zombies.end()) {
+            (*z_it)->draw(zombie_frame/ZOMBIE_FRAMES_PER_ANIMATION);
+            z_it++;
+        }
+
         //Render projectiles
         it = projectiles.begin();
         while (it != projectiles.end()) {
@@ -263,7 +276,8 @@ int main( int argc, char* args[] ) {
         //update screen
         SDL_RenderPresent(gRenderer);
 
-        frame = (frame + 1) % (SURVIVOR_NUM_SPRITES*FRAMES_PER_ANIMATION);
+        survivor_frame = (survivor_frame + 1) % (SURVIVOR_NUM_SPRITES*SURVIVOR_FRAMES_PER_ANIMATION);
+        zombie_frame = (zombie_frame + 1) % (ZOMBIE_NUM_SPRITES*ZOMBIE_FRAMES_PER_ANIMATION);
 
         //end frame FrameManager checks
         frame_count++;
