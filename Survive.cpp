@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include "Survivor.h"
 #include "Map.h"
+#include "Zombie.h"
 
 int global_count = 0;
 
@@ -23,9 +24,9 @@ SDL_Renderer* gRenderer = NULL;
 //Initialize Player
 Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 //Initialize Enemies
+std::vector<Zombie*> zombies;
 //Initialize Projectiles
 std::vector<Projectile*> projectiles;
-//std::vector<Projectile> projectiles;
 
 //Initialize tiles Array
 int tiles[MAP1_TILE_ROWS][MAP1_TILE_COLS] = {
@@ -137,6 +138,8 @@ int main( int argc, char* args[] ) {
     int second_timer = current;
     int last = current;
     int last_player_move = current;
+    int last_zombie_spawn = current;
+    int zombie_count = 0;
     int frame_count = 0;
 
     //Event handler
@@ -167,7 +170,7 @@ int main( int argc, char* args[] ) {
             survivor.update("RIGHT");
         }
         if (currentKeyState[SDL_SCANCODE_UP]) {
-            if ( (current - last_player_move) > SURVIVOR_TIME_PER_MOVE ) {
+            if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
                 if (!survivor.getMoving()) {
                     survivor.setMoving(true);
                     frame = 0;
@@ -177,7 +180,7 @@ int main( int argc, char* args[] ) {
             }
         }
         if (currentKeyState[SDL_SCANCODE_DOWN]) {
-            if ( (current - last_player_move) > SURVIVOR_TIME_PER_MOVE ) {
+            if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
                 if (!survivor.getMoving()) {
                     survivor.setMoving(true);
                     frame = 0;
@@ -190,11 +193,25 @@ int main( int argc, char* args[] ) {
                 && !currentKeyState[SDL_SCANCODE_DOWN]) {
             survivor.setMoving(false);
         }
+
+        //Zombies updating
+        if ( (current - last_zombie_spawn) >= ZOMBIE_SPAWN_TIME ) {
+            if (zombie_count < MAX_ZOMBIES) {
+                //spawn zombie
+                Zombie* temp = new Zombie(0, 0, 0);
+                temp->load("ZombieRight.png", 2, 6);
+                zombies.push_back(temp);
+                printf("New zombie spawned\n");
+            }
+            last_zombie_spawn = current;
+        }
+        std::vector<Zombie*>::iterator z_it = zombies.begin();
+        while (z_it != zombies.end()) {
+
+
         std::vector<Projectile*>::iterator it = projectiles.begin();
         //printf("check4\n");
         while (it != projectiles.end()) {
-            printf("CHECK6: render projectiles\n");
-            //printf("check5\n");
             //if ( !(it->update()) ) {
             if ( !((*it)->update()) ) {
                 delete *it;
@@ -206,33 +223,34 @@ int main( int argc, char* args[] ) {
             //printf("check6\n");
         }
 
+        //RENDERING
         //clear screen
         SDL_SetRenderDrawColor( gRenderer, BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, BG_COLOR.a );
         SDL_RenderClear(gRenderer);
-
         //Set up viewport for info area
         SDL_RenderSetViewport(gRenderer, &INFO_VIEWPORT);
         //Render info area
         SDL_SetRenderDrawColor( gRenderer, INFO_COLOR.r, INFO_COLOR.g, INFO_COLOR.b, INFO_COLOR.a );
         SDL_RenderFillRect(gRenderer, &INFO);
-
         //Set up viewport for gameplay area
         SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
         //Render gameplay area
         SDL_SetRenderDrawColor(gRenderer, GAME_COLOR.r, GAME_COLOR.g, GAME_COLOR.b, GAME_COLOR.a);
         SDL_RenderFillRect(gRenderer, &GAME);
+
+        //Render map
         map.draw();
 
-        //render texture to the renderer to render to screen
-
+        //Render survivor
         if (survivor.getMoving()) {
             survivor.draw(frame/FRAMES_PER_ANIMATION);
         }
         else {
             survivor.draw(1);
         }
-        
-        //render projectiles to the screen
+        //Render zombies
+        zit
+        //Render projectiles
         it = projectiles.begin();
         while (it != projectiles.end()) {
             //printf("drawing projectile at %f, %f\n", it->getX(), it->getY());
