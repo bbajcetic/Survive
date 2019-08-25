@@ -114,6 +114,14 @@ void close() {
     SDL_DestroyWindow(gWindow);
     gWindow = NULL;
     gRenderer = NULL;
+    for (int i = 0; i < projectiles.size(); ++i) {
+        delete projectiles[i];
+        projectiles[i] = NULL;
+    }
+    for (int i = 0; i < zombies.size(); ++i) {
+        delete zombies[i];
+        zombies[i] = NULL;
+    }
     //Quit SDL subsystems
     IMG_Quit();
     SDL_Quit();
@@ -139,6 +147,7 @@ int main( int argc, char* args[] ) {
     int second_timer = current;
     int last = current;
     int last_player_move = current;
+    int last_zombie_move = current;
     int last_zombie_spawn = current;
     int zombie_count = 0;
     int frame_count = 0;
@@ -197,12 +206,15 @@ int main( int argc, char* args[] ) {
 
         //Zombies updating
         std::vector<Zombie*>::iterator z_it = zombies.begin();
-        while (z_it != zombies.end()) {
-            if ( !((*z_it)->update()) ) {
-                z_it++;
-            } else {
-                z_it++;
+        if ( (current - last_zombie_move) >= ZOMBIE_TIME_PER_MOVE ) {
+            while (z_it != zombies.end()) {
+                if ( !((*z_it)->update()) ) {
+                    z_it++;
+                } else {
+                    z_it++;
+                }
             }
+            last_zombie_move = current;
         }
         if ( (current - last_zombie_spawn) >= ZOMBIE_SPAWN_TIME ) {
             if (zombie_count < MAX_ZOMBIES) {

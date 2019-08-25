@@ -20,6 +20,7 @@ const int ZOMBIE_WIDTH = 44;
 const int ZOMBIE_HEIGHT = 44;
 const int ZOMBIE_SPAWN_TIME = 2000; //6000ms = 6s
 const int ZOMBIE_FRAMES_PER_ANIMATION = 8;
+const int ZOMBIE_TIME_PER_MOVE = 16;
 const int ZOMBIE_NUM_SPRITES = 4;
 const int MAX_ZOMBIES = 3;
 
