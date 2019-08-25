@@ -248,7 +248,6 @@ int main( int argc, char* args[] ) {
         //Render projectiles
         it = projectiles.begin();
         while (it != projectiles.end()) {
-            //printf("drawing projectile at %f, %f\n", it->getX(), it->getY());
             printf("drawing projectile at %f, %f\n", (*it)->getX(), (*it)->getY());
             //it->draw();
             (*it)->draw();

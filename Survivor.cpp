@@ -25,7 +25,9 @@ Survivor::~Survivor() {
 }
 bool Survivor::changedTiles() {
     printf("---Entering Survivor::changedTiles\n");
-    if ( map.getTileIndex(x, y) != map.getTileIndex(last_x, last_y) ) {
+    int curr_tile = map.getTileIndex(getX(), getY());
+    int last_tile = map.getTileIndex(getLastX(), getLastY());
+    if (curr_tile != last_tile) {
         printf("---Leaving Survivor::changedTiles\n");
         return true;
     }
