@@ -46,27 +46,32 @@ bool Map::onMap(int x, int y, int width, int height) {
     printf("---Leaving Map::onMap\n");
     return false;
 }
+/*checks if a rectangle is touching a Wall or is off screen */
 bool Map::isWall(int x, int y, int width, int height) {
     printf("---Entering Map::isWall\n");
-    if (!onMap(x, y, width, height)) { printf("---Leaving Map::isWall\n");return true; }
-    int row, col, tile_value;
-    row = y/tile_height;
-    col = x/tile_width;
-    if (getTileValue(row, col) != 0) { printf("---Leaving Map::isWall\n");return true; }
-    col = (x+width)/tile_width;
-    if (getTileValue(row, col) != 0) { printf("---Leaving Map::isWall\n");return true; }
-    row = (y+height)/tile_height;
-    if (getTileValue(row, col) != 0) { printf("---Leaving Map::isWall\n");return true; }
-    col = x/tile_width;
-    if (getTileValue(row, col) != 0) { printf("---Leaving Map::isWall\n");return true; }
+
+    bool invalid = false;
+    if (!onMap(x, y, width, height)) { invalid = true; }
+    else if (getTileValue(x, y) != 0) { invalid = true; }
+    else if (getTileValue(x+width, y) != 0) { invalid = true; }
+    else if (getTileValue(x+width, y+height) != 0) { invalid = true; }
+    else if (getTileValue(x, y+height) != 0) { invalid = true; }
+
     printf("---Leaving Map::isWall\n");
-    return false;
+    return invalid;
 }
-int Map::getTileValue(int row, int col) {
+/* Returns the value/type of Tile at the row, col specified */
+int Map::getTileValue(int x, int y) {
     printf("---Entering Map::getTileValue\n");
     printf("---Leaving Map::getTileValue\n");
-    return (*(tiles+(row*cols)+col));
+    return *( tiles + (getRow(y)*cols) + getCol(x) );
 }
+int Map::getPathValue(int x, int y) {
+    printf("---Entering Map::getPathValue\n");
+    printf("---Leaving Map::getPathValue\n");
+    return *( path_to_survivor + (getRow(y)*cols) + getCol(x) );
+}
+
 void Map::draw() {
     printf("---Entering Map::draw\n");
     int curr_tile;

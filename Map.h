@@ -20,8 +20,11 @@ class Map {
         int getTileHeight() { return tile_height; }
         int getRows() { return rows; }
         int getCols() { return cols; }
+        int getRow(int y) { return y/tile_height; }
+        int getCol(int x) { return x/tile_width; }
 
-        int getTileValue(int row, int col);
+        int getTileValue(int x, int y);
+        int getPathValue(int x, int y);
         bool onMap(int x, int y, int width, int height);
         bool isWall(int x, int y, int width, int height);
         void fillMap1();
