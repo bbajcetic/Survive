@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include <string>
 #include <vector>
+#include <queue>
 #include <stdio.h>
 
 class Map {
@@ -30,14 +31,14 @@ class Map {
         bool isWall(int x, int y, int width, int height);
         void fillMap1();
         void initPath(int size);
-        void updatePath();
+        void updatePath(int x, int y);
         //ObjTexture* getTexture() { return texture; }
 
     private:
         std::vector<ObjTexture*> textures;
         //std::vector<ObjTexture> textures;
         int* tiles;
-        int* path_to_survivor;
+        int* survivor_path;
         int num_textures;
         std::string* texture_names;
         int rows;

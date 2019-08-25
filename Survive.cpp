@@ -124,6 +124,8 @@ int main( int argc, char* args[] ) {
 
     while( !quit ) {
         current = SDL_GetTicks();
+        map.updatePath(survivor.getX(), survivor.getY()); //fill path for zombie path finding
+
         //Handle events on queue
         while (SDL_PollEvent( &e ) != 0) {
             if (e.type == SDL_QUIT) {
@@ -146,7 +148,6 @@ int main( int argc, char* args[] ) {
          * class and then putting scancode as an argument to the update func*/
         if (currentKeyState[SDL_SCANCODE_LEFT]) {
             if ( (current - last_player_turn) >= SURVIVOR_TIME_PER_MOVE ) {
-                printf("%d\n",current-last_player_turn);
                 survivor.update("LEFT");
                 last_player_turn = current;
             }
@@ -176,7 +177,7 @@ int main( int argc, char* args[] ) {
 
         //Update path finding
         if (survivor.changedTiles()) {
-            map.updatePath();
+            map.updatePath(survivor.getX(), survivor.getY());
         }
         //Zombies updating
         std::vector<Zombie*>::iterator z_it = zombies.begin();

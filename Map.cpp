@@ -12,7 +12,7 @@ Map::Map(int num_textures, std::string* texture_names,
     this->tile_width = tile_width;
     this->tile_height = tile_height;
     this->tiles = new int[MAP1_TILE_ROWS * MAP1_TILE_COLS];
-    this->path_to_survivor = new int[MAP1_TILE_ROWS * MAP1_TILE_COLS];
+    this->survivor_path = new int[MAP1_TILE_ROWS * MAP1_TILE_COLS];
     fillMap1();
     initPath(MAP1_TILE_ROWS * MAP1_TILE_COLS);
     printf("---Leaving Map constructor\n");
@@ -69,7 +69,7 @@ int Map::getTileValue(int x, int y) {
 int Map::getPathValue(int x, int y) {
     printf("---Entering Map::getPathValue\n");
     printf("---Leaving Map::getPathValue\n");
-    return path_to_survivor[getTileIndex(x, y)];
+    return survivor_path[getTileIndex(x, y)];
 }
 int Map::getTileIndex(int x, int y) {
     printf("---Entering Map::getTileIndex\n");
@@ -112,12 +112,56 @@ void Map::load() {
     }
     printf("---Leaving Map::load\n");
 }
-void Map::updatePath() {
-    ;
+void Map::updatePath(int x, int y) {
+    initPath(MAP1_TILE_ROWS * MAP1_TILE_COLS);
+    /* -2:  unfilled space
+     *
+     * -1:  invalid space (such as a wall)
+     *
+     * x:   tile is x tiles away from Survivor, where x >= 0 */
+    std::queue<int> to_process; //index of tile
+    int temp = getTileIndex(x, y);
+    survivor_path[temp] = 0; //survivor tile = 0 tiles away from survivor
+    to_process.push(temp); //insert survivor tile index
+    
+    while (!to_process.empty()) {
+        temp = to_process.front();
+        int top = temp - MAP1_TILE_COLS;
+        int bottom = temp + MAP1_TILE_COLS;
+        /* around is an array holding the surrounding tile indices */
+        int around[8] = {
+            top-1, top, top+1, temp+1, bottom+1, bottom, bottom-1, temp-1
+        };
+        for (int i = 0; i < 8; ++i) {
+            /* if tile is off map, do nothing */
+            if (around[i] >= MAP1_TILE_ROWS * MAP1_TILE_COLS) {
+                continue;
+            }
+            /* if tile is wall, do nothing */
+            else if (survivor_path[around[i]] == -1) {
+                continue;
+            }
+            /* if tile is unfilled, fill it */
+            else if (survivor_path[around[i]] == -2) {
+                if (tiles[around[i]] != 0) {
+                    survivor_path[around[i]] = -1;
+                } else {
+                    survivor_path[around[i]] = survivor_path[temp] + 1;
+                    to_process.push(around[i]);
+                }
+            }
+            /* if tile is already filled, check for a possible lower value */
+            else if (survivor_path[around[i]] > survivor_path[temp]+1) {
+                survivor_path[around[i]] = survivor_path[temp] + 1;
+                to_process.push(around[i]);
+            }
+        }
+        to_process.pop();
+    }
 }
 void Map::initPath(int size) {
     for (int i = 0; i < size; ++i) {
-        path_to_survivor[i] = 0;
+        survivor_path[i] = -2;
     }
 }
 void Map::fillMap1() {
