@@ -25,12 +25,15 @@ class Map {
         bool onMap(int x, int y, int width, int height);
         bool isWall(int x, int y, int width, int height);
         void fillMap1();
+        void initPath(int size);
+        void fillPath();
         //ObjTexture* getTexture() { return texture; }
 
     private:
         std::vector<ObjTexture*> textures;
         //std::vector<ObjTexture> textures;
         int* tiles;
+        int* path_to_survivor;
         int num_textures;
         std::string* texture_names;
         int rows;

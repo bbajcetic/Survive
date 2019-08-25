@@ -12,7 +12,9 @@ Map::Map(int num_textures, std::string* texture_names,
     this->tile_width = tile_width;
     this->tile_height = tile_height;
     this->tiles = new int[MAP1_TILE_ROWS * MAP1_TILE_COLS];
+    this->path_to_survivor = new int[MAP1_TILE_ROWS * MAP1_TILE_COLS];
     fillMap1();
+    initPath(MAP1_TILE_ROWS * MAP1_TILE_COLS);
     printf("---Leaving Map constructor\n");
 }
 Map::~Map() {
@@ -99,6 +101,14 @@ void Map::load() {
         textures.push_back(temp);
     }
     printf("---Leaving Map::load\n");
+}
+void Map::fillPath() {
+    ;
+}
+void Map::initPath(int size) {
+    for (int i = 0; i < size; ++i) {
+        path_to_survivor[i] = 0;
+    }
 }
 void Map::fillMap1() {
     tiles[0] = 0; tiles[1] = 0; tiles[2] = 0; tiles[3] = 0; 
