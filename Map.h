@@ -2,13 +2,14 @@
 #define MAP_H
 
 #include "ObjTexture.h"
+#include "Constants.h"
 #include <string>
 #include <vector>
 #include <stdio.h>
 
 class Map {
     public:
-        Map(int* tiles, int num_textures, std::string* texture_names, 
+        Map(int num_textures, std::string* texture_names, 
                 int rows, int cols, int tile_width, int tile_height);
         ~Map();
 
@@ -23,6 +24,7 @@ class Map {
         int getTileValue(int row, int col);
         bool onMap(int x, int y, int width, int height);
         bool isWall(int x, int y, int width, int height);
+        void fillMap1();
         //ObjTexture* getTexture() { return texture; }
 
     private:

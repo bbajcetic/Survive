@@ -27,39 +27,13 @@ Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 std::vector<Zombie*> zombies;
 //Initialize Projectiles
 std::vector<Projectile*> projectiles;
-
-//Initialize tiles Array
-int tiles[MAP1_TILE_ROWS][MAP1_TILE_COLS] = {
-    {},
-    {},
-    { 0, 0, 8, 5, 5, 12, 5, 5, 5, 5, 5, 5, 5, 0, 0, 12, 5, 0, 0, 5 },
-    { 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
-    { 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
-    { 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
-    { 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0 },
-    { 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 14, 5, 5, 12, 4 },
-    { 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0 },
-    { 0, 0, 9, 5, 5, 5, 5, 11, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0 },
-    { 0, 0, 0, 0, 0, 0, 0, 4, 0, 9, 5, 5, 5, 5, 5, 5, 5, 5, 10, 0 },
-    { 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-};
-//Print tiles
-void printMultiArray(int* tiles, int r, int c) {
-    for (int i = 0; i < r; ++i) {
-        for (int j = 0; j < c; ++j) {
-            printf("%d, ", *(tiles+i*c+j));
-        }
-        printf("\n");
-    }
-}
 //Initialize Map
 std::string texture_names[4] = { "Floor.png", "WallEdge.png", 
     "WallCorner.png", "WallT.png" };
-Map map( (int*)tiles, 4, (std::string*)texture_names, MAP1_TILE_ROWS, 
+Map map( 4, (std::string*)texture_names, MAP1_TILE_ROWS, 
         MAP1_TILE_COLS, MAP1_TILE_WIDTH, MAP1_TILE_HEIGHT );
 
 bool init() {
-    //printMultiArray((int*)tiles, 12, 20);
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not be initialized. Error: %s\n", SDL_GetError());
         return false;
@@ -81,7 +55,7 @@ bool init() {
     SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
     SDL_RenderClear(gRenderer);
 
-    //Initialize PNG loading
+    //Initialize PNG/JPG loading
     int flags = IMG_INIT_PNG | IMG_INIT_JPG;
     int initted = IMG_Init(flags);
     if ((initted&flags) != flags) {
@@ -91,19 +65,11 @@ bool init() {
 
     return true;
 }
-SDL_Texture* loadTexture(std::string path) {
-    SDL_Texture* newTexture = NULL;
-    SDL_Surface* loaded = IMG_Load(path.c_str());
-    newTexture = SDL_CreateTextureFromSurface(gRenderer, loaded);
-    SDL_FreeSurface(loaded);
-    return newTexture;
-}
-
 bool load() {
     bool success = true;
     //load main Character texture
     survivor.load("PlayerRight.png", 1, SURVIVOR_NUM_SPRITES);
-    //survivor.load("Projectile.png", 1, SURVIVOR_NUM_SPRITES);
+    //load map
     map.load();
 
     return success;
