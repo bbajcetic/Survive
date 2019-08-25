@@ -25,12 +25,16 @@ class Map {
         int getCol(int x) { return x/tile_width; }
 
         int getTileValue(int x, int y);
+        int getPathValue(int index);
         int getPathValue(int x, int y);
         int getTileIndex(int x, int y);
+        int getXFromIndex(int index);
+        int getYFromIndex(int index);
         bool onMap(int x, int y, int width, int height);
         bool isWall(int x, int y, int width, int height);
         void fillMap1();
         void initPath(int size);
+        void printPath();
         void updatePath(int x, int y);
         //ObjTexture* getTexture() { return texture; }
 

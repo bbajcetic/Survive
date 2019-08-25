@@ -71,10 +71,21 @@ int Map::getPathValue(int x, int y) {
     printf("---Leaving Map::getPathValue\n");
     return survivor_path[getTileIndex(x, y)];
 }
+int Map::getPathValue(int index) {
+    printf("---Entering Map::getPathValue\n");
+    printf("---Leaving Map::getPathValue\n");
+    return survivor_path[index];
+}
 int Map::getTileIndex(int x, int y) {
     printf("---Entering Map::getTileIndex\n");
     printf("---Leaving Map::getTileIndex\n");
     return getRow(y)*cols + getCol(x);
+}
+int Map::getXFromIndex(int index) {
+    return (index % cols) * tile_width;
+}
+int Map::getYFromIndex(int index) {
+    return (index / cols) * tile_height;
 }
 
 void Map::draw() {
@@ -112,6 +123,18 @@ void Map::load() {
     }
     printf("---Leaving Map::load\n");
 }
+
+void Map::printPath() {
+    printf("printPath:\n");
+    for (int i = 0; i < MAP1_TILE_ROWS * MAP1_TILE_COLS; ++i) {
+        if ((i % 20) == 0 ) {
+            printf("\n");
+        }
+        printf(" %2d ", survivor_path[i]);
+    }
+    printf("\n");
+}
+/* updates Path for survivor at center of object coordinates x, y */
 void Map::updatePath(int x, int y) {
     initPath(MAP1_TILE_ROWS * MAP1_TILE_COLS);
     /* -2:  unfilled space
@@ -132,9 +155,22 @@ void Map::updatePath(int x, int y) {
         int around[8] = {
             top-1, top, top+1, temp+1, bottom+1, bottom, bottom-1, temp-1
         };
+        /* if left side tile, make sure it doesn't wrap around */
+        if (temp % MAP1_TILE_COLS == 0) {
+            /* invalidate tiles to the left */
+            around[0] = -1; around[6] = -1; around[7] = -1;
+        }
+        /* if right side tile, make sure it doesn't wrap around */
+        else if ( (temp+1) % MAP1_TILE_COLS == 0 ) {
+            /* invalidate tiles to the right */
+            around[2] = -1; around[3] = -1; around[4] = -1;
+        }
         for (int i = 0; i < 8; ++i) {
             /* if tile is off map, do nothing */
             if (around[i] >= MAP1_TILE_ROWS * MAP1_TILE_COLS) {
+                continue;
+            }
+            else if (around[i] < 0) {
                 continue;
             }
             /* if tile is wall, do nothing */
