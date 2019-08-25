@@ -141,7 +141,6 @@ int main( int argc, char* args[] ) {
 
     //Main loop flag
     bool quit = false;
-    int survivor_frame = 0;
     int zombie_frame = 0;
     int current = SDL_GetTicks();
     int second_timer = current;
@@ -181,20 +180,12 @@ int main( int argc, char* args[] ) {
         }
         if (currentKeyState[SDL_SCANCODE_UP]) {
             if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
-                if (!survivor.getMoving()) {
-                    survivor.setMoving(true);
-                    survivor_frame = 0;
-                }
                 survivor.update("UP");
                 last_player_move = current;
             }
         }
         if (currentKeyState[SDL_SCANCODE_DOWN]) {
             if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
-                if (!survivor.getMoving()) {
-                    survivor.setMoving(true);
-                    survivor_frame = 0;
-                }
                 survivor.update("DOWN");
                 last_player_move = current;
             }
@@ -262,12 +253,8 @@ int main( int argc, char* args[] ) {
         map.draw();
 
         //Render survivor
-        if (survivor.getMoving()) {
-            survivor.draw(survivor_frame/SURVIVOR_FRAMES_PER_ANIMATION);
-        }
-        else {
-            survivor.draw(1);
-        }
+        survivor.draw();
+
         //Render zombies
         z_it = zombies.begin();
         while (z_it != zombies.end()) {
@@ -288,7 +275,6 @@ int main( int argc, char* args[] ) {
         //update screen
         SDL_RenderPresent(gRenderer);
 
-        survivor_frame = (survivor_frame + 1) % (SURVIVOR_NUM_SPRITES*SURVIVOR_FRAMES_PER_ANIMATION);
         zombie_frame = (zombie_frame + 1) % (ZOMBIE_NUM_SPRITES*ZOMBIE_FRAMES_PER_ANIMATION);
 
         //end frame FrameManager checks

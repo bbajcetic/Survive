@@ -19,7 +19,7 @@ class Survivor {
         void update(std::string dir);
         void move(std::string dir);
         void shoot();
-        void draw(int anim_index);
+        void draw();
         void load(std::string path, int anim_rows, int anim_cols);
 
         int getWidth() { return width; }
@@ -48,6 +48,7 @@ class Survivor {
         int speed;
         int width;
         int height;
+        int frame;
 };
 
 #endif
