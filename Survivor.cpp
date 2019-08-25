@@ -28,9 +28,9 @@ void Survivor::update(std::string dir) {
         frame = 0;
     }
     if (dir == "LEFT") {
-        angle = angle + 5;
+        angle = angle + SURVIVOR_SENSITIVITY;
     } else if (dir == "RIGHT") {
-        angle = angle - 5;
+        angle = angle - SURVIVOR_SENSITIVITY;
     } else if (dir == "UP") {
         move("FORWARD");
     } else if (dir == "DOWN") {

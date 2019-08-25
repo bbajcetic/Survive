@@ -112,6 +112,7 @@ int main( int argc, char* args[] ) {
     int second_timer = current;
     int last = current;
     int last_player_move = current;
+    int last_player_turn = current;
     int last_player_shot = current;
     int last_zombie_move = current;
     int last_zombie_spawn = current;
@@ -122,6 +123,7 @@ int main( int argc, char* args[] ) {
     SDL_Event e;
 
     while( !quit ) {
+        current = SDL_GetTicks();
         //Handle events on queue
         while (SDL_PollEvent( &e ) != 0) {
             if (e.type == SDL_QUIT) {
@@ -143,10 +145,17 @@ int main( int argc, char* args[] ) {
         /* put all this in survivor update function by defining sdl library in
          * class and then putting scancode as an argument to the update func*/
         if (currentKeyState[SDL_SCANCODE_LEFT]) {
-            survivor.update("LEFT");
+            if ( (current - last_player_turn) >= SURVIVOR_TIME_PER_MOVE ) {
+                printf("%d\n",current-last_player_turn);
+                survivor.update("LEFT");
+                last_player_turn = current;
+            }
         }
         else if (currentKeyState[SDL_SCANCODE_RIGHT]) {
-            survivor.update("RIGHT");
+            if ( (current - last_player_turn) >= SURVIVOR_TIME_PER_MOVE ) {
+                survivor.update("RIGHT");
+                last_player_turn = current;
+            }
         }
         if (currentKeyState[SDL_SCANCODE_UP]) {
             if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
@@ -262,7 +271,6 @@ int main( int argc, char* args[] ) {
             SDL_Delay( MS_PER_FRAME - (current-last) );
         }
         last = SDL_GetTicks();
-
     }
 
     //Close SDL window and subsystems and free memory
