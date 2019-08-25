@@ -64,12 +64,17 @@ bool Map::isWall(int x, int y, int width, int height) {
 int Map::getTileValue(int x, int y) {
     printf("---Entering Map::getTileValue\n");
     printf("---Leaving Map::getTileValue\n");
-    return *( tiles + (getRow(y)*cols) + getCol(x) );
+    return tiles[getTileIndex(x, y)];
 }
 int Map::getPathValue(int x, int y) {
     printf("---Entering Map::getPathValue\n");
     printf("---Leaving Map::getPathValue\n");
-    return *( path_to_survivor + (getRow(y)*cols) + getCol(x) );
+    return path_to_survivor[getTileIndex(x, y)];
+}
+int Map::getTileIndex(int x, int y) {
+    printf("---Entering Map::getTileIndex\n");
+    printf("---Leaving Map::getTileIndex\n");
+    return getRow(y)*cols + getCol(x);
 }
 
 void Map::draw() {
@@ -107,7 +112,7 @@ void Map::load() {
     }
     printf("---Leaving Map::load\n");
 }
-void Map::fillPath() {
+void Map::updatePath() {
     ;
 }
 void Map::initPath(int size) {

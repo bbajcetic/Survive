@@ -21,6 +21,7 @@ class Survivor {
         void shoot();
         void draw();
         void load(std::string path, int anim_rows, int anim_cols);
+        bool changedTiles();
 
         int getWidth() { return width; }
         int getHeight() { return height; }

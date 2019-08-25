@@ -174,6 +174,10 @@ int main( int argc, char* args[] ) {
             survivor.setMoving(false);
         }
 
+        //Update path finding
+        if (survivor.changedTiles()) {
+            map.updatePath();
+        }
         //Zombies updating
         std::vector<Zombie*>::iterator z_it = zombies.begin();
         if ( (current - last_zombie_move) >= ZOMBIE_TIME_PER_MOVE ) {

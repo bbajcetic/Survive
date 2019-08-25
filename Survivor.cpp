@@ -23,6 +23,15 @@ Survivor::~Survivor() {
     objTexture = NULL;
     printf("---Leaving Survivor destructor\n");
 }
+bool Survivor::changedTiles() {
+    printf("---Entering Survivor::changedTiles\n");
+    if ( map.getTileIndex(x, y) != map.getTileIndex(last_x, last_y) ) {
+        printf("---Leaving Survivor::changedTiles\n");
+        return true;
+    }
+    printf("---Leaving Survivor::changedTiles\n");
+    return false;
+}
 void Survivor::update(std::string dir) {
     printf("---Entering Survivor::update\n");
     if ( moving == false && (dir == "UP" || dir == "DOWN") ) {
