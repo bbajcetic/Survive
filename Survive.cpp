@@ -146,6 +146,7 @@ int main( int argc, char* args[] ) {
     int second_timer = current;
     int last = current;
     int last_player_move = current;
+    int last_player_shot = current;
     int last_zombie_move = current;
     int last_zombie_spawn = current;
     int zombie_count = 0;
@@ -163,8 +164,11 @@ int main( int argc, char* args[] ) {
             else if (e.type == SDL_KEYDOWN) {
                 switch(e.key.keysym.sym) {
                     case SDLK_SPACE:
-                        survivor.shoot();
-                        printf("NEW PROJECTILE SIZE = %d\n", projectiles.size());
+                        if ( (current - last_player_shot) >= SURVIVOR_TIME_PER_SHOT ) {
+                            survivor.shoot();
+                            last_player_shot = current;
+                            printf("NEW PROJECTILE SIZE = %d\n", projectiles.size());
+                        }
                         break;
                 }
             }

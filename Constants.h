@@ -7,12 +7,14 @@ const int SURVIVOR_STARTING_X = 0;
 const int SURVIVOR_STARTING_Y = 0;
 const int SURVIVOR_STARTING_ANGLE = 90;
 const int SURVIVOR_STARTING_SPEED = 3;
-const int SURVIVOR_TIME_PER_MOVE = 16;
 const int SURVIVOR_NUM_SPRITES = 4;
 const int SURVIVOR_FRAMES_PER_ANIMATION = 4;
 
 const int SURVIVOR_WIDTH = 44;
 const int SURVIVOR_HEIGHT = 44;
+
+const int SURVIVOR_TIME_PER_MOVE = 16;
+const int SURVIVOR_TIME_PER_SHOT = 500;
 
 //zombie global variables
 const int ZOMBIE_STARTING_SPEED = 2;
