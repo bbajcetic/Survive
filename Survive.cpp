@@ -180,9 +180,10 @@ int main( int argc, char* args[] ) {
         //Update path finding
         
         /*comment out for now */
-        //if (survivor.changedTiles()) {
-        //    map.updatePath(survivor.getX(), survivor.getY());
-        //}
+        if (survivor.changedTiles()) {
+            map.updatePath(survivor.getX(), survivor.getY());
+            printf("SURVIVOR CHANGED TILES!\n");
+        }
         
         //Zombies updating
         std::vector<Zombie*>::iterator z_it = zombies.begin();
