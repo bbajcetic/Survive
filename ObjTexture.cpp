@@ -85,7 +85,7 @@ void ObjTexture::render(int x, int y, int angle, int width, int height, int anim
     //printf("%d, %d, %d, %d, %d, %d\n", row, col, col_width, row_height, textureX, textureY);
     SDL_Rect clip = { textureX, textureY, col_width, row_height };
     SDL_Rect quad = { x, y, width, height };
-    SDL_RenderCopyEx(gRenderer, this->texture, &clip, &quad, -angle, NULL, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(gRenderer, this->texture, &clip, &quad, angle, NULL, SDL_FLIP_NONE);
     //SDL_RenderCopy(gRenderer, this->texture, &clip, &quad);
     /*negative angle for counter clockwise rotation like in the unit circle*/
     //printf("---Leaving ObjTexture::render\n");

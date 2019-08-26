@@ -119,12 +119,14 @@ int main( int argc, char* args[] ) {
     int zombie_count = 0;
     int frame_count = 0;
 
+    map.updatePath(survivor.getX(), survivor.getY()); //fill path for zombie path finding
+    map.printPath();
+
     //Event handler
     SDL_Event e;
 
     while( !quit ) {
         current = SDL_GetTicks();
-        map.updatePath(survivor.getX(), survivor.getY()); //fill path for zombie path finding
 
         //Handle events on queue
         while (SDL_PollEvent( &e ) != 0) {
@@ -176,18 +178,18 @@ int main( int argc, char* args[] ) {
         }
 
         //Update path finding
-        if (survivor.changedTiles()) {
-            map.updatePath(survivor.getX(), survivor.getY());
-        }
+        
+        /*comment out for now */
+        //if (survivor.changedTiles()) {
+        //    map.updatePath(survivor.getX(), survivor.getY());
+        //}
+        
         //Zombies updating
         std::vector<Zombie*>::iterator z_it = zombies.begin();
         if ( (current - last_zombie_move) >= ZOMBIE_TIME_PER_MOVE ) {
             while (z_it != zombies.end()) {
-                if ( !((*z_it)->update()) ) {
-                    z_it++;
-                } else {
-                    z_it++;
-                }
+                (*z_it)->update();
+                z_it++;
             }
             last_zombie_move = current;
         }

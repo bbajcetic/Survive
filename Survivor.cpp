@@ -41,9 +41,9 @@ void Survivor::update(std::string dir) {
         frame = 0;
     }
     if (dir == "LEFT") {
-        angle = angle + SURVIVOR_SENSITIVITY;
-    } else if (dir == "RIGHT") {
         angle = angle - SURVIVOR_SENSITIVITY;
+    } else if (dir == "RIGHT") {
+        angle = angle + SURVIVOR_SENSITIVITY;
     } else if (dir == "UP") {
         move("FORWARD");
     } else if (dir == "DOWN") {
@@ -62,10 +62,10 @@ void Survivor::move(std::string dir) {
     //printf("rad = %f, move_x = %f, move_y = %f\n", rad, move_x, move_y);
     if (dir == "FORWARD") {
         temp_x = x + move_x;
-        temp_y = y - move_y;
+        temp_y = y + move_y;
     } else if (dir == "BACKWARD") {
         temp_x = x - move_x;
-        temp_y = y + move_y;
+        temp_y = y - move_y;
     }
     if (!map.isWall(temp_x, temp_y, width, height)) {
         last_x = x; last_y = y;

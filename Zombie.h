@@ -2,6 +2,9 @@
 #define ZOMBIE_H
 
 #include <string>
+#include <cstdlib>
+#include <cmath>
+#include <limits>
 #include "ObjTexture.h"
 #include "Map.h"
 #include "Constants.h"
@@ -14,15 +17,21 @@ class Zombie {
         Zombie(int x, int y, int angle);
         ~Zombie();
 
-        bool update();
+        void update();
+        void turn();
+        void move();
+        void updateNext();
         void draw(int anim_index);
         void drawHitBox();
         void load(std::string path, int anim_rows, int anim_cols);
 
         int getWidth() { return width; }
         int getHeight() { return height; }
-        float getX() { return x; }
-        float getY() { return y; }
+        /* get x value of center of object */
+        float getX() { return x + float(width)/2.0; }
+        /* get y value of center of object */
+        float getY() { return y + float(height)/2.0; }
+        /* get last x value of center of object */
         bool getMoving() { return moving; }
         int getAngle() { return angle; }
         int getSpeed() { return speed; }
@@ -39,8 +48,11 @@ class Zombie {
         ObjTexture* objTexture;
         float x;
         float y;
-        bool moving;
         int angle; //0 - 360
+        float next_x;
+        float next_y;
+        float next_angle;
+        bool moving;
         int speed;
         int width;
         int height;
