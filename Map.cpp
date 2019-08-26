@@ -201,6 +201,7 @@ void Map::initPath(int size) {
     }
 }
 void Map::fillMap1() {
+    /* 0 = Floor, 4 = WallEdge, 8 = WallCorner, 12 = WallT */
     tiles[0] = 0; tiles[1] = 0; tiles[2] = 0; tiles[3] = 0; 
     tiles[4] = 0; tiles[5] = 0; tiles[6] = 0; tiles[7] = 0; 
     tiles[8] = 0; tiles[9] = 0; tiles[10] = 0; tiles[11] = 0; 
@@ -246,14 +247,14 @@ void Map::fillMap1() {
     tiles[168] = 0; tiles[169] = 0; tiles[170] = 0; tiles[171] = 0; 
     tiles[172] = 0; tiles[173] = 0; tiles[174] = 0; tiles[175] = 0; 
     tiles[176] = 0; tiles[177] = 0; tiles[178] = 4; tiles[179] = 0; 
-    tiles[180] = 0; tiles[181] = 0; tiles[182] = 9; tiles[183] = 5; 
-    tiles[184] = 5; tiles[185] = 5; tiles[186] = 5; tiles[187] = 11; 
+    tiles[180] = 0; tiles[181] = 0; tiles[182] = 11; tiles[183] = 5;
+    tiles[184] = 5; tiles[185] = 5; tiles[186] = 5; tiles[187] = 9; 
     tiles[188] = 0; tiles[189] = 4; tiles[190] = 0; tiles[191] = 0; 
     tiles[192] = 0; tiles[193] = 0; tiles[194] = 0; tiles[195] = 0; 
     tiles[196] = 0; tiles[197] = 0; tiles[198] = 4; tiles[199] = 0; 
     tiles[200] = 0; tiles[201] = 0; tiles[202] = 0; tiles[203] = 0; 
     tiles[204] = 0; tiles[205] = 0; tiles[206] = 0; tiles[207] = 4; 
-    tiles[208] = 0; tiles[209] = 9; tiles[210] = 5; tiles[211] = 5; 
+    tiles[208] = 0; tiles[209] = 11; tiles[210] = 5; tiles[211] = 5; 
     tiles[212] = 5; tiles[213] = 5; tiles[214] = 5; tiles[215] = 5; 
     tiles[216] = 5; tiles[217] = 5; tiles[218] = 10; tiles[219] = 0; 
     tiles[220] = 0; tiles[221] = 0; tiles[222] = 0; tiles[223] = 0; 
