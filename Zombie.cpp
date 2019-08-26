@@ -103,16 +103,24 @@ void Zombie::turn() {
     if ( abs(to_angle) < ZOMBIE_SENSITIVITY ) {
         angle = next_angle;
     }
+    else if ( abs(to_angle) > 180 ) {
+        if (to_angle > 180) {
+            angle = angle - ZOMBIE_SENSITIVITY;
+            if (angle < 0) {
+                angle += 360;
+            }
+        }
+        else if (to_angle < -180) {
+            angle = (angle + ZOMBIE_SENSITIVITY);
+            if (angle > 360) {
+                angle -= 360;
+            }
+        }
+    }
     else {
         angle = (to_angle > 0) ? angle + ZOMBIE_SENSITIVITY : angle - ZOMBIE_SENSITIVITY;
     }
     printf("NEWANGLE = %d\n", angle);
-    //else if (to_angle > 0) {
-    //    angle = angle + ZOMBIE_SENSITIVITY;
-    //}
-    //else if (to_angle < 0) {
-    //    angle = angle - ZOMBIE_SENSITIVITY;
-    //}
 }
 void Zombie::update() {
     printf("---Entering Zombie::update\n");
