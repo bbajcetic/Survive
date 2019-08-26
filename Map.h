@@ -30,6 +30,9 @@ class Map {
         int getTileIndex(int x, int y);
         int getXFromIndex(int index);
         int getYFromIndex(int index);
+        bool isRightEdge(int index);
+        bool isLeftEdge(int index);
+        bool onMap(int index);
         bool onMap(int x, int y, int width, int height);
         bool isWall(int x, int y, int width, int height);
         void fillMap1();

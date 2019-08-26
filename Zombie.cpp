@@ -34,53 +34,68 @@ void Zombie::updateNext() {
         top-1, top, top+1, temp+1, bottom+1, bottom, bottom-1, temp-1
     };
     /* if zombie is on left side tiles, make sure it doesn't wrap around */
-    if (temp % MAP1_TILE_COLS == 0) {
+    if (map.isLeftEdge(temp)) {
         /* invalidate tiles to the left */
         around[0] = -1; around[6] = -1; around[7] = -1;
     }
     /* if zombie is on right side tiles, make sure it doesn't wrap around */
-    else if ( (temp+1) % MAP1_TILE_COLS == 0 ) {
+    else if (map.isRightEdge(temp)) {
         /* invalidate tiles to the right */
         around[2] = -1; around[3] = -1; around[4] = -1;
     }
 
-    std::vector<int> min_vals;
     int min = std::numeric_limits<int>::max();
+    std::vector<int> min_vals;
     for (int i = 0; i < 8; ++i) {
-        if (around[i] >= MAP1_TILE_ROWS * MAP1_TILE_COLS) {
-            continue;
-        }
-        if (around[i] < 0) {
+        if (!map.onMap(around[i])) {
             continue;
         }
         int curr_val = map.getPathValue(around[i]);
+        /* if wall or unfilled, skip tile */
         if (curr_val < 0) {
             continue;
         }
+        /* check corner piece to prevent cutting corners */
+        if (i%2 == 0) {
+            int side1, side2;
+            if (i == 0) { side1 = around[7]; }
+            else { side1 = around[i-1]; }
+            side2 = around[(i+1)%8];
+            if (map.getPathValue(side1) < 0 || map.getPathValue(side2) < 0) {
+                around[i] = -1;
+                continue;
+            }
+        }
+        /* go to decreasing tile */
         else if (curr_val <= min) {
             min = curr_val;
         }
     }
     printf("min = %d\n", min);
     for (int i = 0; i < 8; ++i) {
-        if (around[i] >= MAP1_TILE_ROWS * MAP1_TILE_COLS || around[i] < 0) {
+        if (!map.onMap(around[i])) {
             continue;
         }
         int curr_val = map.getPathValue(around[i]);
+        /* put all min values in vector */
         if (curr_val == min) {
             min_vals.push_back(around[i]);
         }
     }
     //pick random index from min_vals[0] to min_vals[size]-1
+    /* choose random square from min_vals to go to */
     int rand_pick = 0;
     int next_index = min_vals[rand_pick];
     printf("Next index = %d\n", next_index);
+    /* get coordinates of next tile and calculate diff from current tile */
     next_x = map.getXFromIndex(next_index);
     next_y = map.getYFromIndex(next_index);
     int diff_x = next_x - x;
     int diff_y = next_y - y;
     printf("DIFFX = %d, DIFFY = %d\n", diff_x, diff_y);
     printf("NEXTX = %f, NEXTY = %f\n", next_x, next_y);
+
+    /* calculate next_angle */
     float rad;
     if (diff_x == 0) {
         rad = (diff_y >= 0) ? PI/2.0 : 3*PI/2.0;

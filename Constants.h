@@ -3,8 +3,8 @@
 #define CONSTANTS_H
 
 //survivor global variables
-const int SURVIVOR_STARTING_X = 0;
-const int SURVIVOR_STARTING_Y = 0;
+const int SURVIVOR_STARTING_X = 384;
+const int SURVIVOR_STARTING_Y = 336;
 const int SURVIVOR_STARTING_ANGLE = 270;
 const int SURVIVOR_STARTING_SPEED = 6;
 const int SURVIVOR_SENSITIVITY = 10;

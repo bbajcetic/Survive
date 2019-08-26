@@ -30,9 +30,9 @@ class Survivor {
         /* get y value of center of object */
         float getY() { return y + float(height)/2.0; }
         /* get last x value of center of object */
-        float getLastX() { return last_x; }
+        float getLastX() { return last_x + float(width)/2.0; }
         /* get last y value of center of object */
-        float getLastY() { return last_y; }
+        float getLastY() { return last_y + float(height)/2.0; }
         bool getMoving() { return moving; }
         int getAngle() { return angle; }
         int getSpeed() { return speed; }

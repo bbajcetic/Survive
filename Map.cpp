@@ -46,6 +46,25 @@ bool Map::onMap(int x, int y, int width, int height) {
     printf("---Leaving Map::onMap\n");
     return false;
 }
+bool Map::onMap(int index) {
+    printf("---Entering Map::onMap\n");
+    if ( (index >= MAP1_TILE_ROWS * MAP1_TILE_COLS) || (index < 0) ) {
+        return false;
+    }
+    return true;
+}
+bool Map::isRightEdge(int index) {
+    if ( ((index+1) % MAP1_TILE_COLS) == 0) {
+        return true;
+    }
+    return false;
+}
+bool Map::isLeftEdge(int index) {
+    if ( (index % MAP1_TILE_COLS) == 0) {
+        return true;
+    }
+    return false;
+}
 /*checks if a rectangle is touching a Wall or is off screen */
 bool Map::isWall(int x, int y, int width, int height) {
     printf("---Entering Map::isWall\n");
@@ -156,21 +175,18 @@ void Map::updatePath(int x, int y) {
             top-1, top, top+1, temp+1, bottom+1, bottom, bottom-1, temp-1
         };
         /* if left side tile, make sure it doesn't wrap around */
-        if (temp % MAP1_TILE_COLS == 0) {
+        if (isLeftEdge(temp)) {
             /* invalidate tiles to the left */
             around[0] = -1; around[6] = -1; around[7] = -1;
         }
         /* if right side tile, make sure it doesn't wrap around */
-        else if ( (temp+1) % MAP1_TILE_COLS == 0 ) {
+        else if (isRightEdge(temp)) {
             /* invalidate tiles to the right */
             around[2] = -1; around[3] = -1; around[4] = -1;
         }
         for (int i = 0; i < 8; ++i) {
             /* if tile is off map, do nothing */
-            if (around[i] >= MAP1_TILE_ROWS * MAP1_TILE_COLS) {
-                continue;
-            }
-            else if (around[i] < 0) {
+            if (!onMap(around[i])) {
                 continue;
             }
             /* if tile is wall, do nothing */
@@ -181,7 +197,8 @@ void Map::updatePath(int x, int y) {
             else if (survivor_path[around[i]] == -2) {
                 if (tiles[around[i]] != 0) {
                     survivor_path[around[i]] = -1;
-                } else {
+                }
+                else {
                     survivor_path[around[i]] = survivor_path[temp] + 1;
                     to_process.push(around[i]);
                 }

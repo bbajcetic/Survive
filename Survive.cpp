@@ -22,7 +22,8 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreen = NULL;
 SDL_Renderer* gRenderer = NULL;
 //Initialize Player
-Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
+//Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
+Survivor survivor(SURVIVOR_STARTING_X, SURVIVOR_STARTING_Y);
 //Initialize Enemies
 std::vector<Zombie*> zombies;
 //Initialize Projectiles
@@ -182,6 +183,7 @@ int main( int argc, char* args[] ) {
         /*comment out for now */
         if (survivor.changedTiles()) {
             map.updatePath(survivor.getX(), survivor.getY());
+            map.printPath();
             printf("SURVIVOR CHANGED TILES!\n");
         }
         
