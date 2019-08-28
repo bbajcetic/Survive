@@ -24,7 +24,7 @@ class Zombie {
         void updateNext();
         void draw();
         void drawHitBox();
-        bool takeDamage();
+        bool takeDamage(int damage);
         void load(std::string path, int anim_rows, int anim_cols);
 
         int getWidth() { return width; }

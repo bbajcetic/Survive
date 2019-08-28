@@ -235,12 +235,12 @@ int main( int argc, char* args[] ) {
             z_it = zombies.begin();
             while (z_it != zombies.end()) {
                 if (isCollision(**it, **z_it)) {
-                    delete *it;
-                    it = projectiles.erase(it);
-                    if ( !((*z_it)->takeDamage()) ) {
+                    if ( !((*z_it)->takeDamage((*it)->getDamage())) ) {
                         delete *z_it;
                         z_it = zombies.erase(z_it);
                     }
+                    delete *it;
+                    it = projectiles.erase(it);
                     hit = true;
                     break;
                 }

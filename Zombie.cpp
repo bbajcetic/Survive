@@ -25,7 +25,12 @@ Zombie::~Zombie() {
     //printf("---Leaving Zombie destructor\n");
 }
 /* returns true if Zombie is still alive */
-bool Zombie::takeDamage() {
+bool Zombie::takeDamage(int damage) {
+    health -= damage;
+    printf("Zombie health = %d\n", health);
+    if (health <= 0) {
+        return false;
+    }
     return true;
 }
 void Zombie::update() {
