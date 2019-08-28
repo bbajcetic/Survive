@@ -2,7 +2,7 @@
 
 Map::Map(int num_textures, std::string* texture_names, 
         int rows, int cols, int tile_width, int tile_height) {
-    printf("---Entering Map constructor\n");
+    //printf("---Entering Map constructor\n");
     //textures = NULL;
     //this->tiles = tiles;
     this->num_textures = num_textures;
@@ -15,17 +15,17 @@ Map::Map(int num_textures, std::string* texture_names,
     this->survivor_path = new int[MAP1_TILE_ROWS * MAP1_TILE_COLS];
     fillMap1();
     initPath(MAP1_TILE_ROWS * MAP1_TILE_COLS);
-    printf("---Leaving Map constructor\n");
+    //printf("---Leaving Map constructor\n");
 }
 Map::~Map() {
-    printf("---Entering Map destructor\n");
+    //printf("---Entering Map destructor\n");
     delete [] tiles;
     for (int i = 0; i < num_textures; ++i) {
         delete textures[i];
         textures[i] = NULL;
     }
     textures.clear();
-    printf("---Leaving Map destructor\n");
+    //printf("---Leaving Map destructor\n");
 }
 //Map::~Map() {
 //    //for (int i = 0; i < num_textures; ++i) {
@@ -36,18 +36,18 @@ Map::~Map() {
 //    textures = NULL;
 //}
 bool Map::onMap(int x, int y, int width, int height) {
-    printf("---Entering Map::onMap\n");
+    //printf("---Entering Map::onMap\n");
     if (x >= 0 && (x+width) < (cols*tile_width)) {
         if (y >= 0 && (y+height) < (rows*tile_height)) {
-            printf("---Leaving Map::onMap\n");
+            //printf("---Leaving Map::onMap\n");
             return true;
         }
     }
-    printf("---Leaving Map::onMap\n");
+    //printf("---Leaving Map::onMap\n");
     return false;
 }
 bool Map::onMap(int index) {
-    printf("---Entering Map::onMap\n");
+    //printf("---Entering Map::onMap\n");
     if ( (index >= MAP1_TILE_ROWS * MAP1_TILE_COLS) || (index < 0) ) {
         return false;
     }
@@ -67,7 +67,7 @@ bool Map::isLeftEdge(int index) {
 }
 /*checks if a rectangle is touching a Wall or is off screen */
 bool Map::isWall(int x, int y, int width, int height) {
-    printf("---Entering Map::isWall\n");
+    //printf("---Entering Map::isWall\n");
 
     bool invalid = false;
     if (!onMap(x, y, width, height)) { invalid = true; }
@@ -76,28 +76,28 @@ bool Map::isWall(int x, int y, int width, int height) {
     else if (getTileValue(x+width, y+height) != 0) { invalid = true; }
     else if (getTileValue(x, y+height) != 0) { invalid = true; }
 
-    printf("---Leaving Map::isWall\n");
+    //printf("---Leaving Map::isWall\n");
     return invalid;
 }
 /* Returns the value/type of Tile at the row, col specified */
 int Map::getTileValue(int x, int y) {
-    printf("---Entering Map::getTileValue\n");
-    printf("---Leaving Map::getTileValue\n");
+    //printf("---Entering Map::getTileValue\n");
+    //printf("---Leaving Map::getTileValue\n");
     return tiles[getTileIndex(x, y)];
 }
 int Map::getPathValue(int x, int y) {
-    printf("---Entering Map::getPathValue\n");
-    printf("---Leaving Map::getPathValue\n");
+    //printf("---Entering Map::getPathValue\n");
+    //printf("---Leaving Map::getPathValue\n");
     return survivor_path[getTileIndex(x, y)];
 }
 int Map::getPathValue(int index) {
-    printf("---Entering Map::getPathValue\n");
-    printf("---Leaving Map::getPathValue\n");
+    //printf("---Entering Map::getPathValue\n");
+    //printf("---Leaving Map::getPathValue\n");
     return survivor_path[index];
 }
 int Map::getTileIndex(int x, int y) {
-    printf("---Entering Map::getTileIndex\n");
-    printf("---Leaving Map::getTileIndex\n");
+    //printf("---Entering Map::getTileIndex\n");
+    //printf("---Leaving Map::getTileIndex\n");
     return getRow(y)*cols + getCol(x);
 }
 int Map::getXFromIndex(int index) {
@@ -108,7 +108,7 @@ int Map::getYFromIndex(int index) {
 }
 
 void Map::draw() {
-    printf("---Entering Map::draw\n");
+    //printf("---Entering Map::draw\n");
     int curr_tile;
     int type;
     int angle;
@@ -128,30 +128,30 @@ void Map::draw() {
             this->textures[type]->render(x, y, angle, tile_width, tile_height, 0);
         }
     }
-    printf("---Leaving Map::draw\n");
+    //printf("---Leaving Map::draw\n");
 }
 void Map::load() {
-    printf("---Entering Map::load\n");
+    //printf("---Entering Map::load\n");
     for (int i = 0; i < num_textures; ++i) {
         ObjTexture* temp = new ObjTexture;
-        printf("LOADING %s\n", texture_names[i].c_str());
+        //printf("LOADING %s\n", texture_names[i].c_str());
         temp->load(texture_names[i], 1, 1);
         //ObjTexture* temp = new ObjTexture;
         //temp->load(texture_names[i], 1, 1);
         textures.push_back(temp);
     }
-    printf("---Leaving Map::load\n");
+    //printf("---Leaving Map::load\n");
 }
 
 void Map::printPath() {
-    printf("printPath:\n");
+    //printf("printPath:\n");
     for (int i = 0; i < MAP1_TILE_ROWS * MAP1_TILE_COLS; ++i) {
         if ((i % 20) == 0 ) {
-            printf("\n");
+            //printf("\n");
         }
-        printf(" %2d ", survivor_path[i]);
+        //printf(" %2d ", survivor_path[i]);
     }
-    printf("\n");
+    //printf("\n");
 }
 /* updates Path for survivor at center of object coordinates x, y */
 void Map::updatePath(int x, int y) {

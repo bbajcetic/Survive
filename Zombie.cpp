@@ -1,7 +1,7 @@
 #include "Zombie.h"
 
 Zombie::Zombie(int x, int y, int angle) {
-    printf("---Entering Zombie constructor\n");
+    //printf("---Entering Zombie constructor\n");
     //objTexture = NULL;
     this->objTexture = new ObjTexture();
     this->x = x;
@@ -15,16 +15,20 @@ Zombie::Zombie(int x, int y, int angle) {
     this->width = ZOMBIE_WIDTH;
     this->height = ZOMBIE_HEIGHT;
     this->frame = 0;
-    printf("---Leaving Zombie constructor\n");
+    //printf("---Leaving Zombie constructor\n");
 }
 Zombie::~Zombie() {
-    printf("---Entering Zombie destructor\n");
+    //printf("---Entering Zombie destructor\n");
     delete objTexture;
     objTexture = NULL;
-    printf("---Leaving Zombie destructor\n");
+    //printf("---Leaving Zombie destructor\n");
+}
+/* returns true if Zombie is still alive */
+bool Zombie::takeDamage() {
+    return true;
 }
 void Zombie::update() {
-    printf("---Entering Zombie::update\n");
+    //printf("---Entering Zombie::update\n");
     if (x == next_x && y == next_y) {
         updateNext();
     }
@@ -35,6 +39,7 @@ void Zombie::update() {
         move();
     }
     frame = (frame + 1) % (ZOMBIE_NUM_SPRITES*ZOMBIE_FRAMES_PER_ANIMATION);
+    //printf("---Leaving Zombie::update\n");
 }
 void Zombie::turn() {
     int to_angle = next_angle - angle;
@@ -162,18 +167,18 @@ void Zombie::move() {
 }
 
 void Zombie::draw() {
-    printf("---Entering Zombie::draw\n");
+    //printf("---Entering Zombie::draw\n");
     int anim_index = frame/ZOMBIE_FRAMES_PER_ANIMATION;
     objTexture->render(x, y, angle, width, height, anim_index);
-    printf("---Leaving Zombie::draw\n");
+    //printf("---Leaving Zombie::draw\n");
 }
 void Zombie::load(std::string path, int anim_rows, int anim_cols) {
-    printf("---Entering Zombie::load\n");
+    //printf("---Entering Zombie::load\n");
     //if (objTexture != NULL) {
     //    delete objTexture;
     //}
     //objTexture = new ObjTexture();
     objTexture->load(path, anim_rows, anim_cols);
     //objTexture.load(path, 1, 1);
-    printf("---Leaving Zombie::load\n");
+    //printf("---Leaving Zombie::load\n");
 }

@@ -1,5 +1,9 @@
 #include "Collision.h"
 
+bool isCollision(Projectile& proj, Zombie& zombie) {
+    return false;
+}
+
 bool isCollision_nonRotate(Vec2D centerA, float widthA, float heightA,
         Vec2D centerB, float widthB, float heightB) {
     float minAx, maxAx, minAy, maxAy, minBx, maxBx, minBy, maxBy;

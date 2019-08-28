@@ -1,15 +1,15 @@
 #include "ObjTexture.h"
 
 ObjTexture::ObjTexture() {
-    printf("---Entering ObjTexture constructor\n");
+    //printf("---Entering ObjTexture constructor\n");
     global_count++;
-    printf("Global count = %d\n", global_count);
+    //printf("Global count = %d\n", global_count);
     texture = NULL;
     width = 0;
     height = 0;
     anim_rows = 0;
     anim_cols = 0;
-    printf("---Leaving ObjTexture constructor\n");
+    //printf("---Leaving ObjTexture constructor\n");
 }
 //ObjTexture::ObjTexture(ObjTexture& oldObj) {
 //    texture = oldObj.texture;
@@ -20,16 +20,16 @@ ObjTexture::ObjTexture() {
 //    anim_cols = oldObj.anim_cols;
 //}
 ObjTexture::~ObjTexture() {
-    printf("---Entering ObjTexture destructor\n");
+    //printf("---Entering ObjTexture destructor\n");
     global_count--;
-    printf("Global count = %d\n", global_count);
+    //printf("Global count = %d\n", global_count);
     SDL_DestroyTexture(this->texture);
     this->texture = NULL;
     //free_();
-    printf("---Leaving ObjTexture destructor\n");
+    //printf("---Leaving ObjTexture destructor\n");
 }
 void ObjTexture::free_() {
-    printf("---Entering ObjTexture::free\n");
+    //printf("---Entering ObjTexture::free\n");
     ;
     //if(texture != NULL) {
     //    SDL_DestroyTexture(texture);
@@ -39,10 +39,10 @@ void ObjTexture::free_() {
     //    anim_rows = 0;
     //    anim_cols = 0;
     //}
-    printf("---Leaving ObjTexture::free\n");
+    //printf("---Leaving ObjTexture::free\n");
 }
 bool ObjTexture::load(std::string path, int anim_rows, int anim_cols) {
-    printf("---Entering ObjTexture::load\n");
+    //printf("---Entering ObjTexture::load\n");
     bool success = true;
     //free_();
     setAnimRows(anim_rows);
@@ -67,12 +67,12 @@ bool ObjTexture::load(std::string path, int anim_rows, int anim_cols) {
     this->texture = newTexture;
     newTexture = NULL;
     this->file_name = path;
-    printf("---Leaving ObjTexture::load\n");
+    //printf("---Leaving ObjTexture::load\n");
     return success;
 }
 void ObjTexture::render(int x, int y, int angle, int width, int height, int anim_index) {
     //printf("---Entering ObjTexture::render\n");
-    printf("r");
+    //printf("r");
     int row, col, row_height, col_width, textureX, textureY;
     row = anim_index / getAnimCols();
     col = anim_index % getAnimCols();

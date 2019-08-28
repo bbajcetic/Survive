@@ -8,6 +8,7 @@
 #include "Survivor.h"
 #include "Map.h"
 #include "Zombie.h"
+#include "Collision.h"
 
 int global_count = 0;
 
@@ -207,7 +208,7 @@ int main( int argc, char* args[] ) {
             last_zombie_spawn = current;
         }
 
-
+        //Projectiles updating
         std::vector<Projectile*>::iterator it = projectiles.begin();
         while (it != projectiles.end()) {
             if ( !((*it)->update()) ) {
@@ -216,6 +217,30 @@ int main( int argc, char* args[] ) {
             } else {
                 it++;
             }
+        }
+
+        //Collision detection
+        bool hit;
+        it = projectiles.begin();
+        while (it != projectiles.end()) {
+            hit = false;
+            z_it = zombies.begin();
+            while (z_it != zombies.end()) {
+                if (isCollision(**it, **z_it)) {
+                    delete *it;
+                    it = projectiles.erase(it);
+                    if ( !((*z_it)->takeDamage()) ) {
+                        delete *z_it;
+                        z_it = zombies.erase(z_it);
+                    }
+                    hit = true;
+                    break;
+                }
+                else {
+                    z_it++;
+                }
+            }
+            if (!hit) { it++; }
         }
 
         //RENDERING

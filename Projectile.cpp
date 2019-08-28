@@ -1,7 +1,7 @@
 #include "Projectile.h"
 
 Projectile::Projectile(int x, int y, int angle) {
-    printf("---Entering Projectile constructor\n");
+    //printf("---Entering Projectile constructor\n");
     //objTexture = NULL;
     this->objTexture = new ObjTexture();
     this->x = x;
@@ -10,16 +10,16 @@ Projectile::Projectile(int x, int y, int angle) {
     this->speed = PROJECTILE_STARTING_SPEED;
     this->width = PROJECTILE_WIDTH;
     this->height = PROJECTILE_HEIGHT;
-    printf("---Leaving Projectile constructor\n");
+    //printf("---Leaving Projectile constructor\n");
 }
 Projectile::~Projectile() {
-    printf("---Entering Projectile destructor\n");
+    //printf("---Entering Projectile destructor\n");
     delete objTexture;
     objTexture = NULL;
-    printf("---Leaving Projectile destructor\n");
+    //printf("---Leaving Projectile destructor\n");
 }
 bool Projectile::update() {
-    printf("---Entering Projectile::update\n");
+    //printf("---Entering Projectile::update\n");
     float rad = float(angle) * (PI/float(180));
     float move_x = float(speed) * (cos(float(rad)));
     float move_y = float(speed) * (sin(float(rad)));
@@ -30,26 +30,25 @@ bool Projectile::update() {
         x = temp_x;
         y = temp_y;
         //printf("new x, y = %f, %f\n", x, y);
-        printf("---Leaving Projectile::update\n");
+        //printf("---Leaving Projectile::update\n");
         return true;
     }
-    printf("---Leaving Projectile::update\n");
+    //printf("---Leaving Projectile::update\n");
     return false;
 }
 void Projectile::draw() {
-    printf("---Entering Projectile::draw\n");
+    //printf("---Entering Projectile::draw\n");
     objTexture->render(x, y, angle, width, height, 0);
-    //objTexture.render(x, y, angle, width, height, 0);
     drawHitBox();
-    printf("---Leaving Projectile::draw\n");
+    //printf("---Leaving Projectile::draw\n");
 }
 void Projectile::drawHitBox() {
     SDL_Rect hitbox = {int((x+0.25*float(width))-1.0), int((y+0.25*float(height))-1.0), int(float(width)/2.0+2.0), int(float(height)/2.0+2.0)};
-    SDL_SetRenderDrawColor( gRenderer, 0, 255, 0, 255); //green
-    SDL_RenderDrawRect(gRenderer, &hitbox);
+    //SDL_SetRenderDrawColor( gRenderer, 0, 255, 0, 255); //green
+    //SDL_RenderDrawRect(gRenderer, &hitbox);
 }
 void Projectile::load(std::string path) {
-    printf("---Entering Projectile::load\n");
+    //printf("---Entering Projectile::load\n");
     //if (objTexture != NULL) {
     //    delete objTexture;
     //}
