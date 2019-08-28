@@ -2,6 +2,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <SDL2/SDL.h>
+
 //survivor global variables
 const int SURVIVOR_STARTING_X = 384;
 const int SURVIVOR_STARTING_Y = 336;

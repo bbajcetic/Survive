@@ -24,6 +24,7 @@ class Projectile {
         float getX() { return x + float(width)/2.0; }
         float getY() { return y + float(height)/2.0; }
         int getAngle() { return angle; }
+        float getRadians() { return float(angle) * PI/float(180); }
         int getSpeed() { return speed; }
         //ObjTexture* getTexture() { return objTexture; }
 

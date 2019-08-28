@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Zombie.h"
 #include "Collision.h"
+#include "CustomMath.h"
 
 int global_count = 0;
 
@@ -129,6 +130,10 @@ int main( int argc, char* args[] ) {
     while( !quit ) {
         current = SDL_GetTicks();
 
+        /* set last x,y for Survivor to current x,y */
+        survivor.setLastX(survivor.getX()-survivor.getWidth()/2.0);
+        survivor.setLastY(survivor.getY()-survivor.getHeight()/2.0);
+
         //Handle events on queue
         while (SDL_PollEvent( &e ) != 0) {
             if (e.type == SDL_QUIT) {
@@ -177,11 +182,14 @@ int main( int argc, char* args[] ) {
                 && !currentKeyState[SDL_SCANCODE_DOWN]) {
             survivor.setMoving(false);
         }
+        printf("current frames = %d\n", current);
 
         //Update path finding
         
         /*comment out for now */
         if (survivor.changedTiles()) {
+            printf("survivor x = %f, survivor y = %f\n", survivor.getX(), survivor.getY());
+            printf("survivor last x = %f, survivor last y = %f\n", survivor.getLastX(), survivor.getLastY());
             map.updatePath(survivor.getX(), survivor.getY());
             map.printPath();
             printf("SURVIVOR CHANGED TILES!\n");

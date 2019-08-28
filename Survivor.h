@@ -40,6 +40,8 @@ class Survivor {
 
         void setX(int x) { this->x = x; }
         void setY(int y) { this->y = y; }
+        void setLastX(int x) { this->last_x = x; }
+        void setLastY(int y) { this->last_y = y; }
         void setMoving(bool moving) { this->moving = moving; }
         void setAngle(int angle) { this->angle = angle; }
         void setSpeed(int speed) { this->speed = speed; }

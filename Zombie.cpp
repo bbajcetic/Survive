@@ -135,18 +135,19 @@ void Zombie::updateNext() {
 
     /* calculate next_angle */
     float rad;
-    if (diff_x == 0) {
-        rad = (diff_y >= 0) ? PI/2.0 : 3*PI/2.0;
-    }
-    else {
-        rad = atan( float(diff_y)/float(diff_x) );
-        if (diff_x >= 0 and diff_y < 0) {
-            rad = rad + 2.0*PI;
-        }
-        else if (diff_x < 0) {
-            rad = rad + PI;
-        }
-    }
+    rad = findAngle(float(diff_x), float(diff_y));
+    //if (diff_x == 0) {
+    //    rad = (diff_y >= 0) ? PI/2.0 : 3*PI/2.0;
+    //}
+    //else {
+    //    rad = atan( float(diff_y)/float(diff_x) );
+    //    if (diff_x >= 0 and diff_y < 0) {
+    //        rad = rad + 2.0*PI;
+    //    }
+    //    else if (diff_x < 0) {
+    //        rad = rad + PI;
+    //    }
+    //}
     next_angle = int( rad * float(180) / PI );
 }
 

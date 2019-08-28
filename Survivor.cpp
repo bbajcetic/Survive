@@ -68,14 +68,11 @@ void Survivor::move(std::string dir) {
         temp_y = y - move_y;
     }
     if (!map.isWall(temp_x, temp_y, width, height)) {
-        last_x = x; last_y = y;
         x = temp_x;
         y = temp_y;
     } else if (!map.isWall(temp_x, y, width, height)) {
-        last_x = x;
         x = temp_x;
     } else if (!map.isWall(x, temp_y, width, height)) {
-        last_y = y;
         y = temp_y;
     }
     //printf("---Leaving Survivor::move\n");

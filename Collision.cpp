@@ -1,6 +1,48 @@
 #include "Collision.h"
 
-bool isCollision(Projectile& proj, Zombie& zombie) {
+bool isCollision(Projectile& p, Zombie& z) {
+    /* when hitting Zombie, call SDL_Delay(1000) (wait 1 second) */
+    Vec2D zombie_box[4];
+    zombie_box[0] = { float(z.getX()-z.getWidth()/2.0), float(z.getY()-z.getHeight()/2.0) };
+    zombie_box[1] = { float(z.getX()+z.getWidth()/2.0), float(z.getY()-z.getHeight()/2.0) };
+    zombie_box[2] = { float(z.getX()+z.getWidth()/2.0), float(z.getY()+z.getHeight()/2.0) };
+    zombie_box[3] = { float(z.getX()-z.getWidth()/2.0), float(z.getY()+z.getHeight()/2.0) };
+
+    float dist_to_corner = getDist(float(p.getWidth())/2.0, float(p.getHeight())/2.0);
+    float angles[4];
+    angles[0] = findAngle(p.getWidth(), p.getHeight());
+    printf("found angle = %f\n", angles[0]);
+    angles[1] = PI - angles[0];
+    angles[2] = PI + angles[0];
+    angles[3] = 2*PI - angles[0];
+    //corners
+    printf("Projectile is located with its center at (%f, %f)\n", p.getX(), p.getY());
+    printf("Projectile width, height: %f, %f\n", float(p.getWidth()), float(p.getHeight()));
+    printf("Projectile angle = %fdeg or %frad\n", float(p.getAngle()), float(p.getRadians()));
+    float px[4], py[4];
+    for (int i = 0; i < 4; ++i) {
+        px[i] = dist_to_corner * cos( angles[i] + p.getRadians() ) + p.getX();
+        py[i] = dist_to_corner * sin( angles[i] + p.getRadians() ) + p.getY();
+    }
+
+    Vec2D proj_box[4] = { {px[0], py[0]}, {px[1], py[1]}, {px[2], py[2]}, {px[3], py[3]} };
+
+    if (isCollision_rotate(proj_box, zombie_box)) {
+        printf("COLLISION! (bullet zombie)\n");
+        for (int i = 0; i < 4; ++i) {
+            printf("(x,y) = (%f,%f)\n", px[i], py[i]);
+        }
+        //SDL_Delay(1000);
+        return true;
+    }
+    for (int i = 0; i < 4; ++i) {
+        printf("(x,y) = (%f,%f)\n", px[i], py[i]);
+    }
+    printf("Zombie at (%f, %f)\n", z.getX(), z.getY());
+    for (int i = 0; i < 4; ++i) {
+        zombie_box[i].print();
+        //printf("zombie (x,y) = (%f,%f)\n", zombie_box[i]);
+    }
     return false;
 }
 

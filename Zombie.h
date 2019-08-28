@@ -8,6 +8,7 @@
 #include "ObjTexture.h"
 #include "Map.h"
 #include "Constants.h"
+#include "CustomMath.h"
 
 extern Map map;
 extern SDL_Renderer* gRenderer;
