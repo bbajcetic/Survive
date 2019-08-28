@@ -31,7 +31,6 @@ class Zombie {
         float getX() { return x + float(width)/2.0; }
         /* get y value of center of object */
         float getY() { return y + float(height)/2.0; }
-        /* get last x value of center of object */
         bool getMoving() { return moving; }
         int getAngle() { return angle; }
         int getSpeed() { return speed; }
