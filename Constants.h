@@ -18,7 +18,7 @@ const int SURVIVOR_WIDTH = 44;
 const int SURVIVOR_HEIGHT = 44;
 
 const int SURVIVOR_TIME_PER_MOVE = 33;
-const int SURVIVOR_TIME_PER_SHOT = 500;
+const int SURVIVOR_TIME_PER_SHOT = 250;
 
 //zombie global variables
 const int ZOMBIE_STARTING_HEALTH = 100;

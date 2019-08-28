@@ -131,7 +131,7 @@ void Zombie::updateNext() {
     }
     //pick random index from min_vals[0] to min_vals[size]-1
     /* choose random square from min_vals to go to */
-    int rand_pick = 0;
+    int rand_pick = rand() % min_vals.size();
     int next_index = min_vals[rand_pick];
     /* get coordinates of next tile and calculate diff from current tile */
     next_x = map.getXFromIndex(next_index);

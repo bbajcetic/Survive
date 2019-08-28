@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <cstdlib>
 
 #include "Constants.h"
 #include "Survivor.h"
@@ -109,6 +110,7 @@ int main( int argc, char* args[] ) {
     }
 
     //Main loop flag
+    srand(time(NULL));
     bool quit = false;
     int current = SDL_GetTicks();
     int second_timer = current;
