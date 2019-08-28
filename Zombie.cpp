@@ -16,6 +16,7 @@ Zombie::Zombie(int x, int y, int angle) {
     this->height = ZOMBIE_HEIGHT;
     this->health = ZOMBIE_STARTING_HEALTH;
     this->frame = 0;
+    this->last_move = 0;
     //printf("---Leaving Zombie constructor\n");
 }
 Zombie::~Zombie() {
@@ -33,8 +34,11 @@ bool Zombie::takeDamage(int damage) {
     }
     return true;
 }
-void Zombie::update() {
+void Zombie::update(int current_time) {
     //printf("---Entering Zombie::update\n");
+    if (current_time - last_move < ZOMBIE_TIME_PER_MOVE) {
+        return;
+    }
     if (x == next_x && y == next_y) {
         updateNext();
     }
@@ -44,6 +48,7 @@ void Zombie::update() {
     else if (x != next_x || y != next_y) {
         move();
     }
+    last_move = current_time;
     frame = (frame + 1) % (ZOMBIE_NUM_SPRITES*ZOMBIE_FRAMES_PER_ANIMATION);
     //printf("---Leaving Zombie::update\n");
 }

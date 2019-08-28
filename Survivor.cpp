@@ -16,6 +16,9 @@ Survivor::Survivor(int x, int y) {
     this->height = SURVIVOR_HEIGHT;
     this->health = SURVIVOR_STARTING_HEALTH;
     this->frame = 0;
+    this->last_move = 0;
+    this->last_turn = 0;
+    this->last_shot = 0;
     //printf("---Leaving Survivor constructor\n");
 }
 Survivor::~Survivor() {
@@ -35,8 +38,19 @@ bool Survivor::changedTiles() {
     //printf("---Leaving Survivor::changedTiles\n");
     return false;
 }
-void Survivor::update(std::string dir) {
+void Survivor::update(std::string dir, int current_time) {
     //printf("---Entering Survivor::update\n");
+    if (dir == "UP" || dir == "DOWN") {
+        if (current_time - last_move < SURVIVOR_TIME_PER_MOVE) {
+            return;
+        }
+    }
+    else if (dir == "LEFT" || dir == "RIGHT") {
+        if (current_time - last_turn < SURVIVOR_TIME_PER_TURN) {
+            return;
+        }
+    }
+
     if ( moving == false && (dir == "UP" || dir == "DOWN") ) {
         moving = true;
         frame = 0;
@@ -49,6 +63,11 @@ void Survivor::update(std::string dir) {
         move("FORWARD");
     } else if (dir == "DOWN") {
         move("BACKWARD");
+    }
+    if (dir == "UP" || dir == "DOWN") {
+        last_move = current_time;
+    } else if (dir == "LEFT" || dir == "RIGHT") {
+        last_turn = current_time;
     }
     frame = (frame + 1) % (SURVIVOR_NUM_SPRITES*SURVIVOR_FRAMES_PER_ANIMATION);
 
@@ -78,8 +97,11 @@ void Survivor::move(std::string dir) {
     }
     //printf("---Leaving Survivor::move\n");
 }
-void Survivor::shoot() {
+void Survivor::shoot(int current_time) {
     //printf("---Entering Survivor::shoot\n");
+    if (current_time - last_shot < SURVIVOR_TIME_PER_SHOT) {
+        return;
+    }
     float temp_x, temp_y, temp_h;
     float rad = float(angle) * (PI/float(180));
     temp_h = 1.5 * (0.5*float(width));
@@ -88,6 +110,8 @@ void Survivor::shoot() {
     Projectile* temp = new Projectile(temp_x, temp_y, angle);
     temp->load("Projectile.png");
     projectiles.push_back(temp);
+
+    last_shot = current_time;
     //printf("NEW PROJECTILE SIZE = %d\n", projectiles.size());
     //printf("---Leaving Survivor::shoot\n");
 }

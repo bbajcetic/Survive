@@ -16,9 +16,9 @@ class Survivor {
         Survivor(int x, int y);
         ~Survivor();
 
-        void update(std::string dir);
+        void update(std::string dir, int current_time);
         void move(std::string dir);
-        void shoot();
+        void shoot(int current_time);
         void draw();
         void load(std::string path, int anim_rows, int anim_cols);
         bool changedTiles();
@@ -63,6 +63,9 @@ class Survivor {
         int width;
         int height;
         int frame;
+        int last_move;
+        int last_turn;
+        int last_shot;
 };
 
 #endif

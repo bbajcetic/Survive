@@ -115,10 +115,7 @@ int main( int argc, char* args[] ) {
     int current = SDL_GetTicks();
     int second_timer = current;
     int last = current;
-    int last_player_move = current;
-    int last_player_turn = current;
     int last_player_shot = current;
-    int last_zombie_move = current;
     int last_zombie_spawn = current;
     int zombie_count = 0;
     int frame_count = 0;
@@ -144,11 +141,7 @@ int main( int argc, char* args[] ) {
             else if (e.type == SDL_KEYDOWN) {
                 switch(e.key.keysym.sym) {
                     case SDLK_SPACE:
-                        if ( (current - last_player_shot) >= SURVIVOR_TIME_PER_SHOT ) {
-                            survivor.shoot();
-                            last_player_shot = current;
-                            printf("NEW PROJECTILE SIZE = %d\n", projectiles.size());
-                        }
+                        survivor.shoot(current);
                         break;
                 }
             }
@@ -157,28 +150,16 @@ int main( int argc, char* args[] ) {
         /* put all this in survivor update function by defining sdl library in
          * class and then putting scancode as an argument to the update func*/
         if (currentKeyState[SDL_SCANCODE_LEFT]) {
-            if ( (current - last_player_turn) >= SURVIVOR_TIME_PER_MOVE ) {
-                survivor.update("LEFT");
-                last_player_turn = current;
-            }
+            survivor.update("LEFT", current);
         }
-        else if (currentKeyState[SDL_SCANCODE_RIGHT]) {
-            if ( (current - last_player_turn) >= SURVIVOR_TIME_PER_MOVE ) {
-                survivor.update("RIGHT");
-                last_player_turn = current;
-            }
+        if (currentKeyState[SDL_SCANCODE_RIGHT]) {
+            survivor.update("RIGHT", current);
         }
         if (currentKeyState[SDL_SCANCODE_UP]) {
-            if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
-                survivor.update("UP");
-                last_player_move = current;
-            }
+            survivor.update("UP", current);
         }
         if (currentKeyState[SDL_SCANCODE_DOWN]) {
-            if ( (current - last_player_move) >= SURVIVOR_TIME_PER_MOVE ) {
-                survivor.update("DOWN");
-                last_player_move = current;
-            }
+            survivor.update("DOWN", current);
         }
         if (!currentKeyState[SDL_SCANCODE_UP] 
                 && !currentKeyState[SDL_SCANCODE_DOWN]) {
@@ -199,12 +180,9 @@ int main( int argc, char* args[] ) {
         
         //Zombies updating
         std::vector<Zombie*>::iterator z_it = zombies.begin();
-        if ( (current - last_zombie_move) >= ZOMBIE_TIME_PER_MOVE ) {
-            while (z_it != zombies.end()) {
-                (*z_it)->update();
-                z_it++;
-            }
-            last_zombie_move = current;
+        while (z_it != zombies.end()) {
+            (*z_it)->update(current);
+            z_it++;
         }
         if ( (current - last_zombie_spawn) >= ZOMBIE_SPAWN_TIME ) {
             if (zombie_count < MAX_ZOMBIES) {

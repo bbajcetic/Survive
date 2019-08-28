@@ -18,7 +18,7 @@ class Zombie {
         Zombie(int x, int y, int angle);
         ~Zombie();
 
-        void update();
+        void update(int current_time);
         void turn();
         void move();
         void updateNext();
@@ -61,6 +61,7 @@ class Zombie {
         int width;
         int height;
         int frame;
+        int last_move;
 };
 
 #endif
