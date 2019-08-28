@@ -21,7 +21,7 @@ class Zombie {
         void turn();
         void move();
         void updateNext();
-        void draw(int anim_index);
+        void draw();
         void drawHitBox();
         void load(std::string path, int anim_rows, int anim_cols);
 
@@ -55,6 +55,7 @@ class Zombie {
         int speed;
         int width;
         int height;
+        int frame;
 };
 
 #endif

@@ -14,6 +14,7 @@ Zombie::Zombie(int x, int y, int angle) {
     this->speed = ZOMBIE_STARTING_SPEED;
     this->width = ZOMBIE_WIDTH;
     this->height = ZOMBIE_HEIGHT;
+    this->frame = 0;
     printf("---Leaving Zombie constructor\n");
 }
 Zombie::~Zombie() {
@@ -21,6 +22,42 @@ Zombie::~Zombie() {
     delete objTexture;
     objTexture = NULL;
     printf("---Leaving Zombie destructor\n");
+}
+void Zombie::update() {
+    printf("---Entering Zombie::update\n");
+    if (x == next_x && y == next_y) {
+        updateNext();
+    }
+    if (angle != next_angle) {
+        turn();
+    }
+    else if (x != next_x || y != next_y) {
+        move();
+    }
+    frame = (frame + 1) % (ZOMBIE_NUM_SPRITES*ZOMBIE_FRAMES_PER_ANIMATION);
+}
+void Zombie::turn() {
+    int to_angle = next_angle - angle;
+    if ( abs(to_angle) < ZOMBIE_SENSITIVITY ) {
+        angle = next_angle;
+    }
+    else if ( abs(to_angle) > 180 ) {
+        if (to_angle > 180) {
+            angle = angle - ZOMBIE_SENSITIVITY;
+            if (angle < 0) {
+                angle += 360;
+            }
+        }
+        else if (to_angle < -180) {
+            angle = (angle + ZOMBIE_SENSITIVITY);
+            if (angle > 360) {
+                angle -= 360;
+            }
+        }
+    }
+    else {
+        angle = (to_angle > 0) ? angle + ZOMBIE_SENSITIVITY : angle - ZOMBIE_SENSITIVITY;
+    }
 }
 void Zombie::updateNext() {
     //updates next_x and next_y and next_angle to the next tile
@@ -71,7 +108,6 @@ void Zombie::updateNext() {
             min = curr_val;
         }
     }
-    printf("min = %d\n", min);
     for (int i = 0; i < 8; ++i) {
         if (!map.onMap(around[i])) {
             continue;
@@ -86,14 +122,11 @@ void Zombie::updateNext() {
     /* choose random square from min_vals to go to */
     int rand_pick = 0;
     int next_index = min_vals[rand_pick];
-    printf("Next index = %d\n", next_index);
     /* get coordinates of next tile and calculate diff from current tile */
     next_x = map.getXFromIndex(next_index);
     next_y = map.getYFromIndex(next_index);
     int diff_x = next_x - x;
     int diff_y = next_y - y;
-    printf("DIFFX = %d, DIFFY = %d\n", diff_x, diff_y);
-    printf("NEXTX = %f, NEXTY = %f\n", next_x, next_y);
 
     /* calculate next_angle */
     float rad;
@@ -110,44 +143,6 @@ void Zombie::updateNext() {
         }
     }
     next_angle = int( rad * float(180) / PI );
-    printf("Next angle float = %f\n", next_angle);
-}
-
-void Zombie::turn() {
-    int to_angle = next_angle - angle;
-    if ( abs(to_angle) < ZOMBIE_SENSITIVITY ) {
-        angle = next_angle;
-    }
-    else if ( abs(to_angle) > 180 ) {
-        if (to_angle > 180) {
-            angle = angle - ZOMBIE_SENSITIVITY;
-            if (angle < 0) {
-                angle += 360;
-            }
-        }
-        else if (to_angle < -180) {
-            angle = (angle + ZOMBIE_SENSITIVITY);
-            if (angle > 360) {
-                angle -= 360;
-            }
-        }
-    }
-    else {
-        angle = (to_angle > 0) ? angle + ZOMBIE_SENSITIVITY : angle - ZOMBIE_SENSITIVITY;
-    }
-    printf("NEWANGLE = %d\n", angle);
-}
-void Zombie::update() {
-    printf("---Entering Zombie::update\n");
-    if (x == next_x && y == next_y) {
-        updateNext();
-    }
-    if (angle != next_angle) {
-        turn();
-    }
-    else if (x != next_x || y != next_y) {
-        move();
-    }
 }
 
 void Zombie::move() {
@@ -163,25 +158,13 @@ void Zombie::move() {
         float move_y = float(speed) * sin(float(rad));
         x = x + move_x;
         y = y + move_y;
-        //x = ( (next_x - x) >= 0 )? x + move_x : x - move_x;
-        //y = ( (next_y - y) >= 0 )? y + move_y : y - move_y;
-        //if ( (next_x - x) > 0 ) {
-        //    x = x + move_x;
-        //} else {
-        //    x = x - move_x;
-        //}
-        //if ( (next_y - y) > 0) {
-        //    y = y + move_y;
-        //} else {
-        //    y = y - move_y;
-        //}
     }
 }
 
-void Zombie::draw(int anim_index) {
+void Zombie::draw() {
     printf("---Entering Zombie::draw\n");
+    int anim_index = frame/ZOMBIE_FRAMES_PER_ANIMATION;
     objTexture->render(x, y, angle, width, height, anim_index);
-    //objTexture.render(x, y, angle, width, height, 0);
     printf("---Leaving Zombie::draw\n");
 }
 void Zombie::load(std::string path, int anim_rows, int anim_cols) {

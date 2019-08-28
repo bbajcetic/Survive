@@ -108,7 +108,6 @@ int main( int argc, char* args[] ) {
 
     //Main loop flag
     bool quit = false;
-    int zombie_frame = 0;
     int current = SDL_GetTicks();
     int second_timer = current;
     int last = current;
@@ -210,17 +209,13 @@ int main( int argc, char* args[] ) {
 
 
         std::vector<Projectile*>::iterator it = projectiles.begin();
-        //printf("check4\n");
         while (it != projectiles.end()) {
-            //if ( !(it->update()) ) {
             if ( !((*it)->update()) ) {
                 delete *it;
                 it = projectiles.erase(it);
-                //it++;
             } else {
                 it++;
             }
-            //printf("check6\n");
         }
 
         //RENDERING
@@ -247,15 +242,13 @@ int main( int argc, char* args[] ) {
         //Render zombies
         z_it = zombies.begin();
         while (z_it != zombies.end()) {
-            (*z_it)->draw(zombie_frame/ZOMBIE_FRAMES_PER_ANIMATION);
+            (*z_it)->draw();
             z_it++;
         }
 
         //Render projectiles
         it = projectiles.begin();
         while (it != projectiles.end()) {
-            printf("drawing projectile at %f, %f\n", (*it)->getX(), (*it)->getY());
-            //it->draw();
             (*it)->draw();
             it++;
         }
@@ -263,7 +256,7 @@ int main( int argc, char* args[] ) {
         //update screen
         SDL_RenderPresent(gRenderer);
 
-        zombie_frame = (zombie_frame + 1) % (ZOMBIE_NUM_SPRITES*ZOMBIE_FRAMES_PER_ANIMATION);
+        //Update frame counters
 
         //end frame FrameManager checks
         frame_count++;
