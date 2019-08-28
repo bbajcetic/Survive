@@ -151,7 +151,7 @@ void Zombie::update() {
 }
 
 void Zombie::move() {
-    float distance_sq = pow(abs(next_x - x), 2.0) + pow(abs(next_y - y), 2.0);
+    float distance_sq = pow(next_x - x, 2.0) + pow(next_y - y, 2.0);
     float distance = sqrt(distance_sq);
     if (distance < speed) {
         x = next_x;
