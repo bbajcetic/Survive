@@ -26,16 +26,19 @@ class Projectile {
         int getAngle() { return angle; }
         float getRadians() { return float(angle) * PI/float(180); }
         int getSpeed() { return speed; }
+        int getDamage() { return damage; }
         //ObjTexture* getTexture() { return objTexture; }
 
         void setX(int x) { this->x = x; }
         void setY(int y) { this->y = y; }
         void setAngle(int angle) { this->angle = angle; }
         void setSpeed(int speed) { this->speed = speed; }
+        void setDamage(int damage) { this->damage = damage; }
 
 
     private:
         ObjTexture* objTexture;
+        int damage;
         float x;
         float y;
         int angle; //0 - 360

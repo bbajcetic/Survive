@@ -14,6 +14,7 @@ Survivor::Survivor(int x, int y) {
     this->speed = SURVIVOR_STARTING_SPEED;
     this->width = SURVIVOR_WIDTH;
     this->height = SURVIVOR_HEIGHT;
+    this->health = SURVIVOR_STARTING_HEALTH;
     this->frame = 0;
     //printf("---Leaving Survivor constructor\n");
 }

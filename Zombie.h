@@ -36,6 +36,7 @@ class Zombie {
         bool getMoving() { return moving; }
         int getAngle() { return angle; }
         int getSpeed() { return speed; }
+        int getHealth() { return health; }
         //ObjTexture* getTexture() { return objTexture; }
 
         void setX(int x) { this->x = x; }
@@ -43,10 +44,12 @@ class Zombie {
         void setMoving(int moving) { this->moving = moving; }
         void setAngle(int angle) { this->angle = angle; }
         void setSpeed(int speed) { this->speed = speed; }
+        void setHealth(int health) { this->health = health; }
 
 
     private:
         ObjTexture* objTexture;
+        int health;
         float x;
         float y;
         int angle; //0 - 360

@@ -10,6 +10,7 @@ Projectile::Projectile(int x, int y, int angle) {
     this->speed = PROJECTILE_STARTING_SPEED;
     this->width = PROJECTILE_WIDTH;
     this->height = PROJECTILE_HEIGHT;
+    this->damage = PROJECTILE_STARTING_DAMAGE;
     //printf("---Leaving Projectile constructor\n");
 }
 Projectile::~Projectile() {

@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 
 //survivor global variables
+const int SURVIVOR_STARTING_HEALTH = 100;
 const int SURVIVOR_STARTING_X = 384;
 const int SURVIVOR_STARTING_Y = 336;
 const int SURVIVOR_STARTING_ANGLE = 270;
@@ -20,6 +21,7 @@ const int SURVIVOR_TIME_PER_MOVE = 33;
 const int SURVIVOR_TIME_PER_SHOT = 500;
 
 //zombie global variables
+const int ZOMBIE_STARTING_HEALTH = 100;
 const int ZOMBIE_STARTING_SPEED = 4;
 const int ZOMBIE_WIDTH = 44;
 const int ZOMBIE_HEIGHT = 44;
@@ -31,6 +33,7 @@ const int ZOMBIE_NUM_SPRITES = 4;
 const int MAX_ZOMBIES = 3;
 
 //projectile global variables
+const int PROJECTILE_STARTING_DAMAGE = 10;
 const int PROJECTILE_STARTING_SPEED = 3;
 const int PROJECTILE_WIDTH = 15;
 const int PROJECTILE_HEIGHT = 3;
