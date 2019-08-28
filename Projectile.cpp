@@ -25,7 +25,7 @@ bool Projectile::update() {
     float move_y = float(speed) * (sin(float(rad)));
     float temp_x, temp_y;
     temp_x = x + move_x;
-    temp_y = y - move_y;
+    temp_y = y + move_y;
     if (!map.isWall(temp_x, temp_y, width, height)) {
         x = temp_x;
         y = temp_y;

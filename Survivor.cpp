@@ -86,7 +86,7 @@ void Survivor::shoot() {
     float rad = float(angle) * (PI/float(180));
     temp_h = 1.5 * (0.5*float(width));
     temp_x = (x+0.5*float(width)) + temp_h * cos(rad);
-    temp_y = (y+0.5*float(height)) - temp_h * sin(rad);
+    temp_y = (y+0.5*float(height)) + temp_h * sin(rad);
     Projectile* temp = new Projectile(temp_x, temp_y, angle);
     temp->load("Projectile.png");
     projectiles.push_back(temp);
