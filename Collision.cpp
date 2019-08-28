@@ -1,6 +1,26 @@
 #include "Collision.h"
 
-bool detectCollision(Vec2D A[], Vec2D B[]) {
+bool isCollision_nonRotate(Vec2D centerA, float widthA, float heightA,
+        Vec2D centerB, float widthB, float heightB) {
+    float minAx, maxAx, minAy, maxAy, minBx, maxBx, minBy, maxBy;
+    minAx = centerA.x-widthA/2.0;
+    maxAx = centerA.x+widthA/2.0;
+    minAy = centerA.y-heightA/2.0;
+    maxAy = centerA.y+heightA/2.0;
+    minBx = centerB.x-widthB/2.0;
+    maxBx = centerB.x+widthB/2.0;
+    minBy = centerB.y-heightB/2.0;
+    maxBy = centerB.y+heightB/2.0;
+    /* x check */
+    if (minAx <= maxBx && maxAx >= minBx) {
+        /* y check */
+        if (minAy <= maxBy && maxAy >= minBy) {
+            return true;
+        }
+    }
+    return false;
+}
+bool isCollision_rotate(Vec2D A[], Vec2D B[]) {
     /* Parameters A and B are Vec2D arrays of size 4, defining a rectangle by
      * its corners, in a clockwise or counter-clockwise manner */
 
