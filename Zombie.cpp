@@ -182,6 +182,19 @@ void Zombie::draw() {
     //printf("---Entering Zombie::draw\n");
     int anim_index = frame/ZOMBIE_FRAMES_PER_ANIMATION;
     objTexture->render(x, y, angle, width, height, anim_index);
+
+    //draw Zombie health bar
+    int filled_length = int( float(health)/float(ZOMBIE_STARTING_HEALTH) * float(HEALTH_BAR_WIDTH) );
+    int health_red_x = int(x);
+    int health_green_x = int( x+(HEALTH_BAR_WIDTH-filled_length) );
+    SDL_Rect redRect = { health_red_x, int(y+height), HEALTH_BAR_WIDTH-filled_length, HEALTH_BAR_HEIGHT };
+    SDL_Rect greenRect = { health_green_x, int(y+height), filled_length, HEALTH_BAR_HEIGHT };
+    
+    SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF ); //green
+    SDL_RenderFillRect( gRenderer, &greenRect );
+    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF ); //red
+    SDL_RenderFillRect( gRenderer, &redRect );
+
     //printf("---Leaving Zombie::draw\n");
 }
 void Zombie::load(std::string path, int anim_rows, int anim_cols) {

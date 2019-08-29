@@ -19,7 +19,7 @@ const int SURVIVOR_HEIGHT = 44;
 
 const int SURVIVOR_TIME_PER_MOVE = 33;
 const int SURVIVOR_TIME_PER_TURN = 33; 
-const int SURVIVOR_TIME_PER_SHOT = 500;
+const int SURVIVOR_TIME_PER_SHOT = 250;
 
 //zombie global variables
 const int ZOMBIE_STARTING_HEALTH = 100;
@@ -32,6 +32,10 @@ const int ZOMBIE_FRAMES_PER_ANIMATION = 12;
 const int ZOMBIE_TIME_PER_MOVE = 33;
 const int ZOMBIE_NUM_SPRITES = 4;
 const int MAX_ZOMBIES = 3;
+
+//health bar variables
+const int HEALTH_BAR_WIDTH = 40;
+const int HEALTH_BAR_HEIGHT = 5;
 
 //projectile global variables
 const int PROJECTILE_STARTING_DAMAGE = 10;
