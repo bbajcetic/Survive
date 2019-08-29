@@ -69,11 +69,17 @@ const SDL_Rect INFO_VIEWPORT = { 980, 10, 200, 576 }; //x, y, width, height
 const SDL_Rect INFO = { 0, 0, 200, 576 };
 
 //Game viewport
-const SDL_Color GAME_COLOR = { 105, 105, 105, 255 }; //dim gray
-const SDL_Rect GAME_VIEWPORT = { 10, 10, 960, 576 }; //x, y, width, height
-const SDL_Rect GAME = { 0, 0, 960, 576 };
 const int GAME_WIDTH = 960;
 const int GAME_HEIGHT = 576;
+const SDL_Color GAME_COLOR = { 105, 105, 105, 255 }; //dim gray
+const SDL_Rect GAME_VIEWPORT = { 10, 10, GAME_WIDTH, GAME_HEIGHT }; //x, y, width, height
+const SDL_Rect GAME = { 0, 0, 960, 576 };
+
+//Game over screen
+const int GAMEOVER_WIDTH = 240;
+const int GAMEOVER_HEIGHT = 160;
+const SDL_Rect GAMEOVER = { GAME_WIDTH/2 - GAMEOVER_WIDTH/2, GAME_HEIGHT/2 - GAMEOVER_HEIGHT/2 , GAMEOVER_WIDTH, GAMEOVER_HEIGHT };
+const SDL_Color GAMEOVER_COLOR = { 0x00, 0x00, 0x00, 0xFF }; //black
 
 //math constants
 const double PI = 3.141592653589793;
