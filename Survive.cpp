@@ -22,6 +22,7 @@ void close();
 
 //Main game functions
 void gameOver();
+/* returns true if Survivor is alive and false if dead */
 bool startWave();
 
 //Globals
@@ -119,19 +120,44 @@ int main( int argc, char* args[] ) {
     if (!survived) {
         gameOver();
     }
-    //show game over screen
-    SDL_Delay(2000);
 
     //Close SDL window and subsystems and free memory
     close();
 }
 void gameOver() {
-    ;
+    //Set up viewport for gameplay area
+    SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
+    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF ); //red
+    SDL_RenderFillRect( gRenderer, &GAMEOVER_OUTLINE );
+    SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF ); //black
+    SDL_RenderFillRect( gRenderer, &GAMEOVER_RECT );
+    //update screen
+    SDL_RenderPresent(gRenderer);
+    
+    bool quit = false;
+    SDL_Event e;
+    while( !quit ) {
+        //Handle events on queue
+        while (SDL_PollEvent( &e ) != 0) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            }
+            else if (e.type == SDL_KEYDOWN) {
+                switch(e.key.keysym.sym) {
+                    case SDLK_q:
+                        quit = true;
+                        break;
+                }
+            }
+        }
+    }
+
 }
+
 bool startWave() {
     //Main loop flag
     bool quit = false;
-    bool dead = false;
+    bool alive = true;
     int current = SDL_GetTicks();
     int second_timer = current;
     /* last: for frame rate capping */
@@ -251,13 +277,13 @@ bool startWave() {
             if (!hit) { it++; }
         }
         //check zombies->survivor
-        bool dead = false;
         z_it = zombies.begin();
         while (z_it != zombies.end()) {
             if ( (*z_it)->canAttack(current) ) {
                 if (isCollision(survivor, **z_it)) {
                     if ( !survivor.takeDamage((*z_it)->getDamage()) ) {
-                        dead = true;
+                        alive = false;
+                        quit = true;
                         break;
                     }
                     (*z_it)->updateAttackTime(current);
@@ -279,7 +305,7 @@ bool startWave() {
         SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
         //Render gameplay area
         SDL_SetRenderDrawColor(gRenderer, GAME_COLOR.r, GAME_COLOR.g, GAME_COLOR.b, GAME_COLOR.a);
-        SDL_RenderFillRect(gRenderer, &GAME);
+        SDL_RenderFillRect(gRenderer, &GAME_RECT);
 
         //Render map
         map.draw();
@@ -322,10 +348,7 @@ bool startWave() {
         }
         last = SDL_GetTicks();
 
-        //check if Survivor dead
-        if (dead) {
-            quit = true;
-            dead = true;
-        }
     }
+    return alive;
+
 }
