@@ -25,14 +25,14 @@ bool isCollision(Projectile& p, Zombie& z) {
     float dist_to_corner = getDist(float(p.getWidth())/2.0, float(p.getHeight())/2.0);
     float angles[4];
     angles[0] = findAngle(p.getWidth(), p.getHeight());
-    printf("found angle = %f\n", angles[0]);
+    //printf("found angle = %f\n", angles[0]);
     angles[1] = PI - angles[0];
     angles[2] = PI + angles[0];
     angles[3] = 2*PI - angles[0];
     //corners
-    printf("Projectile is located with its center at (%f, %f)\n", p.getX(), p.getY());
-    printf("Projectile width, height: %f, %f\n", float(p.getWidth()), float(p.getHeight()));
-    printf("Projectile angle = %fdeg or %frad\n", float(p.getAngle()), float(p.getRadians()));
+    //printf("Projectile is located with its center at (%f, %f)\n", p.getX(), p.getY());
+    //printf("Projectile width, height: %f, %f\n", float(p.getWidth()), float(p.getHeight()));
+    //printf("Projectile angle = %fdeg or %frad\n", float(p.getAngle()), float(p.getRadians()));
     float px[4], py[4];
     for (int i = 0; i < 4; ++i) {
         px[i] = dist_to_corner * cos( angles[i] + p.getRadians() ) + p.getX();
@@ -43,19 +43,19 @@ bool isCollision(Projectile& p, Zombie& z) {
 
     if (isCollision_rotate(proj_box, zombie_box)) {
         printf("COLLISION! (bullet->zombie)\n");
-        for (int i = 0; i < 4; ++i) {
-            printf("(x,y) = (%f,%f)\n", px[i], py[i]);
-        }
+        //for (int i = 0; i < 4; ++i) {
+        //    printf("(x,y) = (%f,%f)\n", px[i], py[i]);
+        //}
         return true;
     }
-    for (int i = 0; i < 4; ++i) {
-        printf("(x,y) = (%f,%f)\n", px[i], py[i]);
-    }
-    printf("Zombie at (%f, %f)\n", z.getX(), z.getY());
-    for (int i = 0; i < 4; ++i) {
-        zombie_box[i].print();
-        //printf("zombie (x,y) = (%f,%f)\n", zombie_box[i]);
-    }
+    //for (int i = 0; i < 4; ++i) {
+    //    printf("(x,y) = (%f,%f)\n", px[i], py[i]);
+    //}
+    //printf("Zombie at (%f, %f)\n", z.getX(), z.getY());
+    //for (int i = 0; i < 4; ++i) {
+    //    zombie_box[i].print();
+    //    //printf("zombie (x,y) = (%f,%f)\n", zombie_box[i]);
+    //}
     return false;
 }
 

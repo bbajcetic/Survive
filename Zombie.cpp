@@ -18,6 +18,7 @@ Zombie::Zombie(int x, int y, int angle) {
     this->damage = ZOMBIE_STARTING_DAMAGE;
     this->frame = 0;
     this->last_move = 0;
+    this->last_attack = 0;
     //printf("---Leaving Zombie constructor\n");
 }
 Zombie::~Zombie() {
@@ -34,6 +35,15 @@ bool Zombie::takeDamage(int damage) {
         return false;
     }
     return true;
+}
+bool Zombie::canAttack(int current_time) {
+    if (current_time - last_attack >= ZOMBIE_ATTACK_TIME) {
+        return true;
+    }
+    return false;
+}
+void Zombie::updateAttackTime(int current_time) {
+    last_attack = current_time;
 }
 void Zombie::update(int current_time) {
     //printf("---Entering Zombie::update\n");

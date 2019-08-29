@@ -19,6 +19,8 @@ class Zombie {
         ~Zombie();
 
         void update(int current_time);
+        bool canAttack(int current_time);
+        void updateAttackTime(int current_time);
         void turn();
         void move();
         void updateNext();
@@ -65,6 +67,7 @@ class Zombie {
         int height;
         int frame;
         int last_move;
+        int last_attack;
 };
 
 #endif

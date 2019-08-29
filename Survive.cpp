@@ -234,10 +234,13 @@ int main( int argc, char* args[] ) {
         bool dead = false;
         z_it = zombies.begin();
         while (z_it != zombies.end()) {
-            if (isCollision(survivor, **z_it)) {
-                if ( !survivor.takeDamage((*z_it)->getDamage()) ) {
-                    dead = true;
-                    break;
+            if ( (*z_it)->canAttack(current) ) {
+                if (isCollision(survivor, **z_it)) {
+                    if ( !survivor.takeDamage((*z_it)->getDamage()) ) {
+                        dead = true;
+                        break;
+                    }
+                    (*z_it)->updateAttackTime(current);
                 }
             }
             z_it++;
