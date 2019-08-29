@@ -247,8 +247,6 @@ int main( int argc, char* args[] ) {
         }
         if (dead) {
             quit = true;
-            SDL_Delay(1000);
-            break;
         }
 
 
@@ -308,6 +306,8 @@ int main( int argc, char* args[] ) {
         }
         last = SDL_GetTicks();
     }
+    //show game over screen
+    SDL_Delay(2000);
 
     //Close SDL window and subsystems and free memory
     close();

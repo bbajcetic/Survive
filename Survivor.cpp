@@ -128,11 +128,21 @@ void Survivor::draw() {
     //printf("---Entering Survivor::draw\n");
 
     int anim_index = 1; //index 1 is non moving sprite
-    if (moving) {
-        anim_index = frame/SURVIVOR_FRAMES_PER_ANIMATION;
-    }
+    if (moving) { anim_index = frame/SURVIVOR_FRAMES_PER_ANIMATION; }
     objTexture->render(x, y, angle, width, height, anim_index);
     
+    //draw Survivor health bar
+    int filled_length = int( float(health)/float(SURVIVOR_STARTING_HEALTH) * float(HEALTH_BAR_WIDTH) );
+    int health_red_x = int(x);
+    int health_green_x = int( x+(HEALTH_BAR_WIDTH-filled_length) );
+    SDL_Rect redRect = { health_red_x, int(y+height), HEALTH_BAR_WIDTH-filled_length, HEALTH_BAR_HEIGHT*2 };
+    SDL_Rect greenRect = { health_green_x, int(y+height), filled_length, HEALTH_BAR_HEIGHT*2 };
+
+    SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF ); //green
+    SDL_RenderFillRect( gRenderer, &greenRect );
+    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF ); //red
+    SDL_RenderFillRect( gRenderer, &redRect );
+
     //printf("---Leaving Survivor::draw\n");
 }
 void Survivor::load(std::string path, int anim_rows, int anim_cols) {
