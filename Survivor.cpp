@@ -27,6 +27,15 @@ Survivor::~Survivor() {
     objTexture = NULL;
     //printf("---Leaving Survivor destructor\n");
 }
+bool Survivor::takeDamage(int damage) {
+    health -= damage;
+    printf("Survivor health = %d\n", health);
+    if (health <= 0) {
+        return false;
+    }
+    return true;
+}
+
 bool Survivor::changedTiles() {
     //printf("---Entering Survivor::changedTiles\n");
     int curr_tile = map.getTileIndex(getX(), getY());

@@ -5,8 +5,10 @@
 #include "Vec2D.h"
 #include "Projectile.h"
 #include "Zombie.h"
+#include "Survivor.h"
 #include "CustomMath.h"
 
+bool isCollision(Survivor& s, Zombie& z);
 bool isCollision(Projectile& p, Zombie& z);
 
 bool isCollision_nonRotate(Vec2D centerA, float widthA, float heightA,

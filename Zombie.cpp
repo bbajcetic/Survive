@@ -15,6 +15,7 @@ Zombie::Zombie(int x, int y, int angle) {
     this->width = ZOMBIE_WIDTH;
     this->height = ZOMBIE_HEIGHT;
     this->health = ZOMBIE_STARTING_HEALTH;
+    this->damage = ZOMBIE_STARTING_DAMAGE;
     this->frame = 0;
     this->last_move = 0;
     //printf("---Leaving Zombie constructor\n");

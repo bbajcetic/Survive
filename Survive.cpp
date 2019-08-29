@@ -171,8 +171,6 @@ int main( int argc, char* args[] ) {
         
         /*comment out for now */
         if (survivor.changedTiles()) {
-            printf("survivor x = %f, survivor y = %f\n", survivor.getX(), survivor.getY());
-            printf("survivor last x = %f, survivor last y = %f\n", survivor.getLastX(), survivor.getLastY());
             map.updatePath(survivor.getX(), survivor.getY());
             map.printPath();
             printf("SURVIVOR CHANGED TILES!\n");
@@ -208,6 +206,8 @@ int main( int argc, char* args[] ) {
         }
 
         //Collision detection
+        
+        //check projectiles->zombies
         bool hit;
         it = projectiles.begin();
         while (it != projectiles.end()) {
@@ -230,6 +230,24 @@ int main( int argc, char* args[] ) {
             }
             if (!hit) { it++; }
         }
+        //check zombies->survivor
+        bool dead = false;
+        z_it = zombies.begin();
+        while (z_it != zombies.end()) {
+            if (isCollision(survivor, **z_it)) {
+                if ( !survivor.takeDamage((*z_it)->getDamage()) ) {
+                    dead = true;
+                    break;
+                }
+            }
+            z_it++;
+        }
+        if (dead) {
+            quit = true;
+            SDL_Delay(1000);
+            break;
+        }
+
 
         //RENDERING
         //clear screen

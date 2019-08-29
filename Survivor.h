@@ -19,6 +19,7 @@ class Survivor {
         void update(std::string dir, int current_time);
         void move(std::string dir);
         void shoot(int current_time);
+        bool takeDamage(int damage);
         void draw();
         void load(std::string path, int anim_rows, int anim_cols);
         bool changedTiles();

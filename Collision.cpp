@@ -1,5 +1,19 @@
 #include "Collision.h"
 
+bool isCollision(Survivor& s, Zombie& z) {
+    Vec2D centerZ = { z.getX(), z.getY() };
+    float widthZ = float(z.getWidth());
+    float heightZ = float(z.getHeight());
+    Vec2D centerS = { s.getX(), s.getY() };
+    float widthS = float(s.getWidth());
+    float heightS = float(s.getHeight());
+    if (isCollision_nonRotate(centerZ, widthZ, heightZ, 
+                centerS, widthS, heightS)) {
+        printf("ATTACKED! (zombie->survivor)\n");
+        return true;
+    }
+    return false;
+}
 bool isCollision(Projectile& p, Zombie& z) {
     /* when hitting Zombie, call SDL_Delay(1000) (wait 1 second) */
     Vec2D zombie_box[4];
@@ -28,11 +42,10 @@ bool isCollision(Projectile& p, Zombie& z) {
     Vec2D proj_box[4] = { {px[0], py[0]}, {px[1], py[1]}, {px[2], py[2]}, {px[3], py[3]} };
 
     if (isCollision_rotate(proj_box, zombie_box)) {
-        printf("COLLISION! (bullet zombie)\n");
+        printf("COLLISION! (bullet->zombie)\n");
         for (int i = 0; i < 4; ++i) {
             printf("(x,y) = (%f,%f)\n", px[i], py[i]);
         }
-        //SDL_Delay(1000);
         return true;
     }
     for (int i = 0; i < 4; ++i) {
