@@ -147,7 +147,7 @@ void Map::printPath() {
     //printf("printPath:\n");
     for (int i = 0; i < MAP1_TILE_ROWS * MAP1_TILE_COLS; ++i) {
         if ((i % 20) == 0 ) {
-            //printf("\n");
+            ;//printf("\n");
         }
         //printf(" %2d ", survivor_path[i]);
     }

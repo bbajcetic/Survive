@@ -20,6 +20,10 @@ bool init();
 //Shut down SDL
 void close();
 
+//Main game functions
+void gameOver();
+bool startWave();
+
 //Globals
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreen = NULL;
@@ -108,14 +112,30 @@ int main( int argc, char* args[] ) {
         printf("load() returned False (failed to load textures)\n");
         return -1;
     }
-
-    //Main loop flag
+    
     srand(time(NULL));
+
+    bool survived = startWave();
+    if (!survived) {
+        gameOver();
+    }
+    //show game over screen
+    SDL_Delay(2000);
+
+    //Close SDL window and subsystems and free memory
+    close();
+}
+void gameOver() {
+    ;
+}
+bool startWave() {
+    //Main loop flag
     bool quit = false;
+    bool dead = false;
     int current = SDL_GetTicks();
     int second_timer = current;
+    /* last: for frame rate capping */
     int last = current;
-    int last_player_shot = current;
     int last_zombie_spawn = current;
     int zombie_count = 0;
     int frame_count = 0;
@@ -245,10 +265,6 @@ int main( int argc, char* args[] ) {
             }
             z_it++;
         }
-        if (dead) {
-            quit = true;
-        }
-
 
         //RENDERING
         //clear screen
@@ -305,10 +321,11 @@ int main( int argc, char* args[] ) {
             SDL_Delay( MS_PER_FRAME - (current-last) );
         }
         last = SDL_GetTicks();
-    }
-    //show game over screen
-    SDL_Delay(2000);
 
-    //Close SDL window and subsystems and free memory
-    close();
+        //check if Survivor dead
+        if (dead) {
+            quit = true;
+            dead = true;
+        }
+    }
 }
