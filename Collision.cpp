@@ -1,15 +1,23 @@
 #include "Collision.h"
 
 bool isCollision(Survivor& s, Zombie& z) {
+    Vec2D hitboxZ = z.getHitBox();
     Vec2D centerZ = { z.getX(), z.getY() };
-    float widthZ = float(z.getWidth());
-    float heightZ = float(z.getHeight());
+    //float widthZ = float(z.getWidth());
+    //float heightZ = float(z.getHeight());
+    float widthZ = hitboxZ.x;
+    float heightZ = hitboxZ.y;
+
+    Vec2D hitboxS = s.getHitBox();
     Vec2D centerS = { s.getX(), s.getY() };
-    float widthS = float(s.getWidth());
-    float heightS = float(s.getHeight());
+    //float widthS = float(s.getWidth());
+    //float heightS = float(s.getHeight());
+    float widthS = float(hitboxS.x);
+    float heightS = float(hitboxS.y);
     if (isCollision_nonRotate(centerZ, widthZ, heightZ, 
                 centerS, widthS, heightS)) {
         printf("ATTACKED! (zombie->survivor)\n");
+        //SDL_Delay(1000);
         return true;
     }
     return false;

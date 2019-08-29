@@ -7,6 +7,7 @@
 #include "ObjTexture.h"
 #include "Map.h"
 #include "Projectile.h"
+#include "Vec2D.h"
 
 extern std::vector<Projectile*> projectiles;
 extern Map map;
@@ -21,6 +22,8 @@ class Survivor {
         void shoot(int current_time);
         bool takeDamage(int damage);
         void draw();
+        void drawHitBox();
+        Vec2D getHitBox();
         void load(std::string path, int anim_rows, int anim_cols);
         bool changedTiles();
 

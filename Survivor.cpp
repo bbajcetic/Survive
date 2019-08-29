@@ -35,6 +35,10 @@ bool Survivor::takeDamage(int damage) {
     }
     return true;
 }
+Vec2D Survivor::getHitBox() {
+    Vec2D temp(SURVIVOR_HITBOX_WIDTH, SURVIVOR_HITBOX_HEIGHT);
+    return temp;
+}
 
 bool Survivor::changedTiles() {
     //printf("---Entering Survivor::changedTiles\n");
@@ -124,12 +128,22 @@ void Survivor::shoot(int current_time) {
     //printf("NEW PROJECTILE SIZE = %d\n", projectiles.size());
     //printf("---Leaving Survivor::shoot\n");
 }
+
+void Survivor::drawHitBox() {
+    SDL_Rect hitbox = { int(getX()-SURVIVOR_HITBOX_WIDTH/2.0), int(getY()-SURVIVOR_HITBOX_HEIGHT/2.0), SURVIVOR_HITBOX_WIDTH, SURVIVOR_HITBOX_HEIGHT };
+    SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF ); //green
+    SDL_RenderDrawRect( gRenderer, &hitbox );
+}
 void Survivor::draw() {
     //printf("---Entering Survivor::draw\n");
 
+    //draw sprite
     int anim_index = 1; //index 1 is non moving sprite
     if (moving) { anim_index = frame/SURVIVOR_FRAMES_PER_ANIMATION; }
     objTexture->render(x, y, angle, width, height, anim_index);
+
+    //draw hitbox
+    drawHitBox();
     
     //draw Survivor health bar
     int filled_length = int( float(health)/float(SURVIVOR_STARTING_HEALTH) * float(HEALTH_BAR_WIDTH) );

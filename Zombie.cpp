@@ -37,6 +37,10 @@ bool Zombie::takeDamage(int damage) {
     }
     return true;
 }
+Vec2D Zombie::getHitBox() {
+    Vec2D temp(ZOMBIE_HITBOX_WIDTH, ZOMBIE_HITBOX_HEIGHT);
+    return temp;
+}
 bool Zombie::canAttack(int current_time) {
     if (current_time - last_attack >= ZOMBIE_ATTACK_TIME) {
         return true;
@@ -190,10 +194,20 @@ void Zombie::move() {
     }
 }
 
+void Zombie::drawHitBox() {
+    SDL_Rect hitbox = { int(getX()-ZOMBIE_HITBOX_WIDTH/2.0), int(getY()-ZOMBIE_HITBOX_HEIGHT/2.0), ZOMBIE_HITBOX_WIDTH, ZOMBIE_HITBOX_HEIGHT };
+    SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF ); //green
+    SDL_RenderDrawRect( gRenderer, &hitbox );
+}
 void Zombie::draw() {
     //printf("---Entering Zombie::draw\n");
+
+    //draw sprite
     int anim_index = frame/ZOMBIE_FRAMES_PER_ANIMATION;
     objTexture->render(x, y, angle, width, height, anim_index);
+
+    //draw hitbox
+    drawHitBox();
 
     //draw Zombie health bar
     int filled_length = int( float(health)/float(ZOMBIE_STARTING_HEALTH) * float(HEALTH_BAR_WIDTH) );

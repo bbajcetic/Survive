@@ -16,6 +16,8 @@ const int SURVIVOR_FRAMES_PER_ANIMATION = 4;
 
 const int SURVIVOR_WIDTH = 44;
 const int SURVIVOR_HEIGHT = 44;
+const int SURVIVOR_HITBOX_WIDTH = 36;
+const int SURVIVOR_HITBOX_HEIGHT = 36;
 
 const int SURVIVOR_TIME_PER_MOVE = 33;
 const int SURVIVOR_TIME_PER_TURN = 33; 
@@ -29,6 +31,8 @@ const int ZOMBIE_MAX_SPEED = 6;
 const int ZOMBIE_MIN_SPEED = 3;
 const int ZOMBIE_WIDTH = 44;
 const int ZOMBIE_HEIGHT = 44;
+const int ZOMBIE_HITBOX_WIDTH = 36;
+const int ZOMBIE_HITBOX_HEIGHT = 36;
 const int ZOMBIE_SENSITIVITY = 20;
 const int ZOMBIE_SPAWN_TIME = 2000; //6000ms = 6s
 const int ZOMBIE_FRAMES_PER_ANIMATION = 3;

@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Constants.h"
 #include "CustomMath.h"
+#include "Vec2D.h"
 
 extern Map map;
 extern SDL_Renderer* gRenderer;
@@ -26,6 +27,7 @@ class Zombie {
         void updateNext();
         void draw();
         void drawHitBox();
+        Vec2D getHitBox();
         bool takeDamage(int damage);
         void load(std::string path, int anim_rows, int anim_cols);
 
