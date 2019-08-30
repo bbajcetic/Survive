@@ -23,10 +23,20 @@ bool init();
 //Shut down SDL
 void close();
 
+//Clear object vectors
+void clearObjects();
+
 //Main game functions
-void gameOver();
+/* function that displays the start screen */
+void startGame();
 /* returns true if Survivor is alive and false if dead */
-bool startWave();
+bool playWave();
+/* function that displays the Game Over screen */
+bool gameOver();
+/* function that resets what is needed for the next wave */
+void resetWave();
+/* function that resets what is needed to restart the game */
+void resetGame();
 
 //Globals
 SDL_Window* gWindow = NULL;
@@ -107,7 +117,29 @@ bool load() {
 
     return success;
 }
-
+void clearObjects() {
+    //Projectiles clear
+    int size1 = projectiles.size();
+    int size2 = zombies.size();
+    printf("number of projectiles = %d\n", size1);
+    printf("number of zombies = %d\n", size2);
+    printf("clearing projectiles\n");
+    std::vector<Projectile*>::iterator it = projectiles.begin();
+    while (it != projectiles.end()) {
+        printf("clearing projectile\n");
+        delete *it;
+        it = projectiles.erase(it);
+        printf("success clearing\n");
+    }
+    //Zombies clear
+    printf("clearing zombies\n");
+    std::vector<Zombie*>::iterator z_it = zombies.begin();
+    while (z_it != zombies.end()) {
+        printf("clearing zombie\n");
+        delete *z_it;
+        z_it = zombies.erase(z_it);
+    }
+}
 void close() {
     TTF_CloseFont(gFont);
     SDL_DestroyRenderer(gRenderer);
@@ -143,15 +175,50 @@ int main( int argc, char* args[] ) {
     
     srand(time(NULL));
 
-    bool survived = startWave();
-    if (!survived) {
-        gameOver();
-    }
+    bool restart, alive;
+    do {
+        restart = false;
+        alive = true;
+        startGame();
+        while (alive) {
+            alive = playWave();
+            if (alive) {
+                /* set up and go to next wave */
+                wave++;
+                resetWave();
+            }
+            else if (!alive) {
+                restart = gameOver();
+                if (restart) {
+                    /* reset and restart game */
+                    resetGame();
+                    continue;
+                }
+                else if (!restart){
+                    /* end game */
+                    break;
+                }
+            }
+        }
+    } while (restart);
 
     //Close SDL window and subsystems and free memory
     close();
 }
-void gameOver() {
+void resetGame() {
+    survivor.resetGame();
+    clearObjects();
+    global_count = 0;
+    score = 0;
+    wave = 1;
+}
+void resetWave() {
+    ;
+}
+void startGame() {
+    ;
+}
+bool gameOver() {
     //Set up viewport for gameplay area
     SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
     SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF ); //red
@@ -195,8 +262,9 @@ void gameOver() {
     SDL_RenderPresent(gRenderer);
     
     bool quit = false;
+    bool restart = false;
     SDL_Event e;
-    while( !quit ) {
+    while( !quit && !restart) {
         //Handle events on queue
         while (SDL_PollEvent( &e ) != 0) {
             if (e.type == SDL_QUIT) {
@@ -207,14 +275,22 @@ void gameOver() {
                     case SDLK_q:
                         quit = true;
                         break;
+                    case SDLK_r:
+                        restart = true;
+                        break;
                 }
             }
         }
+        SDL_Delay(16); //check for input at 60fps
     }
+    if (restart) {
+        return true;
+    }
+    return false;
 
 }
 
-bool startWave() {
+bool playWave() {
     //Main loop flag
     bool quit = false;
     bool alive = true;

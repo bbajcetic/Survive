@@ -27,6 +27,31 @@ Survivor::~Survivor() {
     objTexture = NULL;
     //printf("---Leaving Survivor destructor\n");
 }
+void Survivor::resetWave() {
+    this->last_x = x;
+    this->last_y = y;
+    this->moving = false;
+    this->frame = 0;
+    this->last_move = 0;
+    this->last_turn = 0;
+    this->last_shot = 0;
+}
+void Survivor::resetGame() {
+    this->x = SURVIVOR_STARTING_X;
+    this->y = SURVIVOR_STARTING_Y;
+    this->last_x = x;
+    this->last_y = y;
+    this->moving = false;
+    this->angle = SURVIVOR_STARTING_ANGLE;
+    this->speed = SURVIVOR_STARTING_SPEED;
+    this->width = SURVIVOR_WIDTH;
+    this->height = SURVIVOR_HEIGHT;
+    this->health = SURVIVOR_STARTING_HEALTH;
+    this->frame = 0;
+    this->last_move = 0;
+    this->last_turn = 0;
+    this->last_shot = 0;
+}
 bool Survivor::takeDamage(int damage) {
     health -= damage;
     printf("Survivor health = %d\n", health);

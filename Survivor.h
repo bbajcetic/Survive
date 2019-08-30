@@ -17,6 +17,8 @@ class Survivor {
         Survivor(int x, int y);
         ~Survivor();
 
+        void resetWave();
+        void resetGame();
         void update(std::string dir, int current_time);
         void move(std::string dir);
         void shoot(int current_time);
