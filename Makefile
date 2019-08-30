@@ -11,7 +11,7 @@ OBJ_NAME = Survive.out
 COMPILER_FLAGS = -w -g
 
 #specifies the libraries to link against
-LINKER_FLAGS = -lSDL2 -lSDL2_image
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
 
 #target
 all: $(OBJS)

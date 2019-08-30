@@ -7,8 +7,8 @@ ObjTexture::ObjTexture() {
     texture = NULL;
     width = 0;
     height = 0;
-    anim_rows = 0;
-    anim_cols = 0;
+    anim_rows = 1;
+    anim_cols = 1;
     //printf("---Leaving ObjTexture constructor\n");
 }
 //ObjTexture::ObjTexture(ObjTexture& oldObj) {
@@ -30,20 +30,46 @@ ObjTexture::~ObjTexture() {
 }
 void ObjTexture::free_() {
     //printf("---Entering ObjTexture::free\n");
-    ;
-    //if(texture != NULL) {
-    //    SDL_DestroyTexture(texture);
-    //    texture = NULL;
-    //    width = 0;
-    //    height = 0;
-    //    anim_rows = 0;
-    //    anim_cols = 0;
-    //}
+    if(texture != NULL) {
+        SDL_DestroyTexture(texture);
+        texture = NULL;
+        width = 0;
+        height = 0;
+        anim_rows = 1;
+        anim_cols = 1;
+    }
     //printf("---Leaving ObjTexture::free\n");
+}
+bool ObjTexture::loadText(std::string text, SDL_Color color) {
+    bool success = true;
+    free_();
+    SDL_Texture* newTexture = NULL;
+    SDL_Surface* loaded = TTF_RenderText_Solid(gFont, text.c_str(), color);
+    if (loaded == NULL) {
+        printf( "TTF_RenderText_Solid: %s\n", TTF_GetError() );
+        success = false;
+    } else {
+        newTexture = SDL_CreateTextureFromSurface(gRenderer, loaded);
+        if (newTexture == NULL) {
+            printf("SDL_CreateTextureFromSurface: %s\n", SDL_GetError());
+            success = false;
+        } else {
+            width = loaded->w;
+            height = loaded->h;
+        }
+        SDL_FreeSurface(loaded);
+        loaded = NULL;
+    }
+    this->texture = newTexture;
+    newTexture = NULL;
+
+    return success;
+
 }
 bool ObjTexture::load(std::string path, int anim_rows, int anim_cols) {
     //printf("---Entering ObjTexture::load\n");
     bool success = true;
+    free_();
     //free_();
     setAnimRows(anim_rows);
     setAnimCols(anim_cols);

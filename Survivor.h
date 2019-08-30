@@ -24,7 +24,7 @@ class Survivor {
         void draw();
         void drawHitBox();
         Vec2D getHitBox();
-        void load(std::string path, int anim_rows, int anim_cols);
+        bool load(std::string path, int anim_rows, int anim_cols);
         bool changedTiles();
 
         int getWidth() { return width; }

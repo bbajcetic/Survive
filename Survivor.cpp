@@ -159,10 +159,10 @@ void Survivor::draw() {
 
     //printf("---Leaving Survivor::draw\n");
 }
-void Survivor::load(std::string path, int anim_rows, int anim_cols) {
+bool Survivor::load(std::string path, int anim_rows, int anim_cols) {
     //printf("---Entering Survivor::load\n");
 
-    objTexture->load(path, anim_rows, anim_cols);
+    return objTexture->load(path, anim_rows, anim_cols);
     
     //printf("---Leaving Survivor::load\n");
 }

@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -13,6 +14,8 @@
 #include "CustomMath.h"
 
 int global_count = 0;
+int score = 0;
+int wave = 1;
 
 //Initialize SDL and create window
 bool init();
@@ -29,6 +32,9 @@ bool startWave();
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreen = NULL;
 SDL_Renderer* gRenderer = NULL;
+ObjTexture gTextTexture;
+//SDL_Texture* gTextTexture = NULL;
+TTF_Font* gFont = NULL;
 //Initialize Player
 //Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 Survivor survivor(SURVIVOR_STARTING_X, SURVIVOR_STARTING_Y);
@@ -71,22 +77,42 @@ bool init() {
         printf("IMG_Init: %s\n", IMG_GetError());
         return false;
     }
+    //Initialize SDL_ttf
+    if (TTF_Init() == -1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        return false;
+    }
 
     return true;
+}
+bool loadFont(std::string file_name, int point_size) {
+    bool success = true;
+    gFont = TTF_OpenFont(file_name.c_str(), point_size);
+    if (gFont == NULL) {
+        printf("TTF_OpenFont: %s\n", TTF_GetError());
+        success = false;
+    }
+    return success;
 }
 bool load() {
     bool success = true;
     //load main Character texture
-    survivor.load("PlayerRight.png", 1, SURVIVOR_NUM_SPRITES);
+    if ( !(survivor.load("PlayerRight.png", 1, SURVIVOR_NUM_SPRITES)) ) {
+        success = false;
+    }
     //load map
-    map.load();
+    if ( !(map.load()) ) {
+        success = false;
+    }
 
     return success;
 }
 
 void close() {
+    TTF_CloseFont(gFont);
     SDL_DestroyRenderer(gRenderer);
     SDL_DestroyWindow(gWindow);
+    gFont = NULL;
     gWindow = NULL;
     gRenderer = NULL;
     for (int i = 0; i < projectiles.size(); ++i) {
@@ -98,6 +124,7 @@ void close() {
         zombies[i] = NULL;
     }
     //Quit SDL subsystems
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }
@@ -131,6 +158,39 @@ void gameOver() {
     SDL_RenderFillRect( gRenderer, &GAMEOVER_OUTLINE );
     SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF ); //black
     SDL_RenderFillRect( gRenderer, &GAMEOVER_RECT );
+    loadFont("fonts/ArcadeClassic.ttf", 48);
+    //write GAME OVER
+    SDL_Color text_color = { 0xFF, 0x00, 0x00, 0xFF };
+    gTextTexture.loadText("GAME", text_color);
+    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAMEOVER_RECT.y+20, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    gTextTexture.loadText("OVER", text_color);
+    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAMEOVER_RECT.y+20 + gTextTexture.getHeight()/2 + 3, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    //write wave 
+    loadFont("fonts/AtariFull.ttf", 12);
+    //loadFont("fonts/MotionControl-Bold.ttf", 24);
+    char wave_buff[20];
+    snprintf(wave_buff, sizeof(wave_buff), "WAVE REACHED: %d", wave);
+    std::string wave_string = wave_buff;
+    gTextTexture.loadText(wave_string, text_color);
+    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAME_HEIGHT/2-10, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    //write score 
+    loadFont("fonts/AtariFull.ttf", 12);
+    //loadFont("fonts/MotionControl-Bold.ttf", 24);
+    char score_buff[20];
+    snprintf(score_buff, sizeof(score_buff), "Score: %d", score);
+    std::string score_string = score_buff;
+    gTextTexture.loadText(score_string, text_color);
+    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAME_HEIGHT/2+10, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+
+    loadFont("fonts/MotionControl-Bold.ttf", 24);
+    //write exit/restart
+    char exit_buff[40];
+    snprintf(exit_buff, sizeof(exit_buff), "Restart(r)      Exit(q)");
+    //snprintf(exit_buff, sizeof(exit_buff), "Exit(press q)");
+    std::string exit_string = exit_buff;
+    gTextTexture.loadText(exit_string, text_color);
+    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAME_HEIGHT/2+GAMEOVER_HEIGHT/2-gTextTexture.getHeight()-10, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+
     //update screen
     SDL_RenderPresent(gRenderer);
     
@@ -182,6 +242,7 @@ bool startWave() {
         //Handle events on queue
         while (SDL_PollEvent( &e ) != 0) {
             if (e.type == SDL_QUIT) {
+                alive = false;
                 quit = true;
             }
             else if (e.type == SDL_KEYDOWN) {
@@ -211,7 +272,7 @@ bool startWave() {
                 && !currentKeyState[SDL_SCANCODE_DOWN]) {
             survivor.setMoving(false);
         }
-        printf("current frames = %d\n", current);
+        //printf("current frames = %d\n", current);
 
         //Update path finding
         

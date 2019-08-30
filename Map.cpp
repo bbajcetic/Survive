@@ -130,17 +130,21 @@ void Map::draw() {
     }
     //printf("---Leaving Map::draw\n");
 }
-void Map::load() {
+bool Map::load() {
     //printf("---Entering Map::load\n");
+    bool success = true;
     for (int i = 0; i < num_textures; ++i) {
         ObjTexture* temp = new ObjTexture;
         //printf("LOADING %s\n", texture_names[i].c_str());
-        temp->load(texture_names[i], 1, 1);
+        if (! (temp->load(texture_names[i], 1, 1)) ) {
+            success = false;
+        }
         //ObjTexture* temp = new ObjTexture;
         //temp->load(texture_names[i], 1, 1);
         textures.push_back(temp);
     }
     //printf("---Leaving Map::load\n");
+    return success;
 }
 
 void Map::printPath() {

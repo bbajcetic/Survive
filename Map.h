@@ -15,7 +15,7 @@ class Map {
         ~Map();
 
         void draw();
-        void load();
+        bool load();
 
         int getTileWidth() { return tile_width; }
         int getTileHeight() { return tile_height; }
