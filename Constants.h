@@ -6,6 +6,7 @@
 
 //game variables
 const int KILL_POINTS = 10;
+const int OUTLINE_WIDTH = 2;
 
 //survivor global variables
 const int SURVIVOR_STARTING_HEALTH = 100;
@@ -67,9 +68,10 @@ const int MS_PER_FRAME = 16;
 
 /*VIEWPORTS*/
 //Info viewport
-const SDL_Color INFO_COLOR = { 47, 79, 79, 255 }; //dark slate gray
+const SDL_Color INFO_COLOR = { 0xFF, 0x00, 0x00, 0xFF };
 const SDL_Rect INFO_VIEWPORT = { 980, 10, 200, 576 }; //x, y, width, height
-const SDL_Rect INFO = { 0, 0, 200, 576 };
+const SDL_Rect INFO_OUT = { 0, 0, 200, 576 };
+const SDL_Rect INFO_IN = { OUTLINE_WIDTH, OUTLINE_WIDTH, 200-OUTLINE_WIDTH*2, 576-OUTLINE_WIDTH*2 }; //x, y, width, height
 
 //Game viewport
 const int GAME_WIDTH = 960;
@@ -82,7 +84,6 @@ const SDL_Rect GAME_RECT = { 0, 0, 960, 576 };
 const int GAMEOVER_WIDTH = 240;
 const int GAMEOVER_HEIGHT = 240;
 const SDL_Rect GAMEOVER_RECT = { GAME_WIDTH/2 - GAMEOVER_WIDTH/2, GAME_HEIGHT/2 - GAMEOVER_HEIGHT/2 , GAMEOVER_WIDTH, GAMEOVER_HEIGHT };
-const int OUTLINE_WIDTH = 2;
 const SDL_Rect GAMEOVER_OUTLINE = { GAMEOVER_RECT.x-OUTLINE_WIDTH, GAMEOVER_RECT.y-OUTLINE_WIDTH , GAMEOVER_RECT.w+2*OUTLINE_WIDTH, GAMEOVER_RECT.h+2*OUTLINE_WIDTH };
 
 //math constants

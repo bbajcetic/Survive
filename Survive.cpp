@@ -438,7 +438,9 @@ bool playWave() {
         SDL_RenderSetViewport(gRenderer, &INFO_VIEWPORT);
         //Render info area
         SDL_SetRenderDrawColor( gRenderer, INFO_COLOR.r, INFO_COLOR.g, INFO_COLOR.b, INFO_COLOR.a );
-        SDL_RenderFillRect(gRenderer, &INFO);
+        SDL_RenderFillRect(gRenderer, &INFO_OUT);
+        SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
+        SDL_RenderFillRect(gRenderer, &INFO_IN);
         //Set up viewport for gameplay area
         SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
         //Render gameplay area
