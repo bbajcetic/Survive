@@ -7,9 +7,12 @@
 //game variables
 const int KILL_POINTS = 10;
 const int OUTLINE_WIDTH = 2;
+const int INFO_HEALTH_BAR_WIDTH = 100;
+const int INFO_HEALTH_BAR_HEIGHT = 10;
 
 //survivor global variables
 const int SURVIVOR_STARTING_HEALTH = 100;
+const int SURVIVOR_STARTING_AMMO = 50;
 const int SURVIVOR_STARTING_X = 384;
 const int SURVIVOR_STARTING_Y = 336;
 const int SURVIVOR_STARTING_ANGLE = 270;

@@ -31,6 +31,9 @@ Zombie::~Zombie() {
 /* returns true if Zombie is still alive */
 bool Zombie::takeDamage(int damage) {
     health -= damage;
+    if (health < 0) {
+        health = 0;
+    }
     printf("Zombie health = %d\n", health);
     if (health <= 0) {
         return false;

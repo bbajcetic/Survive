@@ -43,6 +43,7 @@ class Survivor {
         int getAngle() { return angle; }
         int getSpeed() { return speed; }
         int getHealth() { return health; }
+        int getAmmo() { return ammo; }
         //ObjTexture* getTexture() { return objTexture; }
 
         void setX(int x) { this->x = x; }
@@ -53,12 +54,14 @@ class Survivor {
         void setAngle(int angle) { this->angle = angle; }
         void setSpeed(int speed) { this->speed = speed; }
         void setHealth(int health) { this->health = health; }
+        void setAmmo(int ammo) { this->ammo = ammo; }
 
 
     private:
         ObjTexture* objTexture;
         //ObjTexture* objTexture;
         int health;
+        int ammo;
         float x;
         float y;
         float last_x;

@@ -229,13 +229,37 @@ void printInfo() {
     snprintf(wave_buff, sizeof(wave_buff), "WAVE: %d", wave);
     std::string wave_string = wave_buff;
     gTextTexture.loadText(wave_string, text_color);
-    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, INFO_HEIGHT/4-10, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
     //output score
     char score_buff[20];
     snprintf(score_buff, sizeof(score_buff), "SCORE: %d", score);
     std::string score_string = score_buff;
     gTextTexture.loadText(score_string, text_color);
-    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, INFO_HEIGHT/4+20, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 2*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    //output ammo
+    int ammo = survivor.getAmmo();
+    char ammo_buff[20];
+    snprintf(ammo_buff, sizeof(ammo_buff), "AMMO: %d/%d", ammo, SURVIVOR_STARTING_AMMO);
+    std::string ammo_string = ammo_buff;
+    gTextTexture.loadText(ammo_string, text_color);
+    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 4*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    //output health
+    int health = survivor.getHealth();
+    char health_buff[20];
+    snprintf(health_buff, sizeof(health_buff), "HEALTH: %d/%d", health, SURVIVOR_STARTING_HEALTH);
+    std::string health_string = health_buff;
+    gTextTexture.loadText(health_string, text_color);
+    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 5*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    int filled_length = int( float(health)/float(SURVIVOR_STARTING_HEALTH) * float(INFO_HEALTH_BAR_WIDTH) );
+    int health_red_x = int(INFO_WIDTH/2-INFO_HEALTH_BAR_WIDTH/2.0);
+    int health_green_x = int(health_red_x+(INFO_HEALTH_BAR_WIDTH-filled_length));
+    SDL_Rect redRect = { health_red_x, 6*INFO_HEIGHT/16, INFO_HEALTH_BAR_WIDTH-filled_length, INFO_HEALTH_BAR_HEIGHT };
+    SDL_Rect greenRect = { health_green_x, 6*INFO_HEIGHT/16, filled_length, INFO_HEALTH_BAR_HEIGHT };
+
+    SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF ); //green
+    SDL_RenderFillRect( gRenderer, &greenRect );
+    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF ); //red
+    SDL_RenderFillRect( gRenderer, &redRect );
 }
 bool gameOver() {
     //Set up viewport for gameplay area

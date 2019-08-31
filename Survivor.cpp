@@ -15,6 +15,7 @@ Survivor::Survivor(int x, int y) {
     this->width = SURVIVOR_WIDTH;
     this->height = SURVIVOR_HEIGHT;
     this->health = SURVIVOR_STARTING_HEALTH;
+    this->ammo = SURVIVOR_STARTING_AMMO;
     this->frame = 0;
     this->last_move = 0;
     this->last_turn = 0;
@@ -54,6 +55,9 @@ void Survivor::resetGame() {
 }
 bool Survivor::takeDamage(int damage) {
     health -= damage;
+    if (health < 0) {
+        health = 0;
+    }
     printf("Survivor health = %d\n", health);
     if (health <= 0) {
         return false;
@@ -140,6 +144,10 @@ void Survivor::shoot(int current_time) {
     if (current_time - last_shot < SURVIVOR_TIME_PER_SHOT) {
         return;
     }
+    if (ammo <= 0) {
+        printf("OUT OF AMMO\n");
+        return;
+    }
     float temp_x, temp_y, temp_h;
     float rad = float(angle) * (PI/float(180));
     temp_h = 1.5 * (0.5*float(width));
@@ -149,6 +157,10 @@ void Survivor::shoot(int current_time) {
     temp->load("Projectile.png");
     projectiles.push_back(temp);
 
+    ammo -= 1;
+    if (ammo < 0) {
+        ammo = 0;
+    }
     last_shot = current_time;
     //printf("NEW PROJECTILE SIZE = %d\n", projectiles.size());
     //printf("---Leaving Survivor::shoot\n");
