@@ -37,6 +37,8 @@ bool gameOver();
 void resetWave();
 /* function that resets what is needed to restart the game */
 void resetGame();
+/* function that prints game info to info area */
+void printInfo();
 
 //Globals
 SDL_Window* gWindow = NULL;
@@ -97,6 +99,8 @@ bool init() {
 }
 bool loadFont(std::string file_name, int point_size) {
     bool success = true;
+    TTF_CloseFont(gFont);
+    gFont = NULL;
     gFont = TTF_OpenFont(file_name.c_str(), point_size);
     if (gFont == NULL) {
         printf("TTF_OpenFont: %s\n", TTF_GetError());
@@ -216,7 +220,22 @@ void resetWave() {
     ;
 }
 void startGame() {
-    ;
+}
+void printInfo() {
+    SDL_Color text_color = { 0xFF, 0x00, 0x00, 0xFF };
+    loadFont("fonts/AtariFull.ttf", 12);
+    //output wave
+    char wave_buff[20];
+    snprintf(wave_buff, sizeof(wave_buff), "WAVE: %d", wave);
+    std::string wave_string = wave_buff;
+    gTextTexture.loadText(wave_string, text_color);
+    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, INFO_HEIGHT/4-10, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    //output score
+    char score_buff[20];
+    snprintf(score_buff, sizeof(score_buff), "SCORE: %d", score);
+    std::string score_string = score_buff;
+    gTextTexture.loadText(score_string, text_color);
+    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, INFO_HEIGHT/4+20, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
 }
 bool gameOver() {
     //Set up viewport for gameplay area
@@ -441,6 +460,9 @@ bool playWave() {
         SDL_RenderFillRect(gRenderer, &INFO_OUT);
         SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
         SDL_RenderFillRect(gRenderer, &INFO_IN);
+        //Print game info to info area
+        printInfo();
+
         //Set up viewport for gameplay area
         SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
         //Render gameplay area

@@ -68,10 +68,12 @@ const int MS_PER_FRAME = 16;
 
 /*VIEWPORTS*/
 //Info viewport
+const int INFO_WIDTH = 200;
+const int INFO_HEIGHT = 576;
 const SDL_Color INFO_COLOR = { 0xFF, 0x00, 0x00, 0xFF };
-const SDL_Rect INFO_VIEWPORT = { 980, 10, 200, 576 }; //x, y, width, height
-const SDL_Rect INFO_OUT = { 0, 0, 200, 576 };
-const SDL_Rect INFO_IN = { OUTLINE_WIDTH, OUTLINE_WIDTH, 200-OUTLINE_WIDTH*2, 576-OUTLINE_WIDTH*2 }; //x, y, width, height
+const SDL_Rect INFO_VIEWPORT = { 980, 10, INFO_WIDTH, INFO_HEIGHT }; //x, y, width, height
+const SDL_Rect INFO_OUT = { 0, 0, INFO_WIDTH, INFO_HEIGHT };
+const SDL_Rect INFO_IN = { OUTLINE_WIDTH, OUTLINE_WIDTH, INFO_WIDTH-OUTLINE_WIDTH*2, INFO_HEIGHT-OUTLINE_WIDTH*2 }; //x, y, width, height
 
 //Game viewport
 const int GAME_WIDTH = 960;
