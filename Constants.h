@@ -4,6 +4,9 @@
 
 #include <SDL2/SDL.h>
 
+//game variables
+const int KILL_POINTS = 10;
+
 //survivor global variables
 const int SURVIVOR_STARTING_HEALTH = 100;
 const int SURVIVOR_STARTING_X = 384;

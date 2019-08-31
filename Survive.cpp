@@ -399,6 +399,7 @@ bool playWave() {
             while (z_it != zombies.end()) {
                 if (isCollision(**it, **z_it)) {
                     if ( !((*z_it)->takeDamage((*it)->getDamage())) ) {
+                        score += KILL_POINTS;
                         delete *z_it;
                         z_it = zombies.erase(z_it);
                     }
