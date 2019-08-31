@@ -35,6 +35,7 @@ class Map {
         bool onMap(int index);
         bool onMap(int x, int y, int width, int height);
         bool isWall(int x, int y, int width, int height);
+        void resetMap();
         void fillMap1();
         void initPath(int size);
         void printPath();

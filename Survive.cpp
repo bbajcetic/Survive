@@ -215,6 +215,7 @@ int main( int argc, char* args[] ) {
 void resetGame() {
     survivor.resetGame();
     clearObjects();
+    map.resetMap();
     global_count = 0;
     score = 0;
     wave = 1;

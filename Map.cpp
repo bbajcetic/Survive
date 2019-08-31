@@ -11,10 +11,10 @@ Map::Map(int num_textures, std::string* texture_names,
     this->cols = cols;
     this->tile_width = tile_width;
     this->tile_height = tile_height;
-    this->tiles = new int[MAP1_TILE_ROWS * MAP1_TILE_COLS];
-    this->survivor_path = new int[MAP1_TILE_ROWS * MAP1_TILE_COLS];
+    this->tiles = new int[rows*cols];
+    this->survivor_path = new int[rows*cols];
     fillMap1();
-    initPath(MAP1_TILE_ROWS * MAP1_TILE_COLS);
+    initPath(rows*cols);
     //printf("---Leaving Map constructor\n");
 }
 Map::~Map() {
@@ -48,19 +48,19 @@ bool Map::onMap(int x, int y, int width, int height) {
 }
 bool Map::onMap(int index) {
     //printf("---Entering Map::onMap\n");
-    if ( (index >= MAP1_TILE_ROWS * MAP1_TILE_COLS) || (index < 0) ) {
+    if ( (index >= rows*cols) || (index < 0) ) {
         return false;
     }
     return true;
 }
 bool Map::isRightEdge(int index) {
-    if ( ((index+1) % MAP1_TILE_COLS) == 0) {
+    if ( ((index+1) % cols) == 0) {
         return true;
     }
     return false;
 }
 bool Map::isLeftEdge(int index) {
-    if ( (index % MAP1_TILE_COLS) == 0) {
+    if ( (index % cols) == 0) {
         return true;
     }
     return false;
@@ -149,7 +149,7 @@ bool Map::load() {
 
 void Map::printPath() {
     //printf("printPath:\n");
-    for (int i = 0; i < MAP1_TILE_ROWS * MAP1_TILE_COLS; ++i) {
+    for (int i = 0; i < rows*cols; ++i) {
         if ((i % 20) == 0 ) {
             ;//printf("\n");
         }
@@ -159,7 +159,7 @@ void Map::printPath() {
 }
 /* updates Path for survivor at center of object coordinates x, y */
 void Map::updatePath(int x, int y) {
-    initPath(MAP1_TILE_ROWS * MAP1_TILE_COLS);
+    initPath(rows*cols);
     /* -2:  unfilled space
      *
      * -1:  invalid space (such as a wall)
@@ -172,8 +172,8 @@ void Map::updatePath(int x, int y) {
     
     while (!to_process.empty()) {
         temp = to_process.front();
-        int top = temp - MAP1_TILE_COLS;
-        int bottom = temp + MAP1_TILE_COLS;
+        int top = temp - cols;
+        int bottom = temp + cols;
         /* around is an array holding the surrounding tile indices */
         int around[8] = {
             top-1, top, top+1, temp+1, bottom+1, bottom, bottom-1, temp-1
@@ -215,6 +215,10 @@ void Map::updatePath(int x, int y) {
         }
         to_process.pop();
     }
+}
+void Map::resetMap() {
+    fillMap1();
+    initPath(rows*cols);
 }
 void Map::initPath(int size) {
     for (int i = 0; i < size; ++i) {
