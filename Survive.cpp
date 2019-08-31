@@ -154,14 +154,21 @@ void close() {
     gFont = NULL;
     gWindow = NULL;
     gRenderer = NULL;
-    for (int i = 0; i < projectiles.size(); ++i) {
-        delete projectiles[i];
-        projectiles[i] = NULL;
+    std::vector<Projectile*>::iterator it = projectiles.begin();
+    while (it != projectiles.end()) {
+        printf("clearing projectile\n");
+        delete *it;
+        it = projectiles.erase(it);
+        printf("success clearing\n");
     }
-    for (int i = 0; i < zombies.size(); ++i) {
-        delete zombies[i];
-        zombies[i] = NULL;
+
+    std::vector<Zombie*>::iterator z_it = zombies.begin();
+    while (z_it != zombies.end()) {
+        printf("clearing zombie\n");
+        delete *z_it;
+        z_it = zombies.erase(z_it);
     }
+
     //Quit SDL subsystems
     TTF_Quit();
     IMG_Quit();
