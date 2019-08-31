@@ -1,5 +1,5 @@
 #OBJS specifies files to compile
-OBJS = Survive.o Survivor.o ObjTexture.o Map.o Projectile.o Zombie.o Collision.o Vec2D.o CustomMath.o
+OBJS = Survive.o Survivor.o ObjTexture.o Map.o Projectile.o Zombie.o ZombieManager.o Collision.o Vec2D.o CustomMath.o
 
 #CC specifies compiler
 CC = g++
@@ -17,13 +17,15 @@ LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
 all: $(OBJS)
 	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
 
-Survive.o: ObjTexture.h Survivor.h Zombie.h Map.h Projectile.h Collision.h Vec2D.h Constants.h CustomMath.h
+Survive.o: ObjTexture.h Survivor.h Zombie.h ZombieManager.h Map.h Projectile.h Collision.h Vec2D.h Constants.h CustomMath.h
 
 ObjTexture.o: ObjTexture.h Constants.h
 
 Survivor.o: Survivor.h Constants.h
 
 Zombie.o: Zombie.h Constants.h
+
+ZombieManager.o: ZombieManager.h Constants.h
 
 Map.o: Map.h Constants.h
 

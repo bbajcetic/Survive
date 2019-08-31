@@ -10,15 +10,13 @@
 #include "Survivor.h"
 #include "Map.h"
 #include "Zombie.h"
+#include "ZombieManager.h"
 #include "Collision.h"
 #include "CustomMath.h"
 
 int global_count = 0;
 int score = 0;
 int wave = 1;
-int zombies_spawned = 0;
-int zombies_dead = 0;
-int total_zombies = WAVE1_ZOMBIES;
 
 //Initialize SDL and create window
 bool init();
@@ -50,11 +48,13 @@ SDL_Renderer* gRenderer = NULL;
 ObjTexture gTextTexture;
 //SDL_Texture* gTextTexture = NULL;
 TTF_Font* gFont = NULL;
-//Initialize Player
+
 //Survivor survivor(GAME_WIDTH/2, 3*GAME_HEIGHT/4);
 Survivor survivor(SURVIVOR_STARTING_X, SURVIVOR_STARTING_Y);
-//Initialize Enemies
-std::vector<Zombie*> zombies;
+
+//Initialize ZombieManager
+ZombieManager zombieManager(1);
+
 //Initialize Projectiles
 std::vector<Projectile*> projectiles;
 //Initialize Map
@@ -127,7 +127,7 @@ bool load() {
 void clearObjects() {
     //Projectiles clear
     int size1 = projectiles.size();
-    int size2 = zombies.size();
+    int size2 = zombieManager.getSize();
     printf("number of projectiles = %d\n", size1);
     printf("number of zombies = %d\n", size2);
     printf("clearing projectiles\n");
@@ -137,14 +137,6 @@ void clearObjects() {
         delete *it;
         it = projectiles.erase(it);
         printf("success clearing\n");
-    }
-    //Zombies clear
-    printf("clearing zombies\n");
-    std::vector<Zombie*>::iterator z_it = zombies.begin();
-    while (z_it != zombies.end()) {
-        printf("clearing zombie\n");
-        delete *z_it;
-        z_it = zombies.erase(z_it);
     }
 }
 void close() {
@@ -162,12 +154,7 @@ void close() {
         printf("success clearing\n");
     }
 
-    std::vector<Zombie*>::iterator z_it = zombies.begin();
-    while (z_it != zombies.end()) {
-        printf("clearing zombie\n");
-        delete *z_it;
-        z_it = zombies.erase(z_it);
-    }
+    zombieManager.destroyZombies();
 
     //Quit SDL subsystems
     TTF_Quit();
@@ -223,11 +210,10 @@ void resetGame() {
     survivor.resetGame();
     clearObjects();
     map.resetMap();
+    zombieManager.reset(1); /* wave 1 */
     global_count = 0;
     score = 0;
     wave = 1;
-    zombies_spawned = 0;
-    zombies_dead = 0;
 }
 void resetWave() {
     ;
@@ -251,8 +237,8 @@ void printInfo() {
     gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 3*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
     //output enemies remaining (only if less than 10) 
     char zombie_buff[20];
-    if (total_zombies - zombies_dead < 10) {
-        snprintf(zombie_buff, sizeof(zombie_buff), "ZOMBIES LEFT: %d", total_zombies - zombies_dead);
+    if (zombieManager.getNumZombies() - zombieManager.getNumDead() < 10) {
+        snprintf(zombie_buff, sizeof(zombie_buff), "ZOMBIES LEFT: %d", zombieManager.getNumZombies() - zombieManager.getNumDead());
         std::string zombie_string = zombie_buff;
         gTextTexture.loadText(zombie_string, text_color);
         gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 4*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
@@ -355,7 +341,6 @@ bool gameOver() {
 }
 
 bool playWave() {
-    total_zombies = int( float(WAVE1_ZOMBIES)*pow(ZOMBIE_MULTIPLIER, float(wave-1)) );
     //Main loop flag
     bool quit = false;
     bool alive = true;
@@ -363,7 +348,8 @@ bool playWave() {
     int second_timer = current;
     /* last: for frame rate capping */
     int last = current;
-    int last_zombie_spawn = current;
+    //int last_zombie_spawn = current;
+    zombieManager.setLastSpawn(current);
     int frame_count = 0;
 
     map.updatePath(survivor.getX(), survivor.getY()); //fill path for zombie path finding
@@ -424,22 +410,7 @@ bool playWave() {
         }
         
         //Zombies updating
-        std::vector<Zombie*>::iterator z_it = zombies.begin();
-        while (z_it != zombies.end()) {
-            (*z_it)->update(current);
-            z_it++;
-        }
-        if ( (current - last_zombie_spawn) >= ZOMBIE_SPAWN_TIME ) {
-            if (zombies_spawned < total_zombies) {
-                //spawn zombie
-                Zombie* temp = new Zombie(0, 0, 0);
-                temp->load("ZombieRight.png", 1, 4);
-                zombies.push_back(temp);
-                zombies_spawned++;
-                printf("New zombie spawned\n");
-            }
-            last_zombie_spawn = current;
-        }
+        zombieManager.update(current);
 
         //Projectiles updating
         std::vector<Projectile*>::iterator it = projectiles.begin();
@@ -459,14 +430,14 @@ bool playWave() {
         it = projectiles.begin();
         while (it != projectiles.end()) {
             hit = false;
-            z_it = zombies.begin();
-            while (z_it != zombies.end()) {
+            std::vector<Zombie*>::iterator z_it = zombieManager.zombies.begin();
+            while (z_it != zombieManager.zombies.end()) {
                 if (isCollision(**it, **z_it)) {
                     if ( !((*z_it)->takeDamage((*it)->getDamage())) ) {
-                        zombies_dead++;
+                        zombieManager.zombieDead();
                         score += KILL_POINTS;
                         delete *z_it;
-                        z_it = zombies.erase(z_it);
+                        z_it = zombieManager.zombies.erase(z_it);
                     }
                     delete *it;
                     it = projectiles.erase(it);
@@ -480,8 +451,8 @@ bool playWave() {
             if (!hit) { it++; }
         }
         //check zombies->survivor
-        z_it = zombies.begin();
-        while (z_it != zombies.end()) {
+        std::vector<Zombie*>::iterator z_it = zombieManager.zombies.begin();
+        while (z_it != zombieManager.zombies.end()) {
             if ( (*z_it)->canAttack(current) ) {
                 if (isCollision(survivor, **z_it)) {
                     if ( !survivor.takeDamage((*z_it)->getDamage()) ) {
@@ -522,11 +493,7 @@ bool playWave() {
         survivor.draw();
 
         //Render zombies
-        z_it = zombies.begin();
-        while (z_it != zombies.end()) {
-            (*z_it)->draw();
-            z_it++;
-        }
+        zombieManager.render();
 
         //Render projectiles
         it = projectiles.begin();
