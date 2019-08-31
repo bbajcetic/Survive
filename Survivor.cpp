@@ -48,6 +48,7 @@ void Survivor::resetGame() {
     this->width = SURVIVOR_WIDTH;
     this->height = SURVIVOR_HEIGHT;
     this->health = SURVIVOR_STARTING_HEALTH;
+    this->ammo = SURVIVOR_STARTING_AMMO;
     this->frame = 0;
     this->last_move = 0;
     this->last_turn = 0;

@@ -9,6 +9,9 @@ const int KILL_POINTS = 10;
 const int OUTLINE_WIDTH = 2;
 const int INFO_HEALTH_BAR_WIDTH = 100;
 const int INFO_HEALTH_BAR_HEIGHT = 10;
+const int WAVE1_ZOMBIES = 4;
+const float ZOMBIE_MULTIPLIER = 1.5;
+
 
 //survivor global variables
 const int SURVIVOR_STARTING_HEALTH = 100;
@@ -45,7 +48,6 @@ const int ZOMBIE_SPAWN_TIME = 2000; //6000ms = 6s
 const int ZOMBIE_FRAMES_PER_ANIMATION = 3;
 const int ZOMBIE_TIME_PER_MOVE = 33;
 const int ZOMBIE_NUM_SPRITES = 4;
-const int MAX_ZOMBIES = 3;
 
 //health bar variables
 const int HEALTH_BAR_WIDTH = 40;
@@ -53,7 +55,7 @@ const int HEALTH_BAR_HEIGHT = 5;
 
 //projectile global variables
 const int PROJECTILE_STARTING_DAMAGE = 10;
-const int PROJECTILE_STARTING_SPEED = 3;
+const int PROJECTILE_STARTING_SPEED = 6;
 const int PROJECTILE_WIDTH = 15;
 const int PROJECTILE_HEIGHT = 3;
 
