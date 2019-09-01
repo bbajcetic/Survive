@@ -371,32 +371,55 @@ bool playWave() {
                 alive = false;
                 quit = true;
             }
-            else if (e.type == SDL_KEYDOWN) {
-                switch(e.key.keysym.sym) {
-                    case SDLK_SPACE:
-                        survivor.shoot(current);
-                        break;
-                }
+            //else if (e.type == SDL_KEYDOWN) {
+            //    switch(e.key.keysym.sym) {
+            //        case SDLK_SPACE:
+            //            survivor.shoot(current);
+            //            break;
+            //    }
+            //}
+            else if (e.type == SDL_MOUSEMOTION) {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                survivor.turn(x, y);
+            }
+            else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                survivor.shoot(current);
             }
         }
         const Uint8* currentKeyState = SDL_GetKeyboardState(NULL);
         /* put all this in survivor update function by defining sdl library in
          * class and then putting scancode as an argument to the update func*/
-        if (currentKeyState[SDL_SCANCODE_LEFT]) {
+        if ( currentKeyState[SDL_SCANCODE_LEFT] 
+                || currentKeyState[SDL_SCANCODE_A] ) {
             survivor.update("LEFT", current);
         }
-        if (currentKeyState[SDL_SCANCODE_RIGHT]) {
+        if ( currentKeyState[SDL_SCANCODE_RIGHT] 
+                || currentKeyState[SDL_SCANCODE_D] ) {
             survivor.update("RIGHT", current);
         }
-        if (currentKeyState[SDL_SCANCODE_UP]) {
+        if ( currentKeyState[SDL_SCANCODE_UP] 
+                || currentKeyState[SDL_SCANCODE_W] ) {
             survivor.update("UP", current);
         }
-        if (currentKeyState[SDL_SCANCODE_DOWN]) {
+        if ( currentKeyState[SDL_SCANCODE_DOWN] 
+                || currentKeyState[SDL_SCANCODE_S] ) {
             survivor.update("DOWN", current);
         }
-        if (!currentKeyState[SDL_SCANCODE_UP] 
-                && !currentKeyState[SDL_SCANCODE_DOWN]) {
+        if ( !currentKeyState[SDL_SCANCODE_UP] 
+                && !currentKeyState[SDL_SCANCODE_DOWN]
+                && !currentKeyState[SDL_SCANCODE_RIGHT]
+                && !currentKeyState[SDL_SCANCODE_LEFT]
+                && !currentKeyState[SDL_SCANCODE_W]
+                && !currentKeyState[SDL_SCANCODE_S]
+                && !currentKeyState[SDL_SCANCODE_A]
+                && !currentKeyState[SDL_SCANCODE_D] ) {
             survivor.setMoving(false);
+        }
+        else {
+            if (survivor.canMove(current)) {
+                survivor.setLastMove(current);
+            }
         }
         //printf("current frames = %d\n", current);
 

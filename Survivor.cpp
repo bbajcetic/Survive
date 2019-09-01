@@ -81,54 +81,62 @@ bool Survivor::changedTiles() {
     //printf("---Leaving Survivor::changedTiles\n");
     return false;
 }
+//void Survivor::move(std::string dir) {
+//    //printf("---Entering Survivor::move\n");
+//    float rad = float(angle) * (PI/float(180));
+//    float move_x = float(speed) * (cos(float(rad)));
+//    float move_y = float(speed) * (sin(float(rad)));
+//    float temp_x, temp_y;
+//    //printf("rad = %f, move_x = %f, move_y = %f\n", rad, move_x, move_y);
+//    if (dir == "FORWARD") {
+//        temp_x = x + move_x;
+//        temp_y = y + move_y;
+//    } else if (dir == "BACKWARD") {
+//        temp_x = x - move_x;
+//        temp_y = y - move_y;
+//    }
+//    if (!map.isWall(temp_x, temp_y, width, height)) {
+//        x = temp_x;
+//        y = temp_y;
+//    } else if (!map.isWall(temp_x, y, width, height)) {
+//        x = temp_x;
+//    } else if (!map.isWall(x, temp_y, width, height)) {
+//        y = temp_y;
+//    }
+//    //printf("---Leaving Survivor::move\n");
+//}
+bool Survivor::canMove(int current_time) {
+    if (current_time - last_move < SURVIVOR_TIME_PER_MOVE) {
+        return false;
+    }
+    return true;
+}
+void Survivor::turn(int x, int y) {
+    float to_x = x - getX();
+    float to_y = y - getY();
+    float new_angle = findAngle(to_x, to_y);
+    angle = int( new_angle * 180.0/PI );
+}
 void Survivor::update(std::string dir, int current_time) {
     //printf("---Entering Survivor::update\n");
-    if (dir == "UP" || dir == "DOWN") {
-        if (current_time - last_move < SURVIVOR_TIME_PER_MOVE) {
-            return;
-        }
+    if (!canMove(current_time)) {
+        return;
     }
-    else if (dir == "LEFT" || dir == "RIGHT") {
-        if (current_time - last_turn < SURVIVOR_TIME_PER_TURN) {
-            return;
-        }
-    }
-
-    if ( moving == false && (dir == "UP" || dir == "DOWN") ) {
+    if ( moving == false ) {
         moving = true;
         frame = 0;
     }
-    if (dir == "LEFT") {
-        angle = angle - SURVIVOR_SENSITIVITY;
-    } else if (dir == "RIGHT") {
-        angle = angle + SURVIVOR_SENSITIVITY;
-    } else if (dir == "UP") {
-        move("FORWARD");
-    } else if (dir == "DOWN") {
-        move("BACKWARD");
-    }
-    if (dir == "UP" || dir == "DOWN") {
-        last_move = current_time;
-    } else if (dir == "LEFT" || dir == "RIGHT") {
-        last_turn = current_time;
-    }
-    frame = (frame + 1) % (SURVIVOR_NUM_SPRITES*SURVIVOR_FRAMES_PER_ANIMATION);
+    float temp_x = x;
+    float temp_y = y;
 
-    //printf("---Leaving Survivor::update\n");
-}
-void Survivor::move(std::string dir) {
-    //printf("---Entering Survivor::move\n");
-    float rad = float(angle) * (PI/float(180));
-    float move_x = float(speed) * (cos(float(rad)));
-    float move_y = float(speed) * (sin(float(rad)));
-    float temp_x, temp_y;
-    //printf("rad = %f, move_x = %f, move_y = %f\n", rad, move_x, move_y);
-    if (dir == "FORWARD") {
-        temp_x = x + move_x;
-        temp_y = y + move_y;
-    } else if (dir == "BACKWARD") {
-        temp_x = x - move_x;
-        temp_y = y - move_y;
+    if (dir == "LEFT") {
+        temp_x = x - float(speed);
+    } else if (dir == "RIGHT") {
+        temp_x = x + float(speed);
+    } else if (dir == "UP") {
+        temp_y = y - float(speed);
+    } else if (dir == "DOWN") {
+        temp_y = y + float(speed);
     }
     if (!map.isWall(temp_x, temp_y, width, height)) {
         x = temp_x;
@@ -139,7 +147,71 @@ void Survivor::move(std::string dir) {
         y = temp_y;
     }
     //printf("---Leaving Survivor::move\n");
+    //last_move = current_time;
+    frame = (frame + 1) % (SURVIVOR_NUM_SPRITES*SURVIVOR_FRAMES_PER_ANIMATION);
+
+    //printf("---Leaving Survivor::update\n");
 }
+    
+//void Survivor::update(std::string dir, int current_time) {
+//    //printf("---Entering Survivor::update\n");
+//    if (dir == "UP" || dir == "DOWN") {
+//        if (current_time - last_move < SURVIVOR_TIME_PER_MOVE) {
+//            return;
+//        }
+//    }
+//    else if (dir == "LEFT" || dir == "RIGHT") {
+//        if (current_time - last_turn < SURVIVOR_TIME_PER_TURN) {
+//            return;
+//        }
+//    }
+//
+//    if ( moving == false && (dir == "UP" || dir == "DOWN") ) {
+//        moving = true;
+//        frame = 0;
+//    }
+//    if (dir == "LEFT") {
+//        angle = angle - SURVIVOR_SENSITIVITY;
+//    } else if (dir == "RIGHT") {
+//        angle = angle + SURVIVOR_SENSITIVITY;
+//    } else if (dir == "UP") {
+//        move("FORWARD");
+//    } else if (dir == "DOWN") {
+//        move("BACKWARD");
+//    }
+//    if (dir == "UP" || dir == "DOWN") {
+//        last_move = current_time;
+//    } else if (dir == "LEFT" || dir == "RIGHT") {
+//        last_turn = current_time;
+//    }
+//    frame = (frame + 1) % (SURVIVOR_NUM_SPRITES*SURVIVOR_FRAMES_PER_ANIMATION);
+//
+//    //printf("---Leaving Survivor::update\n");
+//}
+//void Survivor::move(std::string dir) {
+//    //printf("---Entering Survivor::move\n");
+//    float rad = float(angle) * (PI/float(180));
+//    float move_x = float(speed) * (cos(float(rad)));
+//    float move_y = float(speed) * (sin(float(rad)));
+//    float temp_x, temp_y;
+//    //printf("rad = %f, move_x = %f, move_y = %f\n", rad, move_x, move_y);
+//    if (dir == "FORWARD") {
+//        temp_x = x + move_x;
+//        temp_y = y + move_y;
+//    } else if (dir == "BACKWARD") {
+//        temp_x = x - move_x;
+//        temp_y = y - move_y;
+//    }
+//    if (!map.isWall(temp_x, temp_y, width, height)) {
+//        x = temp_x;
+//        y = temp_y;
+//    } else if (!map.isWall(temp_x, y, width, height)) {
+//        x = temp_x;
+//    } else if (!map.isWall(x, temp_y, width, height)) {
+//        y = temp_y;
+//    }
+//    //printf("---Leaving Survivor::move\n");
+//}
 void Survivor::shoot(int current_time) {
     //printf("---Entering Survivor::shoot\n");
     if (current_time - last_shot < SURVIVOR_TIME_PER_SHOT) {

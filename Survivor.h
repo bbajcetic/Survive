@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Projectile.h"
 #include "Vec2D.h"
+#include "CustomMath.h"
 
 extern std::vector<Projectile*> projectiles;
 extern Map map;
@@ -19,6 +20,8 @@ class Survivor {
 
         void resetWave();
         void resetGame();
+        bool canMove(int current_time);
+        void turn(int x, int y);
         void update(std::string dir, int current_time);
         void move(std::string dir);
         void shoot(int current_time);
@@ -51,6 +54,7 @@ class Survivor {
         void setLastX(int x) { this->last_x = x; }
         void setLastY(int y) { this->last_y = y; }
         void setMoving(bool moving) { this->moving = moving; }
+        void setLastMove(int last_move) { this->last_move = last_move; }
         void setAngle(int angle) { this->angle = angle; }
         void setSpeed(int speed) { this->speed = speed; }
         void setHealth(int health) { this->health = health; }
