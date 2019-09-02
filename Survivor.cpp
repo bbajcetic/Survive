@@ -223,7 +223,7 @@ void Survivor::shoot(int current_time) {
     }
     float temp_x, temp_y, temp_h;
     float rad = float(angle) * (PI/float(180));
-    temp_h = 1.5 * (0.5*float(width));
+    temp_h = 1.0 * (0.5*float(width));
     temp_x = (x+0.5*float(width)) + temp_h * cos(rad);
     temp_y = (y+0.5*float(height)) + temp_h * sin(rad);
     Projectile* temp = new Projectile(temp_x, temp_y, angle);
