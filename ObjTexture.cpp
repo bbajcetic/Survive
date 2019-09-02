@@ -2,8 +2,6 @@
 
 ObjTexture::ObjTexture() {
     //printf("---Entering ObjTexture constructor\n");
-    global_count++;
-    //printf("Global count = %d\n", global_count);
     texture = NULL;
     width = 0;
     height = 0;
@@ -21,8 +19,6 @@ ObjTexture::ObjTexture() {
 //}
 ObjTexture::~ObjTexture() {
     //printf("---Entering ObjTexture destructor\n");
-    global_count--;
-    //printf("Global count = %d\n", global_count);
     SDL_DestroyTexture(this->texture);
     this->texture = NULL;
     //free_();

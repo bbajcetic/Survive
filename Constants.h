@@ -9,13 +9,14 @@ const int KILL_POINTS = 10;
 const int OUTLINE_WIDTH = 2;
 const int INFO_HEALTH_BAR_WIDTH = 100;
 const int INFO_HEALTH_BAR_HEIGHT = 10;
-const int WAVE1_ZOMBIES = 4;
+const int WAVE1_ZOMBIES = 5;
 const float ZOMBIE_MULTIPLIER = 1.5;
+const int NUMBER_OF_WAVES = 3;
 
 
 //survivor global variables
 const int SURVIVOR_STARTING_HEALTH = 100;
-const int SURVIVOR_STARTING_AMMO = 50;
+const int SURVIVOR_STARTING_AMMO = 500;
 const int SURVIVOR_STARTING_X = 384;
 const int SURVIVOR_STARTING_Y = 336;
 const int SURVIVOR_STARTING_ANGLE = 270;
@@ -34,7 +35,7 @@ const int SURVIVOR_TIME_PER_TURN = 33;
 const int SURVIVOR_TIME_PER_SHOT = 250;
 
 //zombie global variables
-const int ZOMBIE_STARTING_HEALTH = 100;
+const int ZOMBIE_STARTING_HEALTH = 50;
 const int ZOMBIE_STARTING_DAMAGE = 20;
 const int ZOMBIE_ATTACK_TIME = 1000;
 const int ZOMBIE_MAX_SPEED = 6;

@@ -9,7 +9,6 @@
 
 extern SDL_Renderer* gRenderer;
 extern TTF_Font* gFont;
-extern int global_count;
 
 class ObjTexture {
     public:

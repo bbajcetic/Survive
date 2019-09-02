@@ -14,7 +14,6 @@
 #include "Collision.h"
 #include "CustomMath.h"
 
-int global_count = 0;
 int score = 0;
 int wave = 1;
 
@@ -184,21 +183,29 @@ int main( int argc, char* args[] ) {
         while (alive) {
             alive = playWave();
             if (alive) {
-                /* set up and go to next wave */
-                wave++;
-                resetWave();
+                if (wave < NUMBER_OF_WAVES) {
+                    /* set up and go to next wave */
+                    wave++;
+                    resetWave();
+                }
+                else {
+                    //end of game, you beat the game!!! Shows score
+                    restart = gameOver();
+                    resetGame();
+                    if (!restart)
+                        break; //end game
+                }
             }
             else if (!alive) {
                 restart = gameOver();
-                if (restart) {
-                    /* reset and restart game */
-                    resetGame();
-                    continue;
-                }
-                else if (!restart){
+                if (!restart) {
                     /* end game */
                     break;
                 }
+            }
+            if (restart) {
+                resetGame();
+                break;
             }
         }
     } while (restart);
@@ -211,12 +218,13 @@ void resetGame() {
     clearObjects();
     map.resetMap();
     zombieManager.reset(1); /* wave 1 */
-    global_count = 0;
     score = 0;
     wave = 1;
 }
 void resetWave() {
-    ;
+    survivor.resetWave();
+    zombieManager.reset(wave);
+
 }
 void startGame() {
 }
@@ -382,6 +390,7 @@ bool playWave() {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
                 survivor.turn(x, y);
+                printf("mouse at %d, %d\n", x, y);
             }
             else if (e.type == SDL_MOUSEBUTTONDOWN) {
                 survivor.shoot(current);
@@ -458,6 +467,9 @@ bool playWave() {
                 if (isCollision(**it, **z_it)) {
                     if ( !((*z_it)->takeDamage((*it)->getDamage())) ) {
                         zombieManager.zombieDead();
+                        if (zombieManager.getNumDead() >= zombieManager.getNumZombies()) {
+                            quit = true;
+                        }
                         score += KILL_POINTS;
                         delete *z_it;
                         z_it = zombieManager.zombies.erase(z_it);
