@@ -16,7 +16,7 @@ extern SDL_Renderer* gRenderer;
 
 class Zombie {
     public:
-        Zombie(int x, int y, int angle);
+        Zombie(int x, int y, int angle, int speed);
         ~Zombie();
 
         void update(int current_time);

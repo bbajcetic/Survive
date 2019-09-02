@@ -1,6 +1,6 @@
 #include "Zombie.h"
 
-Zombie::Zombie(int x, int y, int angle) {
+Zombie::Zombie(int x, int y, int angle, int speed) {
     //printf("---Entering Zombie constructor\n");
     //objTexture = NULL;
     this->objTexture = new ObjTexture();
@@ -11,8 +11,7 @@ Zombie::Zombie(int x, int y, int angle) {
     this->next_y = y;
     this->next_angle = angle;
     this->moving = false;
-
-    this->speed = ( rand() % (ZOMBIE_MAX_SPEED+1-ZOMBIE_MIN_SPEED) ) + ZOMBIE_MIN_SPEED;
+    this->speed = speed;
     this->width = ZOMBIE_WIDTH;
     this->height = ZOMBIE_HEIGHT;
     this->health = ZOMBIE_STARTING_HEALTH;

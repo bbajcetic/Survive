@@ -40,8 +40,12 @@ void ZombieManager::update(int current_time) {
     //check for next spawn
     if ( (current_time - last_spawn) >= ZOMBIE_SPAWN_TIME ) {
         if (num_spawned < num_zombies) {
-            //spawn zombie
-            Zombie* temp = new Zombie(0, 0, 0);
+            /* spawn zombie */
+            //randomize location and speed
+            int speed = ( rand() % (ZOMBIE_MAX_SPEED+1-ZOMBIE_MIN_SPEED) ) + ZOMBIE_MIN_SPEED;
+            int spawn_y = ( rand() % GAME_HEIGHT );
+            int spawn_x = -48;
+            Zombie* temp = new Zombie(spawn_x, spawn_y, 0, speed);
             temp->load("ZombieRight.png", 1, 4);
             zombies.push_back(temp);
             num_spawned++;
