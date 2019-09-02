@@ -42,7 +42,6 @@ void printInfo();
 
 //Globals
 SDL_Window* gWindow = NULL;
-SDL_Surface* gScreen = NULL;
 SDL_Renderer* gRenderer = NULL;
 ObjTexture gTextTexture;
 //SDL_Texture* gTextTexture = NULL;
