@@ -18,7 +18,7 @@ class ObjTexture {
 
         bool load(std::string path, int anim_rows, int anim_cols);
         bool loadText(std::string text, SDL_Color color);
-        void render(int x, int y, int angle, int width, int height, int anim_index);
+        void render(int x, int y, int width, int height, int angle, int anim_index=0);
         void free_();
 
         SDL_Texture* getTexture() { return texture; }

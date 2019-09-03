@@ -92,7 +92,7 @@ bool ObjTexture::load(std::string path, int anim_rows, int anim_cols) {
     //printf("---Leaving ObjTexture::load\n");
     return success;
 }
-void ObjTexture::render(int x, int y, int angle, int width, int height, int anim_index) {
+void ObjTexture::render(int x, int y, int width, int height, int angle, int anim_index) {
     //printf("---Entering ObjTexture::render\n");
     //printf("r");
     int row, col, row_height, col_width, textureX, textureY;

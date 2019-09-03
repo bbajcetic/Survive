@@ -65,6 +65,22 @@ bool Survivor::takeDamage(int damage) {
     }
     return true;
 }
+void Survivor::buyHealth(int health, int cost) {
+    if (score >= cost && this->health < SURVIVOR_STARTING_HEALTH) {
+        this->health += health;
+        if (this->health > SURVIVOR_STARTING_HEALTH) {
+            this->health = SURVIVOR_STARTING_HEALTH;
+        }
+        score -= cost;
+    }
+}
+void Survivor::buyAmmo(int ammo, int cost) {
+    if (score >= cost) {
+        this->ammo += ammo;
+        score -= cost;
+    }
+}
+
 Vec2D Survivor::getHitBox() {
     Vec2D temp(SURVIVOR_HITBOX_WIDTH, SURVIVOR_HITBOX_HEIGHT);
     return temp;
@@ -250,10 +266,10 @@ void Survivor::draw() {
     //draw sprite
     int anim_index = 1; //index 1 is non moving sprite
     if (moving) { anim_index = frame/SURVIVOR_FRAMES_PER_ANIMATION; }
-    objTexture->render(x, y, angle, width, height, anim_index);
+    objTexture->render(x, y, width, height, angle, anim_index);
 
     //draw hitbox
-    drawHitBox();
+    //drawHitBox();
     
     //draw Survivor health bar
     int filled_length = int( float(health)/float(SURVIVOR_STARTING_HEALTH) * float(HEALTH_BAR_WIDTH) );

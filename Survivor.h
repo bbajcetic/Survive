@@ -12,6 +12,7 @@
 
 extern std::vector<Projectile*> projectiles;
 extern Map map;
+extern int score;
 
 class Survivor {
     public:
@@ -26,6 +27,8 @@ class Survivor {
         void move(std::string dir);
         void shoot(int current_time);
         bool takeDamage(int damage);
+        void buyHealth(int health, int cost);
+        void buyAmmo(int ammo, int cost);
         void draw();
         void drawHitBox();
         Vec2D getHitBox();

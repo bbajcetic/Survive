@@ -39,7 +39,7 @@ bool Projectile::update() {
 }
 void Projectile::draw() {
     //printf("---Entering Projectile::draw\n");
-    objTexture->render(x, y, angle, width, height, 0);
+    objTexture->render(x, y, width, height, angle);
     drawHitBox();
     //printf("---Leaving Projectile::draw\n");
 }

@@ -120,12 +120,7 @@ void Map::draw() {
             angle = (curr_tile%4) * 90;
             x = tile_width * j;
             y = tile_height * i;
-            //(*(textures+type))->render(x, y, angle, tile_width, tile_height, 0);
-            //textures[type]->render(x, y, angle, tile_width, tile_height, 0);
-            //printf("TYPE=%d\n", type);
-            //printf("rendering texture %s\n", textures[type].getFileName().c_str());
-            //printf("address = %p\n", &textures[type]);
-            this->textures[type]->render(x, y, angle, tile_width, tile_height, 0);
+            this->textures[type]->render(x, y, tile_width, tile_height, angle, 0);
         }
     }
     //printf("---Leaving Map::draw\n");

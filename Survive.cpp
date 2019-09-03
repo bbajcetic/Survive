@@ -12,7 +12,9 @@
 #include "Zombie.h"
 #include "ZombieManager.h"
 #include "Collision.h"
+#include "Container.h"
 #include "CustomMath.h"
+#include "CustomRender.h"
 
 int score = 0;
 int wave = 1;
@@ -27,10 +29,14 @@ void close();
 void clearObjects();
 
 //Main game functions
+/* function that cleans up resources and exits game */
+void exitGame();
 /* function that displays the start screen */
 void startGame();
 /* returns true if Survivor is alive and false if dead */
 bool playWave();
+/* function that allows purchasing of health, ammo, etc. between waves */
+void afterWave();
 /* function that displays the Game Over screen */
 bool gameOver();
 /* function that resets what is needed for the next wave */
@@ -184,6 +190,7 @@ int main( int argc, char* args[] ) {
             if (alive) {
                 if (wave < NUMBER_OF_WAVES) {
                     /* set up and go to next wave */
+                    afterWave();
                     wave++;
                     resetWave();
                 }
@@ -225,95 +232,232 @@ void resetWave() {
     zombieManager.reset(wave);
 
 }
+void afterWave() {
+    //Set up viewport for wave complete / shop area
+    SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
+    //create Shop container and render Shop area
+    Container shopCont( AFTERWAVE_RECT, 12, 1, RED );
+
+    //write WAVE COMPLETE
+    shopCont.writeCenter("WAVE COMPLETE", 1, 0);
+    
+    //Set up wave complete viewport for buttons
+    SDL_RenderSetViewport(gRenderer, &AFTERWAVE_VIEWPORT);
+
+    //buy health button
+    Container healthCont( BUY_HEALTH_RECT, 2, 1, BUTTON_DARKGRAY); 
+    //buy ammo button
+    Container ammoCont( BUY_AMMO_RECT, 2, 1, BUTTON_DARKGRAY);
+    //continue button
+    Container continueCont( CONTINUE_RECT, 1, 1, BUTTON_DARKGRAY);
+
+    bool continue_ = false;
+
+    SDL_Event e;
+    int x = 0; int y = 0; //current mouse position
+    while( !continue_ ) {
+        //Handle events on queue
+        while (SDL_PollEvent( &e ) != 0) {
+            if (e.type == SDL_QUIT) {
+                exitGame();
+            }
+            else if (e.type == SDL_MOUSEMOTION) {
+                SDL_GetMouseState(&x, &y);
+                x = x - AFTERWAVE_RECT.x - GAME_VIEWPORT.x;
+                y = y - AFTERWAVE_RECT.y - GAME_VIEWPORT.y;
+            }
+            else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                if (healthCont.inButton(x, y)) {
+                    survivor.buyHealth(10, 50);
+                }
+                else if (ammoCont.inButton(x, y)) {
+                    survivor.buyAmmo(10, 10);
+                }
+                else if (continueCont.inButton(x, y)) {
+                    continue_ = true;
+                }
+            }
+        }
+
+        //RENDERING
+        //clear screen
+        SDL_SetRenderDrawColor( gRenderer, BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, BG_COLOR.a );
+        SDL_RenderClear(gRenderer);
+
+        //Print game info to info area
+        printInfo();
+        //Set up viewport for wave complete / shop area
+        SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
+        SDL_SetRenderDrawColor(gRenderer, GAME_COLOR.r, GAME_COLOR.g, GAME_COLOR.b, GAME_COLOR.a);
+        SDL_RenderFillRect(gRenderer, &GAME_RECT);
+
+        map.draw();
+        survivor.draw();
+        zombieManager.render();
+        std::vector<Projectile*>::iterator it = projectiles.begin();
+        while (it != projectiles.end()) {
+            (*it)->draw();
+            it++;
+        }
+
+        shopCont.setColor(RED);
+        shopCont.outline(4);
+        shopCont.setColor(BLACK);
+        shopCont.render();
+        shopCont.setColor(RED);
+        //write WAVE COMPLETE
+        loadFont("fonts/KongText.ttf", 24);
+        shopCont.writeCenter("WAVE COMPLETE", 1, 0);
+        //Set up wave complete viewport for buttons
+        SDL_RenderSetViewport(gRenderer, &AFTERWAVE_VIEWPORT);
+
+        loadFont("fonts/MotionControl-Bold.ttf", 24);
+        if (healthCont.inButton(x, y)) {
+            printf("check2\n");
+            //healthCont.setColor(BUTTON_GRAY);
+            healthCont.setColor(GREEN);
+            healthCont.render();
+            healthCont.setColor(RED);
+            healthCont.writeCenter("Buy +10 Health", 0, -3);
+            healthCont.writeCenter("[Cost: 50 Score]", 1, -3);
+        }
+        else {
+            healthCont.setColor(BUTTON_DARKGRAY);
+            healthCont.render();
+            healthCont.setColor(RED);
+            healthCont.writeCenter("Buy +10 Health", 0, -3);
+            healthCont.writeCenter("[Cost: 50 Score]", 1, -3);
+        }
+        if (ammoCont.inButton(x, y)) {
+            //ammoCont.setColor(BUTTON_GRAY);
+            ammoCont.setColor(GREEN);
+            ammoCont.render();
+            ammoCont.setColor(RED);
+            ammoCont.writeCenter("Buy +10 Ammo", 0, -3);
+            ammoCont.writeCenter("[Cost: 10 Score]", 1, -3);
+        }
+        else {
+            ammoCont.setColor(BUTTON_DARKGRAY);
+            ammoCont.render();
+            ammoCont.setColor(RED);
+            ammoCont.writeCenter("Buy +10 Ammo", 0, -3);
+            ammoCont.writeCenter("[Cost: 10 Score]", 1, -3);
+        }
+        loadFont("fonts/MotionControl-Bold.ttf", 36);
+        if (continueCont.inButton(x, y)) {
+            //continueCont.setColor(BUTTON_GRAY);
+            continueCont.setColor(GREEN);
+            continueCont.render();
+            continueCont.setColor(RED);
+            continueCont.writeCenter("CONTINUE", 0, 0);
+        }
+        else {
+            continueCont.setColor(BUTTON_DARKGRAY);
+            continueCont.render();
+            continueCont.setColor(RED);
+            continueCont.writeCenter("CONTINUE", 0, 0);
+        }
+        //update screen
+        SDL_RenderPresent(gRenderer);
+
+        SDL_Delay(16); //check for input at 60fps
+    }
+
+}
+
+void exitGame() {
+    close();
+    exit(1);
+}
 void startGame() {
 }
 void printInfo() {
-    SDL_Color text_color = { 0xFF, 0x00, 0x00, 0xFF };
-    loadFont("fonts/AtariFull.ttf", 12);
-    //output score
-    char score_buff[20];
-    snprintf(score_buff, sizeof(score_buff), "SCORE: %d", score);
-    std::string score_string = score_buff;
-    gTextTexture.loadText(score_string, text_color);
-    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 1*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
-    //output wave
-    char wave_buff[20];
-    snprintf(wave_buff, sizeof(wave_buff), "WAVE: %d", wave);
-    std::string wave_string = wave_buff;
-    gTextTexture.loadText(wave_string, text_color);
-    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 3*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
-    //output enemies remaining (only if less than 10) 
-    char zombie_buff[20];
-    if (zombieManager.getNumZombies() - zombieManager.getNumDead() < 10) {
-        snprintf(zombie_buff, sizeof(zombie_buff), "ZOMBIES LEFT: %d", zombieManager.getNumZombies() - zombieManager.getNumDead());
-        std::string zombie_string = zombie_buff;
-        gTextTexture.loadText(zombie_string, text_color);
-        gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 4*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
-    }
-    //output ammo
-    int ammo = survivor.getAmmo();
-    char ammo_buff[20];
-    snprintf(ammo_buff, sizeof(ammo_buff), "AMMO: %d/%d", ammo, SURVIVOR_STARTING_AMMO);
-    std::string ammo_string = ammo_buff;
-    gTextTexture.loadText(ammo_string, text_color);
-    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 6*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
-    //output health
-    int health = survivor.getHealth();
-    char health_buff[20];
-    snprintf(health_buff, sizeof(health_buff), "HEALTH: %d/%d", health, SURVIVOR_STARTING_HEALTH);
-    std::string health_string = health_buff;
-    gTextTexture.loadText(health_string, text_color);
-    gTextTexture.render(INFO_WIDTH/2-gTextTexture.getWidth()/2, 7*INFO_HEIGHT/16, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
-    int filled_length = int( float(health)/float(SURVIVOR_STARTING_HEALTH) * float(INFO_HEALTH_BAR_WIDTH) );
-    int health_red_x = int(INFO_WIDTH/2-INFO_HEALTH_BAR_WIDTH/2.0);
-    int health_green_x = int(health_red_x+(INFO_HEALTH_BAR_WIDTH-filled_length));
-    SDL_Rect redRect = { health_red_x, 8*INFO_HEIGHT/16, INFO_HEALTH_BAR_WIDTH-filled_length, INFO_HEALTH_BAR_HEIGHT };
-    SDL_Rect greenRect = { health_green_x, 8*INFO_HEIGHT/16, filled_length, INFO_HEALTH_BAR_HEIGHT };
+        //Set up viewport for info area
+        SDL_RenderSetViewport(gRenderer, &INFO_VIEWPORT);
+        //create Info container and render info area
+        Container infoCont( INFO_RECT, 16, 1, RED );
+        infoCont.outline(2);
+        infoCont.setColor(BLACK);
+        infoCont.render();
+        infoCont.setColor(RED);
 
-    SDL_SetRenderDrawColor( gRenderer, 0x00, 0xFF, 0x00, 0xFF ); //green
-    SDL_RenderFillRect( gRenderer, &greenRect );
-    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF ); //red
-    SDL_RenderFillRect( gRenderer, &redRect );
+        std::string temp;
+        char buff[40];
+        loadFont("fonts/AtariFull.ttf", 12);
+        //output score
+        snprintf(buff, sizeof(buff), "SCORE: %d", score);
+        temp = buff;
+        infoCont.writeCenter(temp, 1, 0);
+
+        //output wave
+        snprintf(buff, sizeof(buff), "WAVE: %d", wave);
+        temp = buff;
+        infoCont.writeCenter(temp, 6, 0);
+
+        //output zombies remaining
+        int num_total = zombieManager.getNumZombies();
+        int num_dead = zombieManager.getNumDead();
+        if (num_total - num_dead < 10) {
+            snprintf( buff, sizeof(buff), 
+                    "ZOMBIES LEFT: %d", num_total - num_dead );
+            temp = buff;
+            infoCont.writeCenter(temp, 7, 0);
+        }
+
+        //output ammo
+        int ammo = survivor.getAmmo();
+        snprintf(buff, sizeof(buff), "AMMO: %d/%d", ammo, SURVIVOR_STARTING_AMMO);
+        temp = buff;
+        infoCont.writeCenter(temp, 9, 0);
+
+        //output health
+        int health = survivor.getHealth();
+        snprintf(buff, sizeof(buff), 
+                "HEALTH: %d/%d", health, SURVIVOR_STARTING_HEALTH);
+        temp = buff;
+        infoCont.writeCenter(temp, 3, 0);
+
+        //output health bar
+        SDL_Rect healthRect = { INFO_WIDTH/2-INFO_HEALTH_BAR_WIDTH/2, 
+            infoCont.rowToY(4), 
+            INFO_HEALTH_BAR_WIDTH, INFO_HEALTH_BAR_HEIGHT };
+        renderHealthBar( healthRect, 
+                float(health)/float(SURVIVOR_STARTING_HEALTH), GREEN, RED );
+
 }
 bool gameOver() {
     //Set up viewport for gameplay area
     SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
-    SDL_SetRenderDrawColor( gRenderer, 0xFF, 0x00, 0x00, 0xFF ); //red
-    SDL_RenderFillRect( gRenderer, &GAMEOVER_OUTLINE );
-    SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF ); //black
-    SDL_RenderFillRect( gRenderer, &GAMEOVER_RECT );
+    //create Game Over container and render game over area
+    Container gameoverCont( GAMEOVER_RECT, 8, 1, RED );
+    gameoverCont.outline(4);
+    gameoverCont.setColor(BLACK);
+    gameoverCont.render();
+    gameoverCont.setColor(RED);
+
+    std::string temp;
+    char buff[40];
     loadFont("fonts/ArcadeClassic.ttf", 48);
     //write GAME OVER
-    SDL_Color text_color = { 0xFF, 0x00, 0x00, 0xFF };
-    gTextTexture.loadText("GAME", text_color);
-    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAMEOVER_RECT.y+20, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
-    gTextTexture.loadText("OVER", text_color);
-    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAMEOVER_RECT.y+20 + gTextTexture.getHeight()/2 + 3, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    gameoverCont.writeCenter("GAME", 1, 0);
+    gameoverCont.writeCenter("OVER", 2, 0);
+
+    loadFont("fonts/AtariFull.ttf", 12);
     //write wave 
-    loadFont("fonts/AtariFull.ttf", 12);
-    //loadFont("fonts/MotionControl-Bold.ttf", 24);
-    char wave_buff[20];
-    snprintf(wave_buff, sizeof(wave_buff), "WAVE REACHED: %d", wave);
-    std::string wave_string = wave_buff;
-    gTextTexture.loadText(wave_string, text_color);
-    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAME_HEIGHT/2-10, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    snprintf(buff, sizeof(buff), "WAVE REACHED: %d", wave);
+    temp = buff;
+    gameoverCont.writeCenter(temp, 4, 0);
+
     //write score 
-    loadFont("fonts/AtariFull.ttf", 12);
-    //loadFont("fonts/MotionControl-Bold.ttf", 24);
-    char score_buff[20];
-    snprintf(score_buff, sizeof(score_buff), "Score: %d", score);
-    std::string score_string = score_buff;
-    gTextTexture.loadText(score_string, text_color);
-    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAME_HEIGHT/2+10, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    snprintf(buff, sizeof(buff), "Score: %d", score);
+    temp = buff;
+    gameoverCont.writeCenter(temp, 5, 0);
 
     loadFont("fonts/MotionControl-Bold.ttf", 24);
     //write exit/restart
-    char exit_buff[40];
-    snprintf(exit_buff, sizeof(exit_buff), "Restart(r)      Exit(q)");
-    //snprintf(exit_buff, sizeof(exit_buff), "Exit(press q)");
-    std::string exit_string = exit_buff;
-    gTextTexture.loadText(exit_string, text_color);
-    gTextTexture.render(GAME_WIDTH/2-gTextTexture.getWidth()/2, GAME_HEIGHT/2+GAMEOVER_HEIGHT/2-gTextTexture.getHeight()-10, 0, gTextTexture.getWidth(), gTextTexture.getHeight(), 0);
+    snprintf(buff, sizeof(buff), "Restart(r)      Exit(q)");
+    temp = buff;
+    gameoverCont.writeCenter(temp, 7, 0);
 
     //update screen
     SDL_RenderPresent(gRenderer);
@@ -378,13 +522,13 @@ bool playWave() {
                 alive = false;
                 quit = true;
             }
-            //else if (e.type == SDL_KEYDOWN) {
-            //    switch(e.key.keysym.sym) {
-            //        case SDLK_SPACE:
-            //            survivor.shoot(current);
-            //            break;
-            //    }
-            //}
+            else if (e.type == SDL_KEYDOWN) {
+                switch(e.key.keysym.sym) {
+                    case SDLK_SPACE:
+                        quit = true;
+                        break;
+                }
+            }
             else if (e.type == SDL_MOUSEMOTION) {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
@@ -504,13 +648,6 @@ bool playWave() {
         //clear screen
         SDL_SetRenderDrawColor( gRenderer, BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, BG_COLOR.a );
         SDL_RenderClear(gRenderer);
-        //Set up viewport for info area
-        SDL_RenderSetViewport(gRenderer, &INFO_VIEWPORT);
-        //Render info area
-        SDL_SetRenderDrawColor( gRenderer, INFO_COLOR.r, INFO_COLOR.g, INFO_COLOR.b, INFO_COLOR.a );
-        SDL_RenderFillRect(gRenderer, &INFO_OUT);
-        SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
-        SDL_RenderFillRect(gRenderer, &INFO_IN);
         //Print game info to info area
         printInfo();
 

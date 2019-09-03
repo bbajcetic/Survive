@@ -206,7 +206,7 @@ void Zombie::draw() {
 
     //draw sprite
     int anim_index = frame/ZOMBIE_FRAMES_PER_ANIMATION;
-    objTexture->render(x, y, angle, width, height, anim_index);
+    objTexture->render(x, y, width, height, angle, anim_index);
 
     //draw hitbox
     drawHitBox();
