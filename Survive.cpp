@@ -370,7 +370,144 @@ void exitGame() {
     exit(1);
 }
 void startGame() {
+
+    //screen container
+    Container screenCont( SCREEN_RECT, 1, 1, BLACK );
+    //start game button
+    Container startCont( START_RECT, 2, 1, BUTTON_DARKGRAY );
+
+    bool continue_ = false;
+
+    SDL_Event e;
+    int x = 0; int y = 0; //current mouse position
+    while( !continue_ ) {
+        //Handle events on queue
+        while (SDL_PollEvent( &e ) != 0) {
+            if (e.type == SDL_QUIT) {
+                exitGame();
+            }
+            else if (e.type == SDL_MOUSEMOTION) {
+                SDL_GetMouseState(&x, &y);
+            }
+            else if (e.type == SDL_MOUSEBUTTONDOWN) {
+                if (startCont.inButton(x, y)) {
+                    continue_ = true;
+                }
+            }
+        }
+        //RENDERING
+        //clear screen
+        SDL_SetRenderDrawColor( gRenderer, BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, BG_COLOR.a ); SDL_RenderClear(gRenderer);
+
+        screenCont.setColor(BLACK);
+        screenCont.render();
+        loadFont("fonts/AtariFull.ttf", 128);
+        screenCont.setColor(RED);
+        screenCont.write("SURVIVE", 0, 0, 50, 225, 330);
+
+        if (startCont.inButton(x, y)) {
+            startCont.setColor(GREEN);
+            startCont.render();
+            startCont.setColor(RED);
+            loadFont("fonts/AtariFull.ttf", 36);
+            startCont.writeCenter("START", 0, 30);
+            startCont.writeCenter("GAME", 1, 10);
+        }
+        else {
+            startCont.setColor(BLACK);
+            startCont.outline(4);
+            startCont.setColor(BUTTON_DARKGRAY);
+            startCont.render();
+            startCont.setColor(RED);
+            loadFont("fonts/AtariFull.ttf", 36);
+            startCont.writeCenter("START", 0, 30);
+            startCont.writeCenter("GAME", 1, 10);
+        }
+        //update screen
+        SDL_RenderPresent(gRenderer);
+
+        SDL_Delay(16); //check for input at 60fps
+    }
+
 }
+//void startGame() {
+//    //Set up viewport for info area
+//    SDL_RenderSetViewport(gRenderer, &INFO_VIEWPORT);
+//    //create Info container and render info area
+//    Container infoCont( INFO_RECT, 16, 1, RED );
+//
+//    //Set up viewport for gameplay area
+//    SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
+//
+//    //start game button
+//    Container startCont( START_RECT, 2, 1, BUTTON_DARKGRAY);
+//
+//    bool continue_ = false;
+//
+//    SDL_Event e;
+//    int x = 0; int y = 0; //current mouse position
+//    while( !continue_ ) {
+//        //Handle events on queue
+//        while (SDL_PollEvent( &e ) != 0) {
+//            if (e.type == SDL_QUIT) {
+//                exitGame();
+//            }
+//            else if (e.type == SDL_MOUSEMOTION) {
+//                SDL_GetMouseState(&x, &y);
+//                x = x - GAME_VIEWPORT.x;
+//                y = y - GAME_VIEWPORT.y;
+//            }
+//            else if (e.type == SDL_MOUSEBUTTONDOWN) {
+//                if (startCont.inButton(x, y)) {
+//                    continue_ = true;
+//                }
+//            }
+//        }
+//        //RENDERING
+//        //clear screen
+//        SDL_SetRenderDrawColor( gRenderer, BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, BG_COLOR.a ); SDL_RenderClear(gRenderer);
+//
+//        //Set up viewport for info area
+//        SDL_RenderSetViewport(gRenderer, &INFO_VIEWPORT);
+//        infoCont.outline(2);
+//        infoCont.setColor(BLACK);
+//        infoCont.render();
+//        infoCont.setColor(RED);
+//        loadFont("fonts/AtariFull.ttf", 12);
+//        infoCont.writeCenter("Press START GAME", 8, 0);
+//        //Set up viewport for gameplay area
+//        SDL_RenderSetViewport(gRenderer, &GAME_VIEWPORT);
+//        SDL_SetRenderDrawColor(gRenderer, GAME_COLOR.r, GAME_COLOR.g, GAME_COLOR.b, GAME_COLOR.a);
+//        SDL_RenderFillRect(gRenderer, &GAME_RECT);
+//
+//        //Render map
+//        map.draw();
+//
+//        if (startCont.inButton(x, y)) {
+//            startCont.setColor(GREEN);
+//            startCont.render();
+//            startCont.setColor(RED);
+//            loadFont("fonts/AtariFull.ttf", 36);
+//            startCont.writeCenter("START", 0, 30);
+//            startCont.writeCenter("GAME", 1, 10);
+//        }
+//        else {
+//            startCont.setColor(BLACK);
+//            startCont.outline(4);
+//            startCont.setColor(BUTTON_DARKGRAY);
+//            startCont.render();
+//            startCont.setColor(RED);
+//            loadFont("fonts/AtariFull.ttf", 36);
+//            startCont.writeCenter("START", 0, 30);
+//            startCont.writeCenter("GAME", 1, 10);
+//        }
+//        //update screen
+//        SDL_RenderPresent(gRenderer);
+//
+//        SDL_Delay(16); //check for input at 60fps
+//    }
+//
+//}
 void printInfo() {
         //Set up viewport for info area
         SDL_RenderSetViewport(gRenderer, &INFO_VIEWPORT);

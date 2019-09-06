@@ -14,7 +14,7 @@ class Container {
         void render();
         void outline(int width);
         bool inButton(int posX, int posY);
-        void write(std::string text, int row, int col, int offX, int offY);
+        void write(std::string text, int row, int col, int offX, int offY, int angle = 0);
         void writeCenter(std::string text, int row, int offY);
 
         int colToX(int col);

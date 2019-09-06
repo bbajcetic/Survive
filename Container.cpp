@@ -35,10 +35,10 @@ int Container::colToX(int col) {
 int Container::rowToY(int row) {
     return int( float(row) * (float(height)/float(rows)) + y );
 }
-void Container::write(std::string text, int row, int col, int offX, int offY) {
+void Container::write(std::string text, int row, int col, int offX, int offY, int angle) {
     gTextTexture.loadText(text, color);
     gTextTexture.render( colToX(col) + offX, rowToY(row) + offY, 
-            gTextTexture.getWidth(), gTextTexture.getHeight(), 0 );
+            gTextTexture.getWidth(), gTextTexture.getHeight(), angle );
 }
 void Container::writeCenter(std::string text, int row, int offY) {
     int center_x = x + width/2;
