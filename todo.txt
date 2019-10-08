@@ -1,0 +1,25 @@
+-Allow for Survivor knife combat (when out of ammo or just whenever you want)
+-Allow mines (start with 1, you can purchase additional), that blow up surrounding walls within a certain radius
+-Sell zombie bodies for ammo, health, etc. at the end of each wave
+
+-Implement windows in walls that Survivor can shoot through but Zombie can't go through
+
+-Zombie attack animations when they are within a certain distance of Survivor
+-Make all angles floats
+-Make zombies more likely to choose straight then to go at an angle
+-Make gameover screen and reduce opacity of it so you can see through it a little)
+-Make start screen with sensitivity settings and choose player name
+-Make "WAVE N" screen with SDL_Delay on it before each wave begins (N=wave no.)
+-Add Pause button
+-After zombies die, make the dying animation them turning to a pile of blood and then slowly seeping into the ground before disappearing (there could be a list of blood animation objects that change slowly (seep into ground) and then when they are gone they are deleted from the list)
+-Add different gun options
+-Add different kinds of zombies (big zombies, little zombies that are super fast and come in swarms of 10 and only take 1/2 bullets to shoot down)
+-Add frame rate object to keep track of current frame rate, to cap frame rate, etc.
+-Fix Pathfinding algorithm to not cut corners, because zombies can't either
+-Implement the 2 doors
+-Fix floor sprite to look more like a floor tile (no red X, such contrast, doesn't go with the wall tiles at all)
+-Add high score functionality (store saved scores to gamedata/scores.txt
+-Add audio
+
+-After version 1 of game is complete, tag it using git tag (https://git-scm.com/book/en/v2/Git-Basics-Tagging)
+
